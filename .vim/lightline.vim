@@ -2,7 +2,7 @@ set laststatus=2
 set noshowmode
 
 let g:lightline = {
-      \ 'colorscheme': 'dracula',
+      \ 'colorscheme': 'iceberg',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]

@@ -164,4 +164,4 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
-let g:coc_node_path = '/home/cjcon90/.nvm/versions/node/v16.4.2/bin/node'
+let g:coc_node_path = '/home/cjcon90/.nvm/versions/node/v16.5.0/bin/node'

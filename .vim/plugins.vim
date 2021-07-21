@@ -7,7 +7,7 @@ Plug 'tpope/vim-surround' " surroundings as nouns
 Plug 'kana/vim-textobj-user' " Add custom objects
 Plug 'kana/vim-textobj-indent' " Add indent as an object __i
 
-Plug 'dracula/vim' " Add dracula theme
+Plug 'cocopon/iceberg.vim' " iceberg colorscheme
 Plug 'tpope/vim-fugitive' " Git functionality
 Plug 'itchyny/lightline.vim' " Lightline bar
 
