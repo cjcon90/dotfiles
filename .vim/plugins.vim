@@ -13,5 +13,6 @@ Plug 'itchyny/lightline.vim' " Lightline bar
 
 Plug 'jiangmiao/auto-pairs' " Auto close brackets
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " Autosuggestion
-Plug 'rafaqz/ranger.vim' " Use ranger as file browser
+" Plug 'rafaqz/ranger.vim' " Use ranger as file browser
+Plug 'iberianpig/ranger-explorer.vim' " Use ranger as file browser
 call plug#end() 
