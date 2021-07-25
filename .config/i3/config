@@ -30,6 +30,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
+exec --no-startup-id blueman-applet
 
 # Launch Polybar
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
@@ -48,10 +49,10 @@ exec --no-startup-id dunst
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec --no-startup-id alacritty
 
 # lock i3
-bindsym $mod+Ctrl+l exec i3lock
+bindsym $mod+Ctrl+l exec --no-startup-id i3lock
 
 # kill focused window
 bindsym $mod+Shift+w kill
@@ -249,10 +250,10 @@ mode "$mode_gaps_outer" {
 }
 
 # Screenshot (select area)
-bindsym --release Shift+Print exec --no-startup-id ~/.config/i3/screenshot_select.sh
+bindsym --release Shift+Print exec --no-startup-id ~/bin/screenshot_select.sh
 
 # Screenshot (select area)
-bindsym --release Print exec --no-startup-id ~/.config/i3/screenshot_full.sh
+bindsym --release Print exec --no-startup-id ~/bin/screenshot_full.sh
 
-# Screenshot (select area)
+# Swap displays
 bindsym --release $mod+Shift+s exec --no-startup-id ~/.config/i3/i3-display-swap.sh
