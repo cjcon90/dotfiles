@@ -60,7 +60,7 @@ colors:
 
   # Bright colors
   bright:
-    black:   '#3d3f4a'
+    black:   '#6b7089'
     red:     '#e98989'
     green:   '#c0ca8e'
     yellow:  '#e9b189'
@@ -68,6 +68,7 @@ colors:
     magenta: '#ada0d3'
     cyan:    '#95c4ce'
     white:   '#d2d4de'
+
 
 # Bell
 #
