@@ -55,22 +55,23 @@ padding-right = 2
 module-margin-left = 1
 module-margin-right = 2
 
-font-0 = Hack Nerd Font:style=Regular:size=11;2
+font-0 = MesloLGS Nerd Font:style=Regular:size=11;2
 font-1 = Font Awesome 5 Free Solid:style=Solid:size=11;2
 font-2 = Font Awesome 5 Brands Regular:style=Regular:size=11;2
+font-3 = Font Awesome 5 Free Regular:style=Regular:size=11;2
 
 modules-left = i3 spotify
 modules-center = 
-modules-right = xbacklight pulseaudio xkeyboard memory cpu wlan eth battery temperature date powermenu
+modules-right = xbacklight pulseaudio xkeyboard memory cpu wlan eth battery temperature date bluetooth powermenu
 
 ; tray-position = right
 ; tray-padding = 2
-;tray-background = #0063ff
+; tray-background = {colors.background}
 
-; wm-restack = i3
+wm-restack = i3
 
-scroll-up = i3wm-wsnext
-scroll-down = i3wm-wsprev
+scroll-up = i3wm-wsprev
+scroll-down = i3wm-wsnext
 
 cursor-click = pointer
 cursor-scroll = ns-resize
@@ -83,7 +84,7 @@ label = %title:0:30:...%
 type = internal/xkeyboard
 blacklist-0 = num lock
 
-format-prefix = "  "
+format-prefix = "%{T3} %{T-}"
 format-prefix-foreground = ${colors.foreground-alt}
 format-prefix-underline = ${colors.blue}
 
@@ -91,7 +92,8 @@ label-layout = %layout%
 label-layout-underline = ${colors.blue}
 
 label-indicator-padding = 2
-label-indicator-margin = 1
+label-indicator-margin-left = 2
+label-indicator-foreground = ${colors.background}
 label-indicator-background = ${colors.red}
 label-indicator-underline = ${colors.red}
 
@@ -173,7 +175,7 @@ card = intel_backlight
 use-actual-brightness = true
 enable-scroll = true
 format = <label> <bar>
-label =  
+label = "%{T3}%{T-}" 
 
 bar-width = 10
 bar-indicator = |
@@ -320,15 +322,15 @@ bar-volume-empty-foreground = ${colors.foreground-alt}
 type = internal/battery
 battery = BAT0
 adapter = AC
-full-at = 98
+full-at = 95
 
 format-charging = <animation-charging> <label-charging>
 format-charging-underline = ${colors.blue}
 
-format-discharging = <animation-discharging> <label-discharging>
+format-discharging = <ramp-capacity> <label-discharging>
 format-discharging-underline = ${self.format-charging-underline}
 
-format-full-prefix = " "
+format-full-prefix = "  "
 format-full-prefix-foreground = ${colors.foreground-alt}
 format-full-underline = ${self.format-charging-underline}
 
@@ -336,6 +338,7 @@ ramp-capacity-0 = " "
 ramp-capacity-1 = " "
 ramp-capacity-2 = " "
 ramp-capacity-foreground = ${colors.foreground-alt}
+ramp-capacity-0-foreground = ${colors.red}
 
 animation-charging-0 = " "
 animation-charging-1 = " "
@@ -396,6 +399,17 @@ menu-2-0 = power off
 menu-2-0-exec = sudo poweroff
 menu-2-1 = cancel
 menu-2-1-exec = menu-open-0
+
+[module/bluetooth]
+type = custom/script
+exec = ~/.config/polybar/bluetooth.sh
+interval = 2
+click-left = exec blueman-manager
+click-right = exec ~/.config/polybar/toggle_bluetooth.sh
+format-padding-left = 1
+format-background = {colors.background}
+format-underline = {colors.cyan}
+format-foreground = #ffffff
 
 [settings]
 screenchange-reload = true
