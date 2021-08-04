@@ -54,6 +54,7 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec --no-startup-id alacritty
+bindsym $mod+Shift+Return exec --no-startup-id alacritty --working-directory "$(xcwd)"
 
 # lock i3
 bindsym $mod+Ctrl+l exec --no-startup-id i3lock
