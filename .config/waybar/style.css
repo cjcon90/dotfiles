@@ -1,0 +1,137 @@
+@define-color bg #282a36;
+@define-color selection #44475a;
+@define-color fg #f8f8f2;
+@define-color comment #6272a4;
+@define-color cyan #8be9fd;
+@define-color green #50fa7b;
+@define-color orange #ffb86c;
+@define-color pink #ff79c6;
+@define-color purple #bd93f9;
+@define-color red #ff5555;
+@define-color yellow #f1fa8c;
+
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "Font Awesome 5 Free Solid", "Font Awesome 5 Free Brands", "DejaVu Sans Mono";
+    font-weight: 400;
+    font-size: 14px;
+    min-height: 35px;
+}
+
+window#waybar {
+    background-color: @bg;
+    color: @fg;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+window#waybar.empty {
+    color: rgba(0,0,0,0);
+}
+/*
+.topbar {
+    border-bottom: 3px solid @selection;
+}
+
+.bottombar {
+    border-top: 3px solid @selection;
+}
+*/
+#workspaces button {
+    padding: 0 15px;
+    background-color: transparent;
+    border-top: solid 3px transparent;
+    color: @fg;
+}
+
+#workspaces button.focused {
+    background-color: @selection;
+    border-top: solid 3px @green;
+}
+
+#workspaces button:hover {
+    background: @comment;
+}
+
+#workspaces button.urgent {
+    background-color: @red;
+}
+
+#mode {
+    background-color: @selection;
+    border-top: 3px solid @green;
+}
+
+#backlight,
+#battery.bat1,
+#battery.bat2,
+#clock,
+#cpu,
+#custom-mail,
+#custom-poweroff,
+#custom-weather,
+#disk,
+#idle_inhibitor,
+#memory,
+#mode,
+#network.vpn,
+#network.wifi,
+#network.ethernet,
+#network.disconnected,
+#pulseaudio,
+#taskbar,
+#temperature,
+#bluetooth,
+#tray {
+    padding: 0 10px;
+    margin: 0 0px;
+    color: @fg;
+}
+
+#bluetooth {
+    font-size: 18px;
+    padding-right: 15px;
+}
+
+@keyframes blink {
+    to {
+        background-color: @fg;
+        color: #000000;
+    }
+}
+
+#battery.bat2.critical:not(.charging) {
+    background-color: @red;
+    color: @fg;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#temperature.critical {
+    background-color: @red;
+}
+
+#taskbar button {
+    padding: 0 10px;
+    background-color: transparent;
+    border-top: solid 3px transparent;
+    color: @fg;
+}
+
+
+#taskbar button.active {
+    background-color: @selection;
+    border-top: solid 3px @green;
+}
+
+#taskbar button:hover {
+    background: @comment;
+}
+
+#taskbar button.urgent {
+    background-color: @red;
+}
