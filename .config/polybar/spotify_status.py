@@ -102,7 +102,7 @@ try:
 
     # Handle play/pause label
 
-    play_pause = play_pause.split(',')
+    play_pause = play_pause.split(",")
 
     if status == 'Playing':
         play_pause = play_pause[0]
@@ -139,4 +139,3 @@ except Exception as e:
         print('')
     else:
         print(e)
-
