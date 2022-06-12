@@ -28,7 +28,6 @@ export EDITOR="lvim"
 alias ls='ls --color=auto'
 # LunarVim as default vim
 alias vim="lvim"
-alias devserver="et $USER@$USER.sb.facebook.com:8080"
 
 # Starship prompt
 eval "$(starship init bash)"
