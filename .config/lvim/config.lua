@@ -67,16 +67,16 @@ lvim.builtin.nvimtree.show_icons.git = 0
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
   "bash",
-  "c",
+  -- "c",
   "javascript",
   "json",
   "lua",
   "python",
-  "typescript",
-  "tsx",
+  -- "typescript",
+  -- "tsx",
   "css",
-  "rust",
-  "java",
+  -- "rust",
+  -- "java",
   "yaml",
 }
 
@@ -142,12 +142,11 @@ lvim.builtin.treesitter.highlight.enabled = true
 
 -- Additional Plugins
 lvim.plugins = {
-    {"folke/tokyonight.nvim"},
-    {
-      "folke/trouble.nvim",
-      cmd = "TroubleToggle",
-    },
-    {"Mofiqul/dracula.nvim"}
+  {
+    "folke/trouble.nvim",
+    cmd = "TroubleToggle",
+  },
+  { "Mofiqul/dracula.nvim" }
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
