@@ -37,6 +37,8 @@ exec_always --no-startup-id xss-lock --transfer-sleep-lock -- betterlockscreen -
 exec_always --no-startup-id nm-applet --sm-disable
 exec_always --no-startup-id blueman-applet
 
+# Keyboard setting
+exec_always --no-startup-id setxkbmap gb
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -46,8 +48,8 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Adjust Brightness
-bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl s 5%-
-bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl s 5%+
+bindsym XF86MonBrightnessUp exec light -A 5
+bindsym XF86MonBrightnessDown exec light -U 5
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -59,7 +61,7 @@ bindsym $mod+Return exec alacritty
 exec --no-startup-id dunst
 
 # lock i3
-bindsym $mod+Ctrl+l exec --no-startup-id betterlockscreen --lock
+bindsym $mod+Ctrl+l exec --no-startup-id betterlockscreen -l dimblur
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -202,7 +204,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Set inner/outer gaps
-gaps inner 10
+gaps inner 15
 gaps outer 5
 
 default_border pixel 4
@@ -226,12 +228,4 @@ client.background       #F8F8F2
 # Swap displays
 bindsym --release $mod+Shift+s exec --no-startup-id ~/.config/i3/i3-display-swap.sh
 
-# setup screens and sleep to allow polybar to get correct primary screen
-exec_always --no-startup-id ~/.config/i3/setupscreens.sh && sleep 5
-
-# Launch Polybar
-exec_always --no-startup-id ~/.config/i3/launch-polybar.sh
-
-# Setup wallpaper
-exec_always --no-startup-id /usr/bin/python3 ~/bin/island_time.py
-
+exec_always --no-startup-id ~/.config/i3/setupscreens.sh

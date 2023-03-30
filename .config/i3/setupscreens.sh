@@ -1,12 +1,19 @@
 #!/bin/sh
-SCREENS=$(xrandr |grep connected | grep -wv disconnected | wc -l)
-echo $SCREENS
-if [ $SCREENS -eq 2 ]; then
-    xrandr --output eDP-1 --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-1 --off --output DP-1 --off --output HDMI-2 --off --output DP-2 --primary --mode 3440x1440 --pos 1920x0 --rotate normal --output HDMI-3 --off --output DP-3 --off --output DP-4 --off
+SCREENS=$(xrandr |grep connected | grep -wv disconnected)
+SCREENCOUNT=$(echo "$SCREENS" | wc -l)
+if [ $SCREENCOUNT -eq 2 ]; then
+  if grep -q "DP-3" <<< $SCREENS; then
+    /bin/sh ~/.screenlayout/work_dual.sh
+    echo "Setting screens for work setup"
+  else
+    /bin/sh ~/.screenlayout/home.sh
+    echo "Setting screens for home setup"
+  fi
 else
-    xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output DP-1 --off --output HDMI-1 --off --output DP-2 --off --output HDMI-2 --off
-
+  /bin/sh ~/.screenlayout/laptop.sh
+  echo "Setting screens for laptop setup"
 fi
-conky -c .conkyrc 2> /dev/null
-sleep 2
-/usr/bin/python3 /home/ciaranconcannon/bin/island_time.py
+
+DISPLAY=:0.0 feh --bg-fill Pictures/wallpapers/dracula-kraken.png
+betterlockscreen -u Pictures/wallpapers/dracula-kraken.png
+/usr/bin/sh /home/ciaranconcannon/.config/i3/launch-polybar.sh
