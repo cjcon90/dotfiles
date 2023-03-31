@@ -2,5 +2,5 @@ configuration {
   terminal: "alacritty";
   font: "JetBrains Mono Nerd Font semibold 11";
   icon-theme: "Dracula";
-  theme: "~/.config/rofi/dracula-one/dracula-one-dark.rasi";
 }
+@theme "~/.config/rofi/dracula.rasi"

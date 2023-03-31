@@ -1,89 +1,71 @@
-/*
- * ROFI color theme
- *
- * Based on Something Found in the Internet
- *
- * User: Contributors
- * Copyright: *!
- */
-
-configuration {
-  font: "JetBrainsMono Nerd Font Medium 10";
-
-  drun {
-    display-name: "";
-  }
-
-  run {
-    display-name: "";
-  }
-
-  window {
-    display-name: "";
-  }
-
-  timeout {
-    delay: 10;
-    action: "kb-cancel";
-  }
-}
-
 * {
-  border: 0;
-  margin: 0;
-  padding: 0;
-  spacing: 0;
+	bg: #282a36;
+	dark: #2e3440;
+	white: #f8f8f2;
+	comment: #6272a4;
+	cyan: #8be9fd;
+	green: #50fa7b;
+	orange: #ffb86c;
+	pink: #ff79c6;
+	purple: #bd93f9;
+	red: #ff5555;
+	yellow: #f1fa8c;
+	highlight-green: bold #50fa7b;
+	
+	background-color: #282a36;
+	text-color: @white;
 
-  bg: #282a36;
-  fg: #f8f8f2;
-  blue: #6272a4;
-  purple: #bd93f9;
-
-  background-color: @bg;
-  text-color: @fg;
+	margin: 0;
+	padding: 10px;
+	font: "JetBrainsMonoNL Nerd Font SemiBold 12";
 }
 
 window {
-  transparency: "real";
+	fullscreen: true;
+	children: [mainbox];
 }
 
 mainbox {
-  children: [inputbar, listview];
-}
-
-inputbar {
-  background-color: @blue;
-  children: [prompt, entry];
-}
-
-entry {
-  background-color: inherit;
-  padding: 12px 3px;
-}
-
-prompt {
-  background-color: inherit;
-  padding: 12px;
+	background-color: @bg;
+	padding: 10% 30%;
+	children: [entry, listview];
 }
 
 listview {
-  lines: 8;
+	background-color: #282a36;
+}
+
+entry {
+	expand: false;
+	padding: 20px;
+	text-color: @pink;
 }
 
 element {
-  children: [element-icon, element-text];
-  text-color: @blue;
-}
-
-element-icon {
-  padding: 10px 10px;
+	padding: 5px;
+	border-radius: 5px;
+	children: [element-icon, element-text];
 }
 
 element-text {
-  padding: 10px 0;
-  text-color: inherit;
+	background-color: inherit;
+	text-color: inherit;
+	highlight: @highlight-green;
+	vertical-align: 0.50;
 }
 
-element-text selected {
-  text-color: @purple;
+element-icon {
+	size: 1.5em;
+	background-color: inherit;
+	margin: 0;
+	padding: 0;
+}
+
+
+
+element selected {
+	background-color: @comment;
+	text-color: @white;
+	border: 3px;
+	border-color: @pink;
 }
