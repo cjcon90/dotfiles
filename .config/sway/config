@@ -4,6 +4,8 @@
 #
 # Read `man 5 sway` for a complete reference.
 
+set $comment  #6272A4
+
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
@@ -14,23 +16,50 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term alacritty
+set $term foot
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu wofi --show=drun --lines=5 --prompt=""
 
-# Execute mako notification daomon
-exec dunst
+set $menu "rofi -modi drun,run -show drun"
+set $metamenu ~/bin/fmenu-rofi
+# set $menu dmenu_path | dmenu | xargs swaymsg exec --
+# set $menu dmenu_path | dmenu | xargs swaymsg exec --
+
+# exec_always --no-startup-id nm-applet --sm-disable
+exec_always --no-startup-id blueman-applet
+
+# Keyboard setting
+input * xkb_layout "gb"
 
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg ~/Pictures/wallpapers/elephant-dracula.png fill
+output * bg ~/Pictures/wallpapers/dracula-kraken.png fill
+
+# Set inner/outer gaps
+gaps inner 10
+gaps outer 5
+smart_gaps off
+
+default_border pixel 3
+default_floating_border pixel 0
+
+exec /usr/bin/python3 /usr/share/sway/contrib/inactive-windows-transparency.py --opacity 0.6
+
+# class                 border  bground text    indicator child_border
+client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
+client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
+client.unfocused        #44475A #44475A #BFBFBF #282A36   #282A36
+client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
+client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
+
+client.background       #F8F8F2
+
 #
 # Example configuration:
 #
-#   output HDMI-A-1 resolution 1920x1080 position 1920,0
+# output HDMI-A-1 resolution 1920x1080 position 1920,0
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
@@ -61,9 +90,6 @@ output * bg ~/Pictures/wallpapers/elephant-dracula.png fill
 # You can get the names of your inputs by running: swaymsg -t get_inputs
 # Read `man 5 sway-input` for more information about this section.
 
-input * {
-	xkb_layout "gb"
-}
 ### Key bindings
 #
 # Basics:
@@ -72,10 +98,11 @@ input * {
     bindsym $mod+Return exec $term
 
     # Kill focused window
-    bindsym $mod+Shift+w kill
+    bindsym $mod+Shift+q kill
 
     # Start your launcher
     bindsym $mod+d exec $menu
+    bindsym $mod+m exec $metamenu
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -85,10 +112,10 @@ input * {
     floating_modifier $mod normal
 
     # Reload the configuration file
-    bindsym $mod+Shift+c reload
+    bindsym $mod+Shift+r reload
 
     # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 #
 # Moving around:
 #
@@ -164,26 +191,7 @@ input * {
     bindsym $mod+space focus mode_toggle
 
     # Move focus to the parent container
-    bindsym $mod+a focus parent
-
-#
-# Multimedia keys
-#
-
-    bindsym --locked XF86AudioRaiseVolume exec pamixer -i 5
-    bindsym --locked XF86AudioLowerVolume exec pamixer -d 5
-    bindsym --locked XF86AudioMute exec pamixer --toggle-mute
-    # bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-    # My keyboard doesn't have a micmute button
-    #bindsym $mod+m exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-
-    bindsym XF86MonBrightnessDown exec light -U 5
-    bindsym XF86MonBrightnessUp exec light -A 5
-
-    bindsym --locked XF86AudioPlay exec playerctl play-pause
-    bindsym --locked XF86AudioNext exec playerctl next
-    bindsym --locked XF86AudioPrev exec playerctl previous
-
+    # bindsym $mod+a focus parent
 #
 # Scratchpad:
 #
@@ -204,16 +212,16 @@ mode "resize" {
     # right will grow the containers width
     # up will shrink the containers height
     # down will grow the containers height
-    bindsym $left resize shrink width 15px
-    bindsym $down resize grow height 15px
-    bindsym $up resize shrink height 15px
-    bindsym $right resize grow width 15px
+    bindsym $left resize shrink width 10px
+    bindsym $down resize grow height 10px
+    bindsym $up resize shrink height 10px
+    bindsym $right resize grow width 10px
 
     # Ditto, with arrow keys
-    bindsym Left resize shrink width 15px
-    bindsym Down resize grow height 15px
-    bindsym Up resize shrink height 15px
-    bindsym Right resize grow width 15px
+    bindsym Left resize shrink width 10px
+    bindsym Down resize grow height 10px
+    bindsym Up resize shrink height 10px
+    bindsym Right resize grow width 10px
 
     # Return to default mode
     bindsym Return mode "default"
@@ -221,39 +229,35 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+
+bindsym XF86MonBrightnessUp exec light -A 5
+bindsym XF86MonBrightnessDown exec light -U 5
+
 #
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
+# bar {
+#     position top
+
+#     # When the status_command prints a new line to stdout, swaybar updates.
+#     # The default just shows the current date and time.
+#     status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
+
+#     colors {
+#         statusline #ffffff
+#         background #323232
+#         inactive_workspace #32323200 #32323200 #5c5c5c
+#     }
+# }
+
 bar {
-    swaybar_command waybar
-    position bottom
-
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
-    status_command while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done
-
-    colors {
-        statusline #ffffff
-        background #323232
-        inactive_workspace #32323200 #32323200 #5c5c5c
-    }
+  swaybar_command waybar
 }
 
-# A 1-=pixel border around every window
-# gaps inner 10
-
-# removes the titlebar of each window
-default_border pixel 2
-
-# class                 border  backgr. text    indicator child_border
-# dracula theme
-client.focused          #6272A4 #6272A4 #F8F8F2 #caa9fa   #ff79c6
-client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
-client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
-client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
-client.background       #F8F8F2
-
+# exec ~/.config/i3/launch-polybar.sh
 
 include /etc/sway/config.d/*

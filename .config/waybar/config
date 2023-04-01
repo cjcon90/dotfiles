@@ -1,189 +1,84 @@
-[
-    {
-        "name": "topbar",
-        "layer": "top",
-        "position": "top",
-        "height": 30,
-        "modules-left": ["battery#bat1", "battery#bat2", "disk", "memory", "cpu", "temperature", "pulseaudio", "backlight", "idle_inhibitor"],
-        "modules-center": ["sway/window"],
-        "modules-right": ["network#vpn", "network#wifi", "network#ethernet", "network#disconnected", "custom/mail", "custom/weather", "clock", "custom/poweroff"],
-        "sway/window": {
-            "format": "{} ",
-            "on-click": "swaymsg kill"
-        },
-        "idle_inhibitor": {
-            "format": "{icon}",
-            "format-icons": {
-                "activated": "",
-                "deactivated": ""
-            }
-        },
-        "clock": {
-            "interval": 1,
-            "format": "<b>{:%H:%M:%S}</b>",
-            "format-alt": "{:%Y-%m-%d}",
-            "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
-        },
-        "cpu": {
-            "format": " {usage}%",
-            "tooltip": false
-        },
-        "disk": {
-            "format": " {}%",
-            "tooltip-format": "{used} / {total} used"
-        },
-        "memory": {
-            "format": " {}%",
-            "tooltip-format": "{used:0.1f}G / {total:0.1f}G used"
-        },
-        "temperature": {
-            "critical-threshold": 80,
-            "format": "{icon} {temperatureC}°C",
-            "format-icons": ["", "", "", "", ""]
-        },
-        "backlight": {
-            "device": "intel_backlight",
-            "interval": 1,
-            "on-scroll-down": "brightlight -pd 1",
-            "on-scroll-up": "brightlight -pi 1",
-            "format": "{icon} {percent}%",
-            "format-icons": ["", ""],
-            "on-click": "wdisplays"
-        },
-        "battery#bat1": {
-            "bat": "BAT0",
-            "adapter": "AC",
-            "interval": 10,
-            "full-at": 99,
-            "states": {
-                "full": 100,
-                "good": 99,
-                "empty": 5
-            },
-            "format": "{icon} {capacity}%",
-            "format-charging": " {capacity}%",
-            "format-plugged": " {capacity}%",
-            "format-empty": "",
-            "format-full": "",
-            "format-icons": ["", "", "", "", ""]
-        },
-        "battery#bat2": {
-            "bat": "BAT1",
-            "adapter": "AC",
-            "interval": 10,
-            "states": {
-                "full": 100,
-                "good": 99,
-                "critical": 15
-            },
-            "format": "{icon} {capacity}%",
-            "format-charging": " {capacity}%",
-            "format-plugged": " {capacity}%",
-            "format-full": "",
-            "format-icons": ["", "", "", "", ""]
-        },
-        "network#disconnected": {
-            "tooltip-format": "No connection!",
-            "format-ethernet": "",
-            "format-wifi": "",
-            "format-linked": "",
-            "format-disconnected": "",
-            "on-click": "nm-connection-editor"
-        },
-        "network#ethernet": {
-            "interface": "enp*",
-            "format-ethernet": "",
-            "format-wifi": "",
-            "format-linked": "",
-            "format-disconnected": "",
-            "tooltip-format": "{ifname}: {ipaddr}/{cidr}",
-            "on-click": "nm-connection-editor"
-        },
-        "network#wifi": {
-            "interface": "wlp*",
-            "format-ethernet": "",
-            "format-wifi": " {essid} ({signalStrength}%)",
-            "format-linked": "",
-            "format-disconnected": "",
-            "tooltip-format": "{ifname}: {ipaddr}/{cidr}",
-            "on-click": "nm-connection-editor"
-        },
-        "network#vpn": {
-            "interface": "tun0",
-            "format": "",
-            "format-disconnected": "",
-            "tooltip-format": "{ifname}: {ipaddr}/{cidr}",
-            "on-click": "nm-connection-editor"
-        },
-        "pulseaudio": {
-            "scroll-step": 1,
-            "format": "{icon} {volume}%{format_source}",
-            "format-bluetooth": "{icon} {volume}%{format_source}",
-            "format-bluetooth-muted": " {icon}{format_source}",
-            "format-muted": " {format_source}",
-            "format-source": "    {volume}%",
-            "format-source-muted": " ",
-            "format-icons": {
-                "headphone": "",
-                "phone": "",
-                "portable": "",
-                "car": "",
-                "default": ["", "", ""]
-            },
-            "on-click": "pavucontrol"
-        },
-        "custom/weather": {
-            "return-type": "json",
-            "exec": "bash $HOME/.config/waybar/scripts/weather.sh",
-            "interval": 300,
-            "on-click": "firefox https://wttr.in"
-        },
-        "custom/poweroff": {
-            "tooltip": false,
-            "format": "",
-            "on-click": "bash $HOME/.config/waybar/scripts/poweroff.sh"
-        },
-        "custom/mail": {
-            "tooltip": false,
-            "exec": "sh $HOME/.config/waybar/scripts/mail.sh",
-            "interval": 120,
-            "on-click": "thunderbird && swaymsg '[app_id=thunderbird] focus'"
-        }
+{
+    "position": "bottom",
+    "modules-left": ["sway/workspaces", "sway/window"],
+    "modules-center": ["clock"],
+    "modules-right": ["backlight", "battery", "cpu", "memory", "pulseaudio", "network", "tray"],
+    "margin-top": 0,
+    "margin-left": 15,
+    "margin-right": 15,
+    "margin-bottom": 10,
+
+    // Modules configuration
+     "sway/workspaces": {
+         "disable-scroll": false,
+         "all-outputs": true,
+         "format": "{icon}",
+         "format-icons": {
+             "1": "I",
+             "2": "II",
+             "3": "III",
+             "4": "IV",
+             "5": "V",
+             "6": "VI",
+             "7": "VII",
+             "8": "VIII",
+             "9": "IX",
+             "10": "X",
+             "urgent": " ",
+             "focused": " ",
+             "default": " "
+         }
+     },
+    "tray": {
+        "icon-size": 21,
+        "spacing": 10,
+        "show-passive-items": true
     },
-    {
-        "name": "bottombar",
-        "layer": "top",
-        "position": "bottom",
-        "height": 30,
-        "modules-left": ["sway/workspaces", "sway/mode"],
-        "modules-center": ["wlr/taskbar"],
-        "modules-right": ["tray","bluetooth"],
-        "tray": {
-            "icon-size": 20,
-            "spacing": 10
+    "pulseaudio": {
+        "format": "墳 {volume}%",
+        "format-alt": "{icon} {volume}%",
+        "format-muted": "婢",
+        "format-icons": ["奔","墳",""],
+        "scroll-step": 3
+    },
+    "clock": {
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+	"format": "{:%H:%M}  ",
+	"format-alt": "{:%A, %B %d, %Y}  "
+    },
+    "cpu": {
+        "format": " {usage}%",
+        "tooltip": false
+    },
+    "memory": {
+        "format": " {}%"
+    },
+    "backlight": {
+        "format": "{icon}",
+        "format-alt": "{icon} {percent}%",
+        "format-icons": ["", "", "", "", "", "", "", "", ""],
+        "on-scroll-up": "light -A 5",
+        "on-scroll-down": "light -U 5"
+    },
+    "battery": {
+        "states": {
+            "warning": 25,
+            "critical": 5
         },
-        "wlr/taskbar": {
-	    "active-first": true,
-	    "all-outputs": true,
-            "format": "{icon}",
-	    "icon-theme": "Dracula",
-            "icon-size": 25,
-            "tooltip": true,
-	    "tooltip-format": "{app_id}",
-            "on-click": "activate",
-            "on-click-right": "close"
-        },
-	"bluetooth": {
-  	    "format": "{icon}",
-  	    "format-alt": "bluetooth: {status}",
-  	    "format-icons": {
-  		"enabled": "",
-  		"disabled": "",
-  	    },
-  	"tooltip-format": "{}"
-        },
-        "sway/mode": {
-            "format": "<span style=\"italic\">{}</span>"
-        }
-    }
-]
+        "format": "{icon} {capacity}%",
+        "tooltip-format": "{timeTo}, {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " ",
+        "format-alt": "{time} {icon}",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "network": {
+        "format-wifi": "直",
+        "format-ethernet": "{ifname}: {ipaddr}/{cidr}  ",
+        "format-linked": "{ifname} (No IP)  ",
+        "format-disconnected": " 睊 ",
+        "format-alt": "{ifname}: {ipaddr}/{cidr}",
+        "tooltip-format": "{essid} {signalStrength}%"
+    },
+}
+
