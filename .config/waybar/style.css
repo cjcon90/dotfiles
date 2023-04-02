@@ -12,7 +12,7 @@
 
 * {
   border: none;
-  font-family: mononoki Nerd Font, sans-serif;
+  font-family: Blex Mono Nerd Font, sans-serif;
   font-size: 14px;
 }
 
@@ -58,7 +58,7 @@ window#waybar {
 #battery,
 #network,
 #tray {
-  min-width: 50px;
+  min-width: 60px;
 }
 
 #workspaces {
@@ -119,17 +119,14 @@ window#waybar {
 }
 
 #battery.charging, #battery.plugged {
-  background-color: @Green;
-  color: @Background;
+  color: @Green;
 }
 
 #battery.warning:not(.charging) {
-    background-color: @Background;
     color: @Red;
 }
 
 #battery.critical:not(.charging) {
-    background-color: @Background;
     color: @Red;
     animation-name: blink;
     animation-duration: 0.5s;

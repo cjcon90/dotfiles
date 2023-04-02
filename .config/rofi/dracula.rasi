@@ -12,39 +12,46 @@
 	yellow: #f1fa8c;
 	highlight-green: bold #50fa7b;
 	
-	background-color: #282a36;
+	background-color: @bg;
 	text-color: @white;
 
 	margin: 0;
 	padding: 10px;
-	font: "JetBrainsMonoNL Nerd Font SemiBold 12";
+	font: "Blex Mono Nerd Font SemiBold 11";
+}
+
+run {
+  display-name: ">_";
 }
 
 window {
-	fullscreen: true;
-	children: [mainbox];
-}
-
-mainbox {
-	background-color: @bg;
-	padding: 10% 30%;
+	fullscreen: false;
 	children: [entry, listview];
-}
-
-listview {
-	background-color: #282a36;
+  height: 60%;
+  width: 40%;
+  border: 3px;
+  border-color: @comment;
 }
 
 entry {
 	expand: false;
-	padding: 20px;
 	text-color: @pink;
+  margin: 10px;
+	font: "Blex Mono Nerd Font SemiBold 12";
+  background-color: @dark;
 }
 
 element {
 	padding: 5px;
 	border-radius: 5px;
 	children: [element-icon, element-text];
+}
+
+element selected {
+	background-color: @comment;
+	text-color: @white;
+	border: 3px;
+	border-color: @pink;
 }
 
 element-text {
@@ -55,17 +62,8 @@ element-text {
 }
 
 element-icon {
-	size: 1.5em;
+	size: 1.3em;
 	background-color: inherit;
 	margin: 0;
 	padding: 0;
-}
-
-
-
-element selected {
-	background-color: @comment;
-	text-color: @white;
-	border: 3px;
-	border-color: @pink;
 }
