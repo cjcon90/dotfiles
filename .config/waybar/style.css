@@ -143,3 +143,6 @@ window#waybar {
     color: @Background;
 }
 
+.custom-spotify {
+    color: @Green;
+}

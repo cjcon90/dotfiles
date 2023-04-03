@@ -1,6 +1,6 @@
 {
   "position": "bottom",
-  "modules-left": ["sway/workspaces", "sway/window"],
+  "modules-left": ["sway/workspaces", "custom/spotify"],
   "modules-center": ["clock"],
   "modules-right": ["backlight","pulseaudio","cpu","memory","network","battery","tray"],
   "margin-top": 0,
@@ -11,7 +11,7 @@
   // Modules configuration
  "sway/workspaces": {
      "disable-scroll": false,
-     "all-outputs": true,
+     "all-outputs": false,
      "format": "{icon}",
      "format-icons": {
          "1": "I",
@@ -72,5 +72,14 @@
     "tooltip-format": "{essid} {signalStrength}%",
     "on-click": "/usr/bin/nm-connection-editor"
   },
+  "custom/spotify": {
+      "exec": "python $HOME/.config/waybar/scripts/mediaplayer.py --player spotify",
+      "format": " {}",
+      "escape": true,
+      "max-length": 45,
+      "return-type": "json",
+      "on-click": "playerctl -p spotify play-pause"
+  },
 }
+
 
