@@ -11,6 +11,8 @@ then
     PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 fi
 export PATH
+# export EDITOR="vim"
+export GRIM_DEFAULT_DIR="~/Pictures/screenshots"
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
@@ -24,16 +26,22 @@ if [ -d ~/.bashrc.d ]; then
 	done
 fi
 
-export EDITOR="lvim"
-alias ls='ls --color=auto'
-# LunarVim as default vim
-alias vim="lvim"
-
-# Starship prompt
-eval "$(starship init bash)"
-
 unset rc
+# Avoid duplicates
+HISTCONTROL=ignoredups
+HISTSIZE=10000
+HISTFILESIZE=20000
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+. "$HOME/.cargo/env"
+
+# Starship prompt
+eval "$(starship init bash)"
+
+# Aliases
+
+alias ls='ls --color=auto'
+alias vim="nvim"
+alias ff="fastfetch"
