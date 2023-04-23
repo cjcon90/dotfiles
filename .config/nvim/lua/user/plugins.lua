@@ -93,6 +93,12 @@ return packer.startup(function(use)
   -- Yank to clipboard
   use 'ojroques/vim-oscyank'
 
+  -- Which Key
+  use "folke/which-key.nvim"
+
+  -- Trouble
+  use "folke/trouble.nvim"
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if PACKER_BOOTSTRAP then

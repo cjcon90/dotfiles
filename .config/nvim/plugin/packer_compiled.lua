@@ -214,6 +214,11 @@ _G.packer_plugins = {
     path = "/home/cjcon90/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
   },
+  ["trouble.nvim"] = {
+    loaded = true,
+    path = "/home/cjcon90/.local/share/nvim/site/pack/packer/start/trouble.nvim",
+    url = "https://github.com/folke/trouble.nvim"
+  },
   ["vim-illuminate"] = {
     loaded = true,
     path = "/home/cjcon90/.local/share/nvim/site/pack/packer/start/vim-illuminate",
@@ -223,6 +228,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/cjcon90/.local/share/nvim/site/pack/packer/start/vim-oscyank",
     url = "https://github.com/ojroques/vim-oscyank"
+  },
+  ["which-key.nvim"] = {
+    loaded = true,
+    path = "/home/cjcon90/.local/share/nvim/site/pack/packer/start/which-key.nvim",
+    url = "https://github.com/folke/which-key.nvim"
   }
 }
 
