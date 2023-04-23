@@ -77,5 +77,5 @@ keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 
 
 -- Yank to clipboard
-keymap('n', '<leader>c', '<Plug>OSCYankOperator', opts)
-keymap('v', '<leader>c', '<Plug>OSCYankVisual', opts)
+keymap('n', '<leader>y', '<Plug>OSCYankOperator', opts)
+keymap('v', '<leader>y', '<Plug>OSCYankVisual', opts)

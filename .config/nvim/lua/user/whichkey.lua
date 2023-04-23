@@ -82,12 +82,13 @@ local mappings = {
   ["e"] = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
   ["w"] = { "<cmd>w!<CR>", "Save" },
   ["q"] = { "<cmd>q!<CR>", "Quit" },
-  ["c"] = { "<cmd>Bdelete!<CR>", "Close Buffer" },
+  ["c"] = { "<cmd>:bp|sp|bn|bd<CR>", "Close Buffer" },
   ["f"] = {
     "<cmd>Telescope find_files<cr>",
     "Find files",
   },
   ["r"] = { "<cmd>Telescope live_grep <cr>", "Find Text" },
+  ["v"] = { "<cmd>vsplit<cr>", "Vertical Split" },
   p = {
     name = "Packer",
     c = { "<cmd>PackerCompile<cr>", "Compile" },
@@ -160,6 +161,15 @@ local mappings = {
     k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
     C = { "<cmd>Telescope commands<cr>", "Commands" },
   },
+  t = {
+    name = "Trouble",
+    t = { "<cmd>TroubleToggle<cr>", "Trouble Toggle" },
+    w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Workspace Diagnostics" },
+    d = { "<cmd>TroubleToggle document_diagnostics<cr>", "Document Diagnostics" },
+    l = { "<cmd>TroubleToggle loclist<cr>", "Trouble loclist" },
+    q = { "<cmd>TroubleToggle quickfix<cr>", "Trouble Quickfix" },
+    R = { "<cmd>TroubleToggle lsp_references<cr>", "Trouble LSP References" },
+  }
 }
 
 which_key.setup(setup)
