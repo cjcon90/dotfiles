@@ -218,6 +218,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/cjcon90/.local/share/nvim/site/pack/packer/start/vim-illuminate",
     url = "https://github.com/RRethy/vim-illuminate"
+  },
+  ["vim-oscyank"] = {
+    loaded = true,
+    path = "/home/cjcon90/.local/share/nvim/site/pack/packer/start/vim-oscyank",
+    url = "https://github.com/ojroques/vim-oscyank"
   }
 }
 

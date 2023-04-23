@@ -90,6 +90,9 @@ return packer.startup(function(use)
   -- Status Line
   use 'nvim-lualine/lualine.nvim'
 
+  -- Yank to clipboard
+  use 'ojroques/vim-oscyank'
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if PACKER_BOOTSTRAP then

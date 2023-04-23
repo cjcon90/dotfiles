@@ -74,3 +74,8 @@ keymap("n", "<leader>r", ":Telescope live_grep<CR>", opts)
 
 -- Nvimtree
 keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
+
+
+-- Yank to clipboard
+keymap('n', '<leader>c', '<Plug>OSCYankOperator', opts)
+keymap('v', '<leader>c', '<Plug>OSCYankVisual', opts)
