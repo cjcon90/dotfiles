@@ -26,14 +26,20 @@ set $metamenu ~/bin/fmenu-rofi
 
 exec_always --no-startup-id blueman-applet
 exec_always --no-startup-id ~/.local/bin/wired
+exec_always --no-startup-id nm-applet
+
+exec_always {
+  gsettings set org.gnome.desktop.interface gtk-theme "Dracula"
+  gsettings set org.gnome.desktop.wm.preferences theme "Dracula"
+  gsettings set org.gnome.desktop.interface icon-theme "Dracula"
+}
 
 # Keyboard setting
 input * xkb_layout "gb"
 
 ### Output configuration
 #
-# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg ~/Pictures/Wallpapers/dracula-ship.png fill
+output * bg ~/Pictures/wallpapers/dracula-kraken.png fill
 
 # Screenshot functionality
 bindsym Print exec ~/.local/bin/screenshot.sh
@@ -108,6 +114,9 @@ bindsym $mod+m exec $metamenu
 
 # Lock the screen
 bindsym $mod+Ctrl+l exec ~/.cargo/bin/swaylock-blur
+
+# Go into hibernation
+bindsym $mod+Ctrl+Escape exec systemctl suspend
 
 # Drag floating windows by holding down $mod and left mouse button.
 # Resize them with right mouse button + $mod.
@@ -194,6 +203,9 @@ bindsym $mod+Shift+space floating toggle
 
 # Swap focus between the tiling area and the floating area
 bindsym $mod+space focus mode_toggle
+
+# Swap workspaces between monitors
+bindsym $mod+Shift+s exec /usr/bin/bash ~/.config/sway/swap-displays.sh
 
 # Move focus to the parent container
 # bindsym $mod+a focus parent
