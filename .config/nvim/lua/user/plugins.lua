@@ -41,9 +41,9 @@ packer.init {
 -- Install your plugins here
 return packer.startup(function(use)
   -- Base neccessities
-  use "wbthomason/packer.nvim"    -- Have packer manage itself
-  use "nvim-lua/popup.nvim"       -- An implementation of the Popup API from vim in Neovim
-  use "nvim-lua/plenary.nvim"     -- Useful lua functions used ny lots of plugins
+  use "wbthomason/packer.nvim" -- Have packer manage itself
+  use "nvim-lua/popup.nvim" -- An implementation of the Popup API from vim in Neovim
+  use "nvim-lua/plenary.nvim" -- Useful lua functions used in lots of plugins
   use { "windwp/nvim-autopairs" } -- Autopairs, integrates with both cmp and treesitter
   use { "numToStr/Comment.nvim" }
 
@@ -51,18 +51,22 @@ return packer.startup(function(use)
   use "Mofiqul/dracula.nvim"
 
   -- Completion
-  use "hrsh7th/nvim-cmp"         -- The completion plugin
-  use "hrsh7th/cmp-buffer"       -- buffer completions
-  use "hrsh7th/cmp-path"         -- path completions
-  use "hrsh7th/cmp-cmdline"      -- cmdline completions
+  use "hrsh7th/nvim-cmp" -- The completion plugin
+  use "hrsh7th/cmp-buffer" -- buffer completions
+  use "hrsh7th/cmp-path" -- path completions
+  use "hrsh7th/cmp-cmdline" -- cmdline completions
   use "saadparwaiz1/cmp_luasnip" -- snippet completions
   use "hrsh7th/cmp-nvim-lsp"
   use "hrsh7th/cmp-nvim-lua"
 
 
   -- Snippets
-  use "L3MON4D3/LuaSnip"             --snippet engine
+  use "L3MON4D3/LuaSnip" --snippet engine
   use "rafamadriz/friendly-snippets" -- a bunch of snippets to use
+
+  -- Telescope
+  use { "nvim-telescope/telescope.nvim" }
+  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 
   -- LSP
   use "neovim/nvim-lspconfig"
@@ -73,12 +77,8 @@ return packer.startup(function(use)
   use { 'VonHeikemen/lsp-zero.nvim', branch = 'v2.x' }
   use { "RRethy/vim-illuminate" }
 
-  -- Telescope
-  use { "nvim-telescope/telescope.nvim" }
-
   -- Treesitter
   use { "nvim-treesitter/nvim-treesitter" }
-  use { "HiPhish/nvim-ts-rainbow2" }
 
   -- File Explorer
   use 'nvim-tree/nvim-web-devicons'
@@ -95,6 +95,8 @@ return packer.startup(function(use)
 
   -- Which Key
   use "folke/which-key.nvim"
+
+  -- FZF Search
 
   -- Trouble
   use "folke/trouble.nvim"

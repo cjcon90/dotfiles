@@ -83,11 +83,8 @@ local mappings = {
   ["w"] = { "<cmd>w!<CR>", "Save" },
   ["q"] = { "<cmd>q!<CR>", "Quit" },
   ["c"] = { "<cmd>:bp|sp|bn|bd<CR>", "Close Buffer" },
-  ["f"] = {
-    "<cmd>Telescope find_files<cr>",
-    "Find files",
-  },
-  ["r"] = { "<cmd>Telescope live_grep <cr>", "Find Text" },
+  ["f"] = { "<cmd>:Telescope find_files<cr>", "Find files" },
+  ["r"] = { "<cmd>:Telescope grep_string<cr>", "Find Text" },
   ["v"] = { "<cmd>vsplit<cr>", "Vertical Split" },
   p = {
     name = "Packer",

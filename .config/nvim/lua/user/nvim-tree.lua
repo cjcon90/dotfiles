@@ -1,7 +1,7 @@
 require("nvim-tree").setup {
   auto_reload_on_write = true,
   disable_netrw = false,
-  hijack_cursor = false,
+  hijack_cursor = true,
   hijack_netrw = true,
   hijack_unnamed_buffer_when_opening = false,
   sort_by = "name",
@@ -110,7 +110,7 @@ require("nvim-tree").setup {
     auto_open = true,
   },
   update_focused_file = {
-    enable = false,
+    enable = true,
     update_root = false,
     ignore_list = {},
   },
@@ -147,7 +147,7 @@ require("nvim-tree").setup {
     ignore_dirs = {},
   },
   git = {
-    enable = true,
+    enable = false, -- Not needed for work
     ignore = true,
     show_on_dirs = true,
     show_on_open_dirs = true,

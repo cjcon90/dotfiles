@@ -6,17 +6,17 @@ local lualine = require('lualine')
 -- Color table for highlights
 -- stylua: ignore
 local colors = {
-  bg       = '#202328',
-  fg       = '#bbc2cf',
-  yellow   = '#ECBE7B',
-  cyan     = '#008080',
-  darkblue = '#081633',
-  green    = '#98be65',
-  orange   = '#FF8800',
-  violet   = '#a9a1e1',
-  magenta  = '#c678dd',
-  blue     = '#51afef',
-  red      = '#ec5f67',
+  bg = '#282a36',
+  fg = '#f8f8f2',
+  yellow = '#f1fa8c',
+  cyan = '#8be9fd',
+  darkblue = '#6272a4',
+  green = '#50fa7b',
+  orange = '#ffb86c',
+  violet = '#bd93f9',
+  magenta = '#ff79c6',
+  blue = '#8be9fd',
+  red = '#ff5555',
 }
 
 local conditions = {
@@ -37,6 +37,7 @@ local conditions = {
 local config = {
   options = {
     -- Disable sections and component separators
+    disabled_filetypes = { 'packer', 'NvimTree' },
     component_separators = '',
     section_separators = '',
     theme = {
@@ -79,31 +80,31 @@ local function ins_right(component)
 end
 
 ins_left {
-  function()
-    return '▊'
-  end,
-  color = { fg = colors.blue }, -- Sets highlighting of component
-  padding = { left = 0, right = 1 }, -- We don't need space before this
-}
-
-ins_left {
   -- mode component
   function()
-    return ''
+    local mode = vim.fn.mode()
+    if mode == "v" then
+      return "VISUAL"
+    elseif mode == "n" then
+      return "NORMAL"
+    elseif mode == "i" then
+      return "INSERT"
+    elseif mode == "c" then
+      return "COMMAND"
+    end
   end,
   color = function()
     -- auto change color according to neovims mode
     local mode_color = {
-      n = colors.red,
+      n = colors.violet,
       i = colors.green,
-      v = colors.blue,
+      v = colors.yellow,
       [''] = colors.blue,
       V = colors.blue,
       c = colors.magenta,
       no = colors.red,
       s = colors.orange,
       S = colors.orange,
-      [''] = colors.orange,
       ic = colors.yellow,
       R = colors.violet,
       Rv = colors.violet,
@@ -115,26 +116,34 @@ ins_left {
       ['!'] = colors.red,
       t = colors.red,
     }
-    return { fg = mode_color[vim.fn.mode()] }
+    return { fg = colors.bg, bg = mode_color[vim.fn.mode()], gui = 'bold' }
   end,
-  padding = { right = 1 },
+  padding = { right = 1, left = 1 },
 }
 
 ins_left {
-  -- filesize component
-  'filesize',
-  cond = conditions.buffer_not_empty,
+  'branch',
+  icon = '',
+  color = { fg = colors.magenta, gui = 'bold' },
+}
+
+ins_left {
+  'diff',
+  -- Is it me or the symbol for modified us really weird
+  symbols = { added = ' ', modified = '柳 ', removed = ' ' },
+  diff_color = {
+    added = { fg = colors.green },
+    modified = { fg = colors.orange },
+    removed = { fg = colors.red },
+  },
+  cond = conditions.hide_in_width,
 }
 
 ins_left {
   'filename',
   cond = conditions.buffer_not_empty,
-  color = { fg = colors.magenta, gui = 'bold' },
+  color = { fg = colors.darkblue, gui = 'bold' },
 }
-
-ins_left { 'location' }
-
-ins_left { 'progress', color = { fg = colors.fg, gui = 'bold' } }
 
 ins_left {
   'diagnostics',
@@ -147,15 +156,7 @@ ins_left {
   },
 }
 
--- Insert mid section. You can make any number of sections in neovim :)
--- for lualine it's any number greater then 2
-ins_left {
-  function()
-    return '%='
-  end,
-}
-
-ins_left {
+ins_right {
   -- Lsp server name .
   function()
     local msg = 'No Active Lsp'
@@ -172,50 +173,14 @@ ins_left {
     end
     return msg
   end,
-  icon = ' LSP:',
-  color = { fg = '#ffffff', gui = 'bold' },
-}
-
--- Add components to right sections
-ins_right {
-  'o:encoding', -- option component same as &encoding in viml
-  fmt = string.upper, -- I'm not sure why it's upper case either ;)
-  cond = conditions.hide_in_width,
+  icon = ' ',
   color = { fg = colors.green, gui = 'bold' },
 }
 
-ins_right {
-  'fileformat',
-  fmt = string.upper,
-  icons_enabled = false, -- I think icons are cool but Eviline doesn't have them. sigh
-  color = { fg = colors.green, gui = 'bold' },
-}
+ins_right {  'location', color = { fg = colors.darkblue, gui = 'bold' }}
 
-ins_right {
-  'branch',
-  icon = '',
-  color = { fg = colors.violet, gui = 'bold' },
-}
+ins_right { 'progress', color = { fg = colors.darkblue, gui = 'bold' } }
 
-ins_right {
-  'diff',
-  -- Is it me or the symbol for modified us really weird
-  symbols = { added = ' ', modified = '柳 ', removed = ' ' },
-  diff_color = {
-    added = { fg = colors.green },
-    modified = { fg = colors.orange },
-    removed = { fg = colors.red },
-  },
-  cond = conditions.hide_in_width,
-}
-
-ins_right {
-  function()
-    return '▊'
-  end,
-  color = { fg = colors.blue },
-  padding = { left = 1 },
-}
 
 -- Now don't forget to initialize lualine
 lualine.setup(config)
