@@ -13,7 +13,8 @@
 * {
   border: none;
   font-family: Blex Mono Nerd Font, sans-serif;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 window#waybar {
@@ -39,31 +40,18 @@ window#waybar {
 #backlight,
 #battery,
 #network,
-#tray {
-  /* padding: 0 5px; */
+#tray,
+#bluetooth {
   color: @Comment;
   border-color: @Comment;
-  margin: 10px;
-  border: 3px solid @CurrentLine;
+  padding: 10px 5px;
+  /* border: 3px solid @CurrentLine; */
   /* border-radius: 90px; */
-  background-clip: padding-box;
+  /* background-clip: padding-box; */
 }
 
-#workspaces,
-#cpu,
-#memory,
-#pulseaudio,
-#clock,
-#backlight,
-#battery,
-#network,
-#tray {
-  min-width: 60px;
-}
-
-#workspaces {
-  margin-right: 25px;
-  padding: 0px;
+#tray, #workspaces {
+  margin: 0 20px 0 10px;
 }
 
 #workspaces button {
@@ -71,7 +59,6 @@ window#waybar {
   min-width: 20px;
   font-weight: 700;
   border-radius: 0px;
-
 }
 
 #workspaces button:hover {
@@ -120,6 +107,7 @@ window#waybar {
 
 #battery.charging, #battery.plugged {
   color: @Green;
+  background-color: transparent;
 }
 
 #battery.warning:not(.charging) {
@@ -135,10 +123,6 @@ window#waybar {
     animation-direction: alternate;
 }
 
-#network {
-    color: @Green;
-}
-
 #network.disconnected {
     color: @Background;
 }
@@ -146,3 +130,35 @@ window#waybar {
 .custom-spotify {
     color: @Green;
 }
+
+#temperature {
+    color: @Purple;
+}
+
+#network {
+    color: @Pink;
+}
+
+#network.disconnected {
+    color: @CurrentLine;
+}
+
+#bluetooth.off {
+    color: @CurrentLine;
+}
+
+#bluetooth.on {
+    color: @Comment;
+}
+
+#bluetooth.connected {
+    color: @Cyan;
+}
+
+/* #keyboard-state { */
+/*   color: @CurrentLine; */
+/* } */
+
+/* #keyboard-state label.capslock.locked { */
+/*   color: @Red; */
+/* } */
