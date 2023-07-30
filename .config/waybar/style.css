@@ -22,7 +22,7 @@ window#waybar {
   background-color: @Background;
   /* background-color: rgba(0, 0, 0, 0); */
   border: 3px solid @Comment;
-  /* border-radius: 50px; */
+  border-radius: 0;
   color: @Comment;
   transition-property: background-color;
   transition-duration: .5s;

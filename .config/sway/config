@@ -39,7 +39,7 @@ input * xkb_layout "gb"
 
 ### Output configuration
 #
-output * bg ~/Pictures/wallpapers/dracula-kraken.png fill
+output * bg ~/.config/sway/dracula-kraken.png fill
 
 # Screenshot functionality
 bindsym Print exec ~/.local/bin/screenshot.sh

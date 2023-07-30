@@ -100,15 +100,6 @@
     "tooltip-format": "{status}",
     "on-click": "/usr/bin/blueman-manager"
   },
-  /* "keyboard-state": { */
-  /*   "capslock": true, */
-  /*   "format": " {name} {icon} ", */
-  /*   "format-icons": { */
-  /*       "locked": "", */
-  /*       "unlocked": "" */
-  /*   }, */
-  /*   "interval": 1, */
-  /* }, */
 }
 
 
