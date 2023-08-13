@@ -24,15 +24,12 @@
          "8": "VIII",
          "9": "IX",
          "10": "X",
-         "urgent": " ",
-         "focused": " ",
-         "default": " "
      }
    },
   "clock": {
       "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
   "format": "{:%H:%M}  ",
-  "format-alt": "{:%H:%M %a %d/%m/%y}  "
+  "format-alt": "{:%H:%M %a %d/%m/%y} 󰃰 "
   },
   "backlight": {
     "format": " {icon} {}% ",
@@ -45,30 +42,21 @@
         "warning": 25,
         "critical": 5
     },
-    "format": " {icon} {capacity}% ",
+    "format": " {icon}  {capacity}% ",
     "tooltip-format": " {timeTo}, {capacity}% ",
-    "format-charging": "  {capacity}% ",
-    "format-charging": "  {capacity}% ",
-    "format-charging": "  {capacity}% ",
-    "format-icons": ["", "", "", "", ""]
+    "format-charging": " 󰂄 {capacity}% ",
+    "format-icons": ["󰂎", "󰁻", "󰁾", "󰂀", "󰁹"]
   },
   "pulseaudio": {
     "format": " {icon} {volume}% ",
-    "format-muted": "婢",
-    "format-icons": ["奔","墳",""],
+    "format-muted": "󰖁",
+    "format-icons": ["󰖀","󰕾",""],
     "scroll-step": 1
   },
-  "cpu": {
-    "format": "   {usage}% ",
-    "tooltip": false
-  },
-  "memory": {
-    "format": "   {}% "
-  },
   "network": {
-    "format-wifi": " 直 {essid} ({signalStrength}%) ",
-    "format-ethernet": "  {ifname} ",
-    "format-disconnected": " 睊 ",
+    "format-wifi": " 󰖩 {essid} ({signalStrength}%) ",
+    "format-ethernet": " 󰈀 {ifname} ",
+    "format-disconnected": " 󰖪 ",
     "tooltip-format": "{essid} {signalStrength}%",
     "on-click": "/usr/bin/nm-connection-editor"
   },
