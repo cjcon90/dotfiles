@@ -53,7 +53,7 @@ smart_gaps off
 default_border pixel 3
 default_floating_border pixel 0
 
-exec /usr/bin/python3 /usr/share/sway/contrib/inactive-windows-transparency.py --opacity 0.6
+exec_always /usr/bin/python3 ~/.config/sway/inactive_windows_transparency.py
 
 # class                 border  bground text    indicator child_border
 client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
