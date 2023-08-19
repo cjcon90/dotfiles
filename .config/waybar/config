@@ -57,8 +57,7 @@
     "scroll-step": 1
   },
   "custom/protonvpn": {
-    "format": " {} ",
-    "format-connected": "",
+    "format": "{}",
     "return-type": "json",
     "exec": "/usr/bin/bash $HOME/.config/waybar/protonvpnstatus.sh",
     "interval": 5,
