@@ -1,0 +1,16 @@
+[warning]
+background=#282a36
+border=#6272a4
+button-background=#282a36
+text=#ff79c6
+font=Blex Mono Nerd Font 12
+edge=top
+message-padding=10
+button-padding=10
+button-gap=15
+button-text=#ff5555
+button-margin-right=10
+button-dismiss-gap=0
+details-border-size=2
+button-border-size=0
+border-bottom-size=0

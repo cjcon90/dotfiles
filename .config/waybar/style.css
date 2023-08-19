@@ -103,6 +103,7 @@ window#waybar {
 
 #battery {
   color: @Purple;
+  margin: 3px 0;
 }
 
 #battery.charging, #battery.plugged {
@@ -112,6 +113,8 @@ window#waybar {
 
 #battery.warning:not(.charging) {
     color: @Red;
+    border-color: @Comment;
+    background-color: transparent;
 }
 
 #battery.critical:not(.charging) {
@@ -129,6 +132,10 @@ window#waybar {
 
 .custom-spotify {
     color: @Green;
+}
+
+#custom-protonvpn {
+  color: @Yellow;
 }
 
 #temperature {

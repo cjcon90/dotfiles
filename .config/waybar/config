@@ -2,7 +2,7 @@
   "position": "bottom",
   "modules-left": ["sway/workspaces", "custom/spotify"],
   "modules-center": ["clock"],
-  "modules-right": ["backlight","pulseaudio","temperature","network","battery","bluetooth"],
+  "modules-right": ["backlight","pulseaudio","temperature","network","custom/protonvpn","battery","bluetooth"],
   "margin-top": 0,
   "margin-left": 15,
   "margin-right": 15,
@@ -38,6 +38,7 @@
     "on-scroll-down": "brightnessctl set 1%-"
   },
   "battery": {
+    "bat": "BAT0",
     "states": {
         "warning": 25,
         "critical": 5
@@ -45,7 +46,9 @@
     "format": " {icon}  {capacity}% ",
     "tooltip-format": " {timeTo}, {capacity}% ",
     "format-charging": " 󰂄 {capacity}% ",
-    "format-icons": ["󰂎", "󰁻", "󰁾", "󰂀", "󰁹"]
+    "format-plugged": " 󰂄 {capacity}% ",
+    "format-icons": ["󰂎", "󰁻", "󰁾", "󰂀", "󰁹"],
+    "interval": 5
   },
   "pulseaudio": {
     "format": " {icon} {volume}% ",
@@ -53,8 +56,15 @@
     "format-icons": ["󰖀","󰕾",""],
     "scroll-step": 1
   },
+  "custom/protonvpn": {
+    "format": " {} ",
+    "format-connected": "",
+    "return-type": "json",
+    "exec": "/usr/bin/bash $HOME/.config/waybar/protonvpnstatus.sh",
+    "interval": 5,
+  },
   "network": {
-    "format-wifi": " 󰖩 {essid} ({signalStrength}%) ",
+    "format-wifi": " 󰖩 {essid}",
     "format-ethernet": " 󰈀 {ifname} ",
     "format-disconnected": " 󰖪 ",
     "tooltip-format": "{essid} {signalStrength}%",
@@ -74,7 +84,7 @@
     "critical-threshold": 80,
     "format": "  {temperatureC}°C ",
     "format-critical": "  {temperatureC}°C ",
-    "interval": 2
+    "interval": 5
   },
   "bluetooth": {
     "format-off": " {icon} off ",
