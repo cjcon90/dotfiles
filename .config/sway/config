@@ -112,6 +112,7 @@ bindsym $mod+m exec $metamenu
 
 # Lock the screen
 bindsym $mod+Ctrl+l exec ~/.cargo/bin/swaylock-blur
+bindsym $mod+semicolon exec flatpak run codes.merritt.FeelingFinder
 
 # Go into hibernation
 bindsym $mod+Ctrl+Escape exec systemctl suspend

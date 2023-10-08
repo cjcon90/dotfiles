@@ -27,9 +27,13 @@
      }
    },
   "clock": {
-      "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-  "format": "{:%H:%M}  ",
-  "format-alt": "{:%H:%M %a %d/%m/%y} 󰃰 "
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format": "{:%H:%M %Z}  ",
+    "format-alt": "{:%H:%M %a %d/%m/%y} 󰃰 ",
+    "timezones": ["Europe/London","America/Mexico_City"],
+    "actions": {
+      "on-click-right": "tz_down",
+    },
   },
   "backlight": {
     "format": " {icon} {}% ",
@@ -45,8 +49,8 @@
     },
     "format": " {icon}  {capacity}% ",
     "tooltip-format": " {timeTo}, {capacity}% ",
-    "format-charging": " 󰂄 {capacity}% ",
     "format-plugged": " 󰂄 {capacity}% ",
+    "format-charging": "  {capacity}% ",
     "format-icons": ["󰂎", "󰁻", "󰁾", "󰂀", "󰁹"],
     "interval": 5
   },
@@ -63,7 +67,8 @@
     "interval": 5,
   },
   "network": {
-    "format-wifi": " 󰖩 {essid}",
+    "format-wifi": " 󰖩 {essid} ({signalStrength}%) ",
+    "max-length": 20,
     "format-ethernet": " 󰈀 {ifname} ",
     "format-disconnected": " 󰖪 ",
     "tooltip-format": "{essid} {signalStrength}%",
@@ -86,17 +91,15 @@
     "interval": 5
   },
   "bluetooth": {
-    "format-off": " {icon} off ",
-    "format-on": " {icon} disconnected ",
-    "format-connected": " {icon} {device_alias} ",
+    "format-off": "  off ",
+    "format-on": "  disconnected ",
+    "format-connected": "  {device_alias} ",
+    "format-connected-battery": "  {device_alias}({device_battery_percentage}%) ", // need to set experimental: true in /etc/bluetooth/main.conf
     "interval": 5,
-    "format-icons": {
-         "enabled": "",
-         "disabled": ""
-    },
     "tooltip-format": "{status}",
     "on-click": "/usr/bin/blueman-manager"
   },
 }
+
 
 
