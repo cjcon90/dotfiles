@@ -1,4 +1,8 @@
-require("nvim-tree").setup { -- BEGIN_DEFAULT_OPTS
+return {
+    {
+      "nvim-tree/nvim-tree.lua",
+      dependencies = "nvim-tree/nvim-web-devicons",
+      opts={
       auto_reload_on_write = true,
       disable_netrw = false,
       hijack_cursor = false,
@@ -105,8 +109,8 @@ require("nvim-tree").setup { -- BEGIN_DEFAULT_OPTS
         auto_open = true,
       },
       update_focused_file = {
-        enable = false,
-        update_root = false,
+        enable = true,
+        update_root = true,
         ignore_list = {},
       },
       system_open = {
@@ -231,8 +235,6 @@ require("nvim-tree").setup { -- BEGIN_DEFAULT_OPTS
           watcher = false,
         },
       },
-    } -- END_DEFAULT_OPTS
-
-vim.cmd('highlight NvimTreeNormal guibg=NONE ctermbg=NONE')
-vim.cmd('highlight NvimTreeFolderIcon guibg=NONE ctermbg=NONE')
-vim.cmd('highlight NvimTreeFileIcon guibg=NONE ctermbg=NONE')
+      }
+    }
+}
