@@ -10,15 +10,6 @@ keymap("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- Define a function to yank selected text to the system clipboard using OSCYankVisual
-local function oscyankvisual()
-  vim.api.nvim_command("silent! OSCYankVisual *")
-end
-
--- Map Ctrl+Shift+C to the oscyankvisual function in visual mode
-vim.api.nvim_command([[autocmd FileType * vnoremap <C-S-C> :lua oscyankvisual()<CR>]])
-
-
 -- Modes
 --   normal_mode = "n",
 --   insert_mode = "i",
@@ -64,8 +55,6 @@ keymap("v", "<", "<gv", opts)
 keymap("v", ">", ">gv", opts)
 -- Retain original yank after paste-over in visual
 keymap("v", "p", '"_dP', opts)
--- Yank to clipboard
-keymap('v', '<leader>y', '<Plug>OSCYankVisual', opts)
 
 -- Visual Block --
 -- Move text up and down
