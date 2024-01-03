@@ -18,7 +18,7 @@ return {
                "vimdoc",
                "tsx",
             },
-            highlight = { enable = true },
+            highlight = { enable = true, disable = { "dockerfile" } },
             indent = { enable = true },
             autotag = { enable = true },
          })

@@ -89,4 +89,3 @@ vim.api.nvim_create_autocmd("BufEnter", {
       --    { silent = true })
    end,
 })
-
