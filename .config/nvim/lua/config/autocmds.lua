@@ -55,7 +55,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
    callback = function()
       vim.keymap.set(
          "n",
-         "<Leader>e",
+         "<Leader>x",
          ":terminal go run %<CR>",
          { silent = true }
       )
@@ -68,7 +68,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
    callback = function()
       vim.keymap.set(
          "n",
-         "<Leader>e",
+         "<Leader>x",
          ":terminal python3 %<CR>",
          { silent = true }
       )
@@ -81,7 +81,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
    callback = function()
       vim.keymap.set(
          "n",
-         "<Leader>e",
+         "<Leader>x",
          ":terminal ./a.out<CR>",
          { silent = true }
       )
