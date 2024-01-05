@@ -10,16 +10,6 @@ return {
    },
    {
       "ojroques/vim-oscyank",
-      config = function()
-         -- Define a function to yank selected text to the system clipboard using OSCYankVisual
-         local function oscyankvisual()
-            vim.api.nvim_command("silent! OSCYankVisual *")
-         end
-         -- Map Ctrl+Shift+C to the oscyankvisual function in visual mode
-         vim.api.nvim_command([[autocmd FileType * vnoremap <C-S-C> :lua oscyankvisual()<CR>]])
-      end
-
-
    },
    {
       "tpope/vim-sleuth",

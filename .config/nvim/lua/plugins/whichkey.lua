@@ -70,7 +70,7 @@ return {
       }
 
       local opts = {
-         mode = "n",     -- NORMAL mode
+         mode = {"v", "n"},     -- VISUAL and NORMAL mode
          prefix = "<leader>",
          buffer = nil,   -- Global mappings. Specify a buffer number for buffer local mappings
          silent = true,  -- use `silent` when creating keymaps
