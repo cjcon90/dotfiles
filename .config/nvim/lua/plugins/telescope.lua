@@ -10,4 +10,16 @@ return {
          vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
       end,
    },
+   {
+      "numToStr/FTerm.nvim",
+      init = function()
+         require("FTerm").setup({
+            dimensions = {
+               height = 0.9,
+               width = 0.9,
+            },
+            vim.api.nvim_create_user_command('FTermOpen', require('FTerm').open, { bang = true }),
+         })
+      end
+   }
 }
