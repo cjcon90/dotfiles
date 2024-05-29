@@ -33,6 +33,7 @@ local languages = {
    "gopls",
    "texlab",
    "rust_analyzer",
+   "bashls",
 }
 
 return {
@@ -95,6 +96,7 @@ return {
             "pyright",
             "gopls",
             "rust_analyzer",
+            "bashls",
          },
       },
    },
@@ -111,6 +113,7 @@ return {
                null_ls.builtins.diagnostics.eslint,
                null_ls.builtins.formatting.prettier,
                null_ls.builtins.formatting.rustfmt,
+               null_ls.builtins.formatting.beautysh,
              },
          })
       end

@@ -2,7 +2,7 @@
   "position": "bottom",
   "modules-left": ["sway/workspaces", "custom/spotify"],
   "modules-center": ["clock"],
-  "modules-right": ["backlight","pulseaudio","temperature","network","custom/protonvpn","battery","bluetooth"],
+  "modules-right": ["backlight","pulseaudio","temperature","network","battery","bluetooth"],
   "margin-top": 0,
   "margin-left": 15,
   "margin-right": 15,
@@ -27,10 +27,10 @@
      }
    },
   "clock": {
-    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+      "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
     "format": "{:%H:%M %Z}  ",
     "format-alt": "{:%H:%M %a %d/%m/%y} 󰃰 ",
-    "timezones": ["Europe/London","America/Mexico_City"],
+    "timezones": ["Europe/Dublin","America/Los_Angeles"],
     "actions": {
       "on-click-right": "tz_down",
     },
@@ -38,21 +38,19 @@
   "backlight": {
     "format": " {icon} {}% ",
     "format-icons": ["", "", "", "", "", "", "", "", ""],
-    "on-scroll-up": "brightnessctl set +1%",
-    "on-scroll-down": "brightnessctl set 1%-"
+    "on-scroll-up": "light -A 1",
+    "on-scroll-down": "light -U 1"
   },
   "battery": {
-    "bat": "BAT0",
     "states": {
         "warning": 25,
         "critical": 5
     },
-    "format": " {icon}  {capacity}% ",
+    "format": " {icon} {capacity}% ",
     "tooltip-format": " {timeTo}, {capacity}% ",
-    "format-plugged": " 󰂄 {capacity}% ",
+    "format-charging": " 󰂄 {capacity}% ",
     "format-charging": "  {capacity}% ",
-    "format-icons": ["󰂎", "󰁻", "󰁾", "󰂀", "󰁹"],
-    "interval": 5
+    "format-icons": ["󰂎", "󰁻", "󰁾", "󰂀", "󰁹"]
   },
   "pulseaudio": {
     "format": " {icon} {volume}% ",
@@ -60,18 +58,11 @@
     "format-icons": ["󰖀","󰕾",""],
     "scroll-step": 1
   },
-  "custom/protonvpn": {
-    "format": "{}",
-    "return-type": "json",
-    "exec": "/usr/bin/bash $HOME/.config/waybar/protonvpnstatus.sh",
-    "interval": 5,
-  },
   "network": {
     "format-wifi": " 󰖩 {essid} ({signalStrength}%) ",
     "max-length": 20,
     "format-ethernet": " 󰈀 {ifname} ",
     "format-disconnected": " 󰖪 ",
-    "tooltip-format": "{essid} {signalStrength}%",
     "on-click": "/usr/bin/nm-connection-editor"
   },
   "custom/spotify": {
@@ -88,7 +79,7 @@
     "critical-threshold": 80,
     "format": "  {temperatureC}°C ",
     "format-critical": "  {temperatureC}°C ",
-    "interval": 5
+    "interval": 2
   },
   "bluetooth": {
     "format-off": "  off ",

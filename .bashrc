@@ -8,11 +8,9 @@ fi
 # User specific environment
 if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
 then
-    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+    PATH="$HOME/.cargo/bin:$HOME/.local/bin:$HOME/bin:$PATH"
 fi
 export PATH
-# export EDITOR="vim"
-export GRIM_DEFAULT_DIR="~/Pictures/screenshots"
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
@@ -26,22 +24,21 @@ if [ -d ~/.bashrc.d ]; then
 	done
 fi
 
-unset rc
-# Avoid duplicates
-HISTCONTROL=ignoredups
-HISTSIZE=10000
-HISTFILESIZE=20000
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-. "$HOME/.cargo/env"
+export EDITOR="nvim"
+alias ls='ls --color=auto'
+# LunarVim as default vim
+alias vim="nvim"
+# alias devserver="ssh ciaranconcannon@devvm32728.lla0.facebook.com"
+alias devserver="ssh ciaranconcannon@devvm24298.cln0.facebook.com"
+alias psc="jrnl psc"
+alias ff="fastfetch"
 
 # Starship prompt
 eval "$(starship init bash)"
 
-# Aliases
+unset rc
 
-alias ls='ls --color=auto'
-alias vim="nvim"
-alias ff="fastfetch"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export GOPATH=$HOME/go

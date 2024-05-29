@@ -1,0 +1,29 @@
+colors:
+  body: none
+  date: none
+  tags: none
+  title: none
+default_hour: 9
+default_minute: 0
+editor: lvim
+encrypt: false
+highlight: true
+indent_character: '|'
+journals:
+  default:
+    display_format: json
+    encrypt: false
+    journal: ~/Dropbox (Meta)/jrnl/default.txt
+  learning:
+    display_format: json
+    encrypt: true
+    journal: ~/Dropbox (Meta)/jrnl/learning.txt
+  psc:
+    display_format: json
+    encrypt: true
+    journal: ~/Dropbox (Meta)/jrnl/psc.txt
+linewrap: 79
+tagsymbols: '#@'
+template: false
+timeformat: '%F %r'
+version: v3.3

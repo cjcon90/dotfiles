@@ -1,0 +1,14 @@
+editor: lvim
+journals: 
+  default: 
+    journal: ~/Dropbox (Meta)/jrnl/default.txt
+    encrypt: false 
+    display_format: json 
+  psc: 
+    journal: ~/Dropbox (Meta)/jrnl/psc.txt
+    encrypt: true 
+    display_format: json 
+  learning:
+    journal: ~/Dropbox (Meta)/jrnl/learning.txt
+    encrypt: true 
+    display_format: json 
