@@ -1,0 +1,47 @@
+# Include the official Dracula color scheme (make sure dracula.conf is in the same folder)
+include dracula.conf
+
+# Font and text settings
+# font_family IBM Plex Mono Nerd Font
+font_size 14.0
+# bold_font auto
+# italic_font auto
+# bold_italic_font auto
+
+# Window padding: top, right, bottom, left (in pixels)
+window_padding_width 12 12 12 12
+
+# Background opacity for translucent effect
+background_opacity 0.9
+
+# Enable ligatures if desired
+enable_ligatures yes
+
+# Cursor style
+cursor_style block
+
+# Allow remote control (for dynamic padding or colorswitching if needed)
+allow_remote_control yes
+
+# Optional startup window size
+initial_window_width 100
+initial_window_height 30
+
+# Colors (if you want to override specifics or tune from Dracula)
+# foreground #f8f8f2
+# background #282a36
+# cursor #f8f8f0
+
+
+
+# BEGIN_KITTY_THEME
+# Dracula
+include current-theme.conf
+# END_KITTY_THEME
+
+# BEGIN_KITTY_FONTS
+font_family      family="BlexMono Nerd Font"
+bold_font        auto
+italic_font      auto
+bold_italic_font auto
+# END_KITTY_FONTS

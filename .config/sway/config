@@ -16,7 +16,7 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term alacritty
+set $term kitty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
@@ -102,6 +102,8 @@ client.background       #F8F8F2
 #
 # Start a terminal
 bindsym $mod+Return exec $term
+bindsym $mod+y exec "$term yazi"
+
 
 # Kill focused window
 bindsym $mod+Shift+q kill
