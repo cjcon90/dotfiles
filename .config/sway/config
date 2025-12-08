@@ -16,7 +16,7 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term kitty
+set $term ghostty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
@@ -37,7 +37,7 @@ input * xkb_layout "gb"
 
 ### Output configuration
 #
-output * bg ~/.config/sway/dracula-kraken.png fill
+output * bg /home/cjcon90/.config/sway/dracula-kraken.png fill
 
 # Screenshot functionality
 bindsym Print exec ~/.local/bin/screenshot.sh
@@ -102,7 +102,7 @@ client.background       #F8F8F2
 #
 # Start a terminal
 bindsym $mod+Return exec $term
-bindsym $mod+y exec "$term yazi"
+bindsym $mod+y exec $term -e yazi
 
 
 # Kill focused window
@@ -113,7 +113,7 @@ bindsym $mod+d exec $menu
 bindsym $mod+m exec $metamenu
 
 # Lock the screen
-bindsym $mod+Ctrl+l exec ~/.cargo/bin/swaylock-blur
+bindsym $mod+Ctrl+l exec swaylock --screenshots --clock --indicator --indicator-radius 200 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color 6272a4 --ring-clear-color f1fa8c  --ring-wrong-color ff5555 --ring-ver-color 8be9fd --inside-color 00000000 --inside-clear-color 00000000 --inside-wrong-color 00000000 --inside-ver-color 00000000 --text-color ff79c6 --text-clear-color f1fa8c  --text-wrong-color ff5555 --text-ver-color 8be9fd --line-color 00000000 --separator-color 00000000 --fade-in 0.5
 bindsym $mod+semicolon exec flatpak run codes.merritt.FeelingFinder
 
 # Go into hibernation

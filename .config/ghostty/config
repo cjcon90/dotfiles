@@ -1,0 +1,8 @@
+theme = dracula
+font-family = Blex Mono Nerd Font
+
+keybind = performable:ctrl+c=copy_to_clipboard
+
+window-padding-x = 12
+window-padding-y = 12
+window-padding-balance = true
