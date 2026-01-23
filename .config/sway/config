@@ -16,7 +16,7 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term ghostty
+set $term alacritty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
@@ -33,11 +33,17 @@ exec gsettings set org.gnome.desktop.wm.preferences theme "Dracula"
 exec gsettings set org.gnome.desktop.interface icon-theme "Dracula"
 
 # Keyboard setting
-input * xkb_layout "gb"
+input * xkb_layout us
+
+# toggle US and GB layouts
+bindsym $mod+Shift+u exec bash -c 'sed -i "s/^input \* xkb_layout .*/input * xkb_layout \"us\"/" ~/.config/sway/config && swaymsg reload'
+bindsym $mod+Shift+g exec bash -c 'sed -i "s/^input \* xkb_layout .*/input * xkb_layout \"gb\"/" ~/.config/sway/config && swaymsg reload'
 
 ### Output configuration
 #
-output * bg /home/cjcon90/.config/sway/dracula-kraken.png fill
+output DP-3 resolution 3440x1440 position 0 0
+output eDP-1 resolution 1920x1080 position 760 1440
+output * bg /home/ciaranconcannon/.config/sway/dracula-kraken.png fill
 
 # Screenshot functionality
 bindsym Print exec ~/.local/bin/screenshot.sh
@@ -102,7 +108,7 @@ client.background       #F8F8F2
 #
 # Start a terminal
 bindsym $mod+Return exec $term
-bindsym $mod+y exec $term -e yazi
+bindsym $mod+y exec $term yazi
 
 
 # Kill focused window
@@ -113,11 +119,14 @@ bindsym $mod+d exec $menu
 bindsym $mod+m exec $metamenu
 
 # Lock the screen
-bindsym $mod+Ctrl+l exec swaylock --screenshots --clock --indicator --indicator-radius 200 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color 6272a4 --ring-clear-color f1fa8c  --ring-wrong-color ff5555 --ring-ver-color 8be9fd --inside-color 00000000 --inside-clear-color 00000000 --inside-wrong-color 00000000 --inside-ver-color 00000000 --text-color ff79c6 --text-clear-color f1fa8c  --text-wrong-color ff5555 --text-ver-color 8be9fd --line-color 00000000 --separator-color 00000000 --fade-in 0.5
+set $lock_cmd swaylock --screenshots --clock --indicator --indicator-radius 200 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color 6272a4 --ring-clear-color f1fa8c  --ring-wrong-color ff5555 --ring-ver-color 8be9fd --inside-color 00000000 --inside-clear-color 00000000 --inside-wrong-color 00000000 --inside-ver-color 00000000 --text-color ff79c6 --text-clear-color f1fa8c  --text-wrong-color ff5555 --text-ver-color 8be9fd --line-color 00000000 --separator-color 00000000 --fade-in 0.5
+bindsym $mod+Ctrl+l exec $lock_cmd
+
+for_window [app_id="codes.merritt.FeelingFinder"] floating enable
 bindsym $mod+semicolon exec flatpak run codes.merritt.FeelingFinder
 
 # Go into hibernation
-bindsym $mod+Ctrl+Escape exec systemctl suspend
+bindsym $mod+Ctrl+Escape exec systemctl suspend && $lock_cmd
 
 # Drag floating windows by holding down $mod and left mouse button.
 # Resize them with right mouse button + $mod.

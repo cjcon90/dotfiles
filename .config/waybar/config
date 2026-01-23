@@ -30,16 +30,16 @@
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
     "format": "{:%H:%M %Z}  ",
     "format-alt": "{:%H:%M %a %d/%m/%y} 󰃰 ",
-    "timezones": ["Europe/London","America/Mexico_City"],
+    "timezones": ["Europe/London","America/Los_Angeles"],
     "actions": {
       "on-click-right": "tz_down",
     },
   },
   "backlight": {
-    "format": "{1} {0}%",
+    "format": " {icon} {0}% ",
     "format-icons": ["", "", "", "", "", "", "", "", ""],
-    "on-scroll-up": "brightnessctl set +1%",
-    "on-scroll-down": "brightnessctl set 1%-"
+    "on-scroll-up": "light -A 1",
+    "on-scroll-down": "light -U 1"
   },
   "battery": {
     "bat": "BAT0",
@@ -61,9 +61,7 @@
     "scroll-step": 1
   },
   "custom/protonvpn": {
-    "format": "{}",
-    "return-type": "json",
-    "exec": "/usr/bin/bash $HOME/.config/waybar/protonvpnstatus.sh",
+    "exec": "nmcli con show --active | grep -q 'FB-VPN' && echo ' FB-VPN ' || ifconfig | grep -qE 'tun[0-9]' && echo ' VPN ' || echo ''",
     "interval": 5,
   },
   "network": {

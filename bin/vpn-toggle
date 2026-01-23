@@ -1,0 +1,13 @@
+#!/bin/sh
+
+ACTIVE=$(/usr/bin/nmcli c show --active | grep "FB-VPN")
+
+if [ -z "$ACTIVE" ]
+then
+    /usr/bin/nmcli c up  "FB-VPN"
+else
+    /usr/bin/nmcli c down  "FB-VPN"
+    notify-send "VPN Connection" "Successfully disconnected from FB-VPN"
+fi
+
+exit 0
