@@ -1,68 +1,113 @@
 {
   "position": "bottom",
-  "modules-left": ["sway/workspaces", "custom/spotify"],
-  "modules-center": ["clock"],
-  "modules-right": ["backlight","pulseaudio","temperature","network","custom/protonvpn","battery","bluetooth"],
+  "height": 38,
+  "modules-left": [
+    "sway/workspaces",
+    "custom/spotify"
+  ],
+  "modules-center": [
+    "clock"
+  ],
+  "modules-right": [
+    "idle_inhibitor",
+    "backlight",
+    "pulseaudio",
+    "temperature",
+    "network",
+    "custom/vpn",
+    "battery",
+    "bluetooth"
+  ],
   "margin-top": 0,
   "margin-left": 15,
   "margin-right": 15,
   "margin-bottom": 10,
-
-  // Modules configuration
- "sway/workspaces": {
-     "disable-scroll": false,
-     "all-outputs": false,
-     "format": "{icon}",
-     "format-icons": {
-         "1": "I",
-         "2": "II",
-         "3": "III",
-         "4": "IV",
-         "5": "V",
-         "6": "VI",
-         "7": "VII",
-         "8": "VIII",
-         "9": "IX",
-         "10": "X",
-     }
-   },
+  "sway/workspaces": {
+    "disable-scroll": false,
+    "all-outputs": false,
+    "format": "{icon}",
+    "format-icons": {
+      "1": "I",
+      "2": "II",
+      "3": "III",
+      "4": "IV",
+      "5": "V",
+      "6": "VI",
+      "7": "VII",
+      "8": "VIII",
+      "9": "IX",
+      "10": "X"
+    }
+  },
   "clock": {
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-    "format": "{:%H:%M %Z}  ",
+    "format": "{:%H:%M %Z}  ",
     "format-alt": "{:%H:%M %a %d/%m/%y} 󰃰 ",
-    "timezones": ["Europe/London","America/Los_Angeles"],
+    "timezones": [
+      "Europe/London",
+      "America/Los_Angeles"
+    ],
     "actions": {
-      "on-click-right": "tz_down",
+      "on-click-right": "tz_down"
+    }
+  },
+  "idle_inhibitor": {
+    "format": "{icon} ",
+    "format-icons": {
+      "activated": "󰅶",
+      "deactivated": "󰾪"
     },
+    "tooltip-format-activated": "Idle inhibitor: on",
+    "tooltip-format-deactivated": "Idle inhibitor: off"
   },
   "backlight": {
-    "format": " {icon} {0}% ",
-    "format-icons": ["", "", "", "", "", "", "", "", ""],
+    "format": " {icon} {percent}% ",
+    "format-icons": [
+      "", 
+      "", 
+      "", 
+      "", 
+      "", 
+      "", 
+      "", 
+      "", 
+      ""
+    ],
     "on-scroll-up": "light -A 1",
     "on-scroll-down": "light -U 1"
   },
   "battery": {
     "bat": "BAT0",
     "states": {
-        "warning": 25,
-        "critical": 5
+      "warning": 25,
+      "critical": 5
     },
     "format": " {icon}  {capacity}% ",
     "tooltip-format": " {timeTo}, {capacity}% ",
     "format-plugged": " 󰂄 {capacity}% ",
-    "format-charging": "  {capacity}% ",
-    "format-icons": ["󰂎", "󰁻", "󰁾", "󰂀", "󰁹"],
+    "format-charging": " 󰢜 {capacity}% ",
+    "format-icons": [
+      "󰂎",
+      "󰁻",
+      "󰁾",
+      "󰂀",
+      "󰁹"
+    ],
     "interval": 5
   },
   "pulseaudio": {
     "format": " {icon} {volume}% ",
     "format-muted": "󰖁",
-    "format-icons": ["󰖀","󰕾",""],
+    "format-icons": [
+      "󰕿",
+      "󰖀",
+      "󰕾"
+    ],
     "scroll-step": 1
   },
-  "custom/protonvpn": {
-    "exec": "nmcli con show --active | grep -q 'FB-VPN' && echo ' FB-VPN ' || ifconfig | grep -qE 'tun[0-9]' && echo ' VPN ' || echo ''",
-    "interval": 5,
+  "custom/vpn": {
+    "exec": "nmcli con show --active 2>/dev/null | grep -oP '(FB-VPN|proton[^ ]*)' | head -1 | xargs -I{} echo ' {} ' || echo ''",
+    "interval": 5
   },
   "network": {
     "format-wifi": " 󰖩 {essid} ({signalStrength}%) ",
@@ -73,31 +118,31 @@
     "on-click": "/usr/bin/nm-connection-editor"
   },
   "custom/spotify": {
-      "exec": "python $HOME/.config/waybar/scripts/mediaplayer.py --player spotify",
-      "format": " {}",
-      "escape": true,
-      "max-length": 45,
-      "return-type": "json",
-      "on-click": "playerctl -p spotify play-pause"
+    "exec": "python $HOME/.config/waybar/scripts/mediaplayer.py --player spotify",
+    "exec-if": "pgrep spotify",
+    "format": " {}",
+    "escape": true,
+    "max-length": 45,
+    "return-type": "json",
+    "on-click": "playerctl -p spotify play-pause",
+    "on-scroll-up": "playerctl -p spotify next",
+    "on-scroll-down": "playerctl -p spotify previous"
   },
   "temperature": {
     "thermal-zone": 1,
-    "hwmon-path": "/sys/class/hwmon/hwmon1/temp1_input",
     "critical-threshold": 80,
-    "format": "  {temperatureC}°C ",
-    "format-critical": "  {temperatureC}°C ",
-    "interval": 5
+    "format": " 󰔏 {temperatureC}°C ",
+    "format-critical": " 󰔏 {temperatureC}°C ",
+    "interval": 5,
+    "on-click": "alacritty -e btop"
   },
   "bluetooth": {
-    "format-off": "  off ",
-    "format-on": "  disconnected ",
-    "format-connected": "  {device_alias} ",
-    "format-connected-battery": "  {device_alias}({device_battery_percentage}%) ", // need to set experimental: true in /etc/bluetooth/main.conf
+    "format-off": " 󰂲 off ",
+    "format-on": " 󰂯 disconnected ",
+    "format-connected": " 󰂱 {device_alias} ",
+    "format-connected-battery": " 󰂱 {device_alias}({device_battery_percentage}%) ",
     "interval": 5,
     "tooltip-format": "{status}",
     "on-click": "/usr/bin/blueman-manager"
-  },
+  }
 }
-
-
-

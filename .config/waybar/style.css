@@ -18,9 +18,7 @@
 }
 
 window#waybar {
-  /* background-color: rgba(18, 21, 29, 0.98); */
   background-color: @Background;
-  /* background-color: rgba(0, 0, 0, 0); */
   border: 3px solid @Comment;
   border-radius: 0;
   color: @Comment;
@@ -28,26 +26,20 @@ window#waybar {
   transition-duration: .5s;
 }
 
-/* window#waybar.hidden { */
-/*   opacity: 0.5; */
-/* } */
-
 #workspaces,
-#cpu,
-#memory,
 #pulseaudio,
 #clock,
 #backlight,
 #battery,
 #network,
+#temperature,
 #tray,
-#bluetooth {
+#bluetooth,
+#idle_inhibitor,
+#custom-vpn {
   color: @Comment;
   border-color: @Comment;
   padding: 10px 5px;
-  /* border: 3px solid @CurrentLine; */
-  /* border-radius: 90px; */
-  /* background-clip: padding-box; */
 }
 
 #tray, #workspaces {
@@ -73,16 +65,8 @@ window#waybar {
   color: @Red;
 }
 
-#cpu {
-  color: @Yellow;
-}
-
-#memory {
-  color: @Pink;
-}
-
 #pulseaudio {
-    color: @Cyan;
+  color: @Cyan;
 }
 
 #clock {
@@ -92,6 +76,14 @@ window#waybar {
 
 #backlight {
   color: @Orange;
+}
+
+#idle_inhibitor {
+  color: @Comment;
+}
+
+#idle_inhibitor.activated {
+  color: @Green;
 }
 
 @keyframes blink {
@@ -112,60 +104,48 @@ window#waybar {
 }
 
 #battery.warning:not(.charging) {
-    color: @Red;
-    border-color: @Comment;
-    background-color: transparent;
+  color: @Red;
+  border-color: @Comment;
+  background-color: transparent;
 }
 
 #battery.critical:not(.charging) {
-    color: @Red;
-    animation-name: blink;
-    animation-duration: 0.5s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+  color: @Red;
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
-#network.disconnected {
-    color: @Background;
+#custom-spotify {
+  color: @Green;
 }
 
-.custom-spotify {
-    color: @Green;
-}
-
-#custom-protonvpn {
+#custom-vpn {
   color: @Yellow;
 }
 
 #temperature {
-    color: @Purple;
+  color: @Purple;
 }
 
 #network {
-    color: @Pink;
+  color: @Pink;
 }
 
 #network.disconnected {
-    color: @CurrentLine;
+  color: @CurrentLine;
 }
 
 #bluetooth.off {
-    color: @CurrentLine;
+  color: @CurrentLine;
 }
 
 #bluetooth.on {
-    color: @Comment;
+  color: @Comment;
 }
 
 #bluetooth.connected {
-    color: @Cyan;
+  color: @Cyan;
 }
-
-/* #keyboard-state { */
-/*   color: @CurrentLine; */
-/* } */
-
-/* #keyboard-state label.capslock.locked { */
-/*   color: @Red; */
-/* } */
