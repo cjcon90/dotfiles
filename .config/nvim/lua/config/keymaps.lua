@@ -26,6 +26,9 @@ vim.keymap.set("v", ">", ">gv", opts)
 -- Retain yank after paste in visual
 vim.keymap.set("v", "p", '"_dP', opts)
 
+-- Unmap <C-b> so it passes through to tmux
+vim.keymap.set({ "n", "v" }, "<C-b>", "<Nop>", opts)
+
 -- Terminal navigation
 vim.keymap.set("t", "<C-h>", "<C-\\><C-N><C-w>h", { silent = true })
 vim.keymap.set("t", "<C-j>", "<C-\\><C-N><C-w>j", { silent = true })
