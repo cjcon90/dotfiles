@@ -15,7 +15,20 @@ return {
           { "<leader>q", "<cmd>q!<CR>", desc = "Quit" },
           { "<leader>c", "<cmd>bwipeout<cr>", desc = "Close Buffer" },
           { "<leader>v", "<cmd>vsplit<cr>", desc = "Vertical Split" },
-          { "<leader>y", '"+y', desc = "Yank to clipboard", mode = "v" },
+          {
+            "<leader>y",
+            function()
+              -- Save unnamed register, yank to clipboard, then restore it
+              local save = vim.fn.getreg('"')
+              local save_type = vim.fn.getregtype('"')
+              vim.cmd('normal! "zy')
+              vim.fn.setreg("+", vim.fn.getreg("z"))
+              vim.fn.setreg("z", "")
+              vim.fn.setreg('"', save, save_type)
+            end,
+            desc = "Yank to clipboard",
+            mode = "v",
+          },
 
           -- Find / Grep (Meta: Biggrep, otherwise: Telescope)
           {

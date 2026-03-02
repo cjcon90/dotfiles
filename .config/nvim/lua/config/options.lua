@@ -1,6 +1,6 @@
 local options = {
   backup = false,
-  clipboard = "unnamedplus",
+  clipboard = "",
   cmdheight = 2,
   completeopt = { "menuone", "noselect" },
   conceallevel = 0,
@@ -44,5 +44,26 @@ end
 vim.opt.whichwrap:append("<,>,[,],h,l")
 vim.opt.iskeyword:append("-")
 
--- Use built-in OSC 52 for clipboard over SSH/remote
-vim.g.clipboard = "osc52"
+-- Disable unnamedplus so y/p use Neovim registers only.
+-- Must run after LazyVim's deferred clipboard restore.
+vim.api.nvim_create_autocmd("User", {
+  pattern = "VeryLazy",
+  callback = function()
+    vim.schedule(function()
+      vim.opt.clipboard = ""
+    end)
+  end,
+})
+
+-- Use OSC 52 for yanking (works over SSH/tmux), wl-paste for pasting
+vim.g.clipboard = {
+  name = "osc52-wlpaste",
+  copy = {
+    ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+    ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+  },
+  paste = {
+    ["+"] = { "wl-paste", "--no-newline" },
+    ["*"] = { "wl-paste", "--no-newline", "--primary" },
+  },
+}
