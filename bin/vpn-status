@@ -1,0 +1,12 @@
+#!/bin/sh
+
+ACTIVE=`nmcli con show --active | grep "FB-VPN"`
+
+if [ -z "$ACTIVE" ]
+then
+    notify-send "VPN Status" "Not currently connected"
+else
+    notify-send "VPN Status" "FB-VPN is currently active"
+fi
+
+exit 0

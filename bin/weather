@@ -1,0 +1,2 @@
+figlet "Weather" | lolcat
+curl wttr\.in/"Dublin"?0?A

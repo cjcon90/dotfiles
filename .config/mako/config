@@ -1,25 +1,26 @@
-# Take a look at the mako manpage with the command:
-#   man 5 mako
-# To view all configuration options.
-
 font=Blex Mono Nerd Font 11
 format=<b>%a</b>\n%s\n%b
 sort=-time
-# output=DP-2
 layer=overlay
 anchor=top-right
 background-color=#282a36
+text-color=#f8f8f2
 width=400
 height=150
+max-visible=5
 margin=15
 padding=0,5,10
 border-size=3
 border-color=#ff79c6
 border-radius=0
-icons=0
+icons=1
 max-icon-size=64
 default-timeout=5000
-ignore-timeout=1
+ignore-timeout=0
+
+[urgency=low]
+border-color=#6272a4
+default-timeout=3000
 
 [urgency=normal]
 border-color=#ff79c6
@@ -30,3 +31,9 @@ default-timeout=0
 
 [app-name=Spotify]
 border-color=#50fa7b
+
+[app-name="Google Chrome"]
+max-visible=3
+
+[app-name="Chromium"]
+max-visible=3

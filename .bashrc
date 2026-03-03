@@ -8,11 +8,12 @@ fi
 # User specific environment
 if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
 then
-    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+    PATH="$HOME/.local/bin:$HOME/bin:/snap/bin:$PATH"
 fi
 export PATH
-# export EDITOR="vim"
+
 export GRIM_DEFAULT_DIR="~/Pictures/screenshots"
+export EDITOR="nvim"
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
@@ -27,6 +28,7 @@ if [ -d ~/.bashrc.d ]; then
 fi
 
 unset rc
+
 # Avoid duplicates
 HISTCONTROL=ignoredups
 HISTSIZE=10000
@@ -45,3 +47,9 @@ eval "$(starship init bash)"
 alias ls='ls --color=auto'
 alias vim="nvim"
 alias ff="fastfetch"
+alias devserver="x2ssh ciaranconcannon@devvm24298.cln0.facebook.com"
+alias psc="jrnl psc"
+export GOPATH=$HOME/go
+
+export UBOOT_SIGNING_KEY="/home/ciaranconcannon/keydir/customer_private_key.pem"
+export BB_ENV_PASSTHROUGH_ADDITIONS="UBOOT_SIGNING_KEY ${BB_ENV_PASSTHROUGH_ADDITIONS}"
