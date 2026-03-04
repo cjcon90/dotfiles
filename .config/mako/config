@@ -32,8 +32,3 @@ default-timeout=0
 [app-name=Spotify]
 border-color=#50fa7b
 
-[app-name="Google Chrome"]
-max-visible=3
-
-[app-name="Chromium"]
-max-visible=3
