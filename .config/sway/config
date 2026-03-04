@@ -35,7 +35,7 @@ focus_follows_mouse yes
 ### Output
 output DP-3 resolution 3440x1440 position 0 0
 output eDP-1 resolution 1920x1080 position 760 1440
-output * bg /home/ciaranconcannon/.config/sway/dracula-kraken.png fill
+output * bg $HOME/.config/sway/dracula-kraken.png fill
 
 ### Idle / Lock
 exec swayidle -w \
