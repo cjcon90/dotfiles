@@ -35,7 +35,7 @@ focus_follows_mouse yes
 ### Output
 output DP-3 resolution 3440x1440 position 0 0
 output eDP-1 resolution 1920x1080 position 760 1440
-output * bg $HOME/.config/sway/dracula-kraken.png fill
+output * bg /home/cjcon90/.config/sway/dracula-kraken.png fill
 
 ### Idle / Lock
 exec swayidle -w \
@@ -81,8 +81,8 @@ client.background       #F8F8F2
 exec gammastep -l geoclue2
 
 ### Screenshot
-bindsym Print exec ~/.local/bin/screenshot.sh
-bindsym Shift+Print exec ~/.local/bin/screenshot_select.sh
+bindsym Print exec ~/.config/sway/screenshot.sh
+bindsym Shift+Print exec ~/.config/sway/screenshot_select.sh
 
 ### Key bindings
 
