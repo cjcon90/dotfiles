@@ -15,6 +15,7 @@
     "temperature",
     "network",
     "custom/vpn",
+    "sway/language",
     "battery",
     "bluetooth"
   ],
@@ -135,6 +136,11 @@
     "format-critical": " 󰔏 {temperatureC}°C ",
     "interval": 5,
     "on-click": "alacritty -e btop"
+  },
+  "sway/language": {
+    "format": " 󰌌 {short} ",
+    "tooltip-format": "Keyboard layout: {long}",
+    "on-click": "swaymsg input type:keyboard xkb_switch_layout next"
   },
   "bluetooth": {
     "format-off": " 󰂲 off ",
