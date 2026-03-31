@@ -55,15 +55,15 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
--- Use OSC 52 for yanking (works over SSH/tmux), wl-paste for pasting
+-- OSC 52 for copy (works over SSH/tmux); paste via terminal (Ctrl+Shift+V)
 vim.g.clipboard = {
-  name = "osc52-wlpaste",
+  name = "osc52",
   copy = {
     ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
     ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
   },
   paste = {
-    ["+"] = { "wl-paste", "--no-newline" },
-    ["*"] = { "wl-paste", "--no-newline", "--primary" },
+    ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+    ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
   },
 }

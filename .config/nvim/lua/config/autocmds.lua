@@ -56,16 +56,11 @@ vim.api.nvim_create_autocmd("BufEnter", {
   end,
 })
 
--- Run gofmt on save for .go files
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = { "*.go" },
+-- Fix WinBar (barbecue) background with transparent Dracula theme
+vim.api.nvim_create_autocmd("ColorScheme", {
   callback = function()
-    local view = vim.fn.winsaveview()
-    vim.cmd([[silent! %!gofmt]])
-    if vim.v.shell_error ~= 0 then
-      vim.cmd("undo")
-    end
-    vim.fn.winrestview(view)
+    vim.api.nvim_set_hl(0, "WinBar",   { bg = "#282a36", fg = "#f8f8f2" })
+    vim.api.nvim_set_hl(0, "WinBarNC", { bg = "#282a36", fg = "#6272a4" })
   end,
 })
 

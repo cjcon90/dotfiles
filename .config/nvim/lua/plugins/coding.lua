@@ -1,8 +1,37 @@
 return {
   -- Disable mini.pairs (autoclose.nvim replaces it)
   { "nvim-mini/mini.pairs", enabled = false },
-  -- Disable conform.nvim (using <leader>lf with vim.lsp.buf.format / arc f instead)
-  { "stevearc/conform.nvim", enabled = false },
+  {
+    "stevearc/conform.nvim",
+    event = { "BufWritePre" },
+    cmd = { "ConformInfo" },
+    opts = {
+      formatters_by_ft = {
+        python          = { "ruff_format", "ruff_organize_imports" },
+        go              = { "goimports", "gofumpt" },
+        rust            = { "rustfmt" },
+        sh              = { "shfmt" },
+        bash            = { "shfmt" },
+        lua             = { "stylua" },
+        javascript      = { "prettier" },
+        javascriptreact = { "prettier" },
+        typescript      = { "prettier" },
+        typescriptreact = { "prettier" },
+        css             = { "prettier" },
+        scss            = { "prettier" },
+        html            = { "prettier" },
+        json            = { "prettier" },
+        jsonc           = { "prettier" },
+        yaml            = { "prettier" },
+        markdown        = { "prettier" },
+        toml            = { "taplo" },
+      },
+      format_on_save = {
+        timeout_ms = 2500,
+        lsp_fallback = true,
+      },
+    },
+  },
   { "tpope/vim-sleuth" },
   { "nacro90/numb.nvim", opts = {} },
   {

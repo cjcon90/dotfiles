@@ -1,6 +1,13 @@
 local is_meta = require("config.meta").is_meta
 
 return {
+  -- Remove LazyVim's default <leader>l (Lazy menu) so we can use it for LSP
+  {
+    "LazyVim/LazyVim",
+    keys = {
+      { "<leader>l", false },
+    },
+  },
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
@@ -68,7 +75,7 @@ return {
           { "<leader>lw", "<cmd>Telescope diagnostics<cr>", desc = "Workspace Diagnostics" },
           {
             "<leader>lf",
-            is_meta and "<cmd>silent !arc f<cr>" or "<cmd>lua vim.lsp.buf.format{async=true}<cr>",
+            is_meta and "<cmd>silent !arc f<cr>" or function() require("conform").format({ async = true, lsp_fallback = true }) end,
             desc = "Format",
           },
           { "<leader>li", "<cmd>LspInfo<cr>", desc = "Info" },
