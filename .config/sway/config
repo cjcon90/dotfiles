@@ -22,8 +22,11 @@ exec gsettings set org.gnome.desktop.interface icon-theme "Dracula"
 ### Input
 input * {
   xkb_layout gb,us
-  xkb_options grp:shifts_toggle
 }
+
+# Switch keyboard layout: Super+Shift+U = US, Super+Shift+G = GB
+bindsym $mod+Shift+u input * xkb_switch_layout 1
+bindsym $mod+Shift+g input * xkb_switch_layout 0
 
 input type:touchpad {
   tap enabled
@@ -33,16 +36,9 @@ input type:touchpad {
 focus_follows_mouse yes
 
 ### Output
-output DP-3 resolution 3440x1440 position 0 0
+output DP-1 resolution 3440x1440 position 0 0
 output eDP-1 resolution 1920x1080 position 760 1440
-output * bg /home/cjcon90/.config/sway/dracula-kraken.png fill
-
-### Idle / Lock
-exec swayidle -w \
-  timeout 300 '$lock_cmd' \
-  timeout 600 'swaymsg "output * dpms off"' \
-    resume 'swaymsg "output * dpms on"' \
-  before-sleep '$lock_cmd'
+output * bg /home/ciaranconcannon/.config/sway/dracula-kraken.png fill
 
 ### Appearance
 gaps inner 10
@@ -81,8 +77,8 @@ client.background       #F8F8F2
 exec gammastep -l geoclue2
 
 ### Screenshot
-bindsym Print exec ~/.config/sway/screenshot.sh
-bindsym Shift+Print exec ~/.config/sway/screenshot_select.sh
+bindsym Print exec ~/.local/bin/screenshot.sh
+bindsym Shift+Print exec ~/.local/bin/screenshot_select.sh
 
 ### Key bindings
 
@@ -97,9 +93,9 @@ bindsym $mod+Shift+q kill
 bindsym $mod+n exec makoctl dismiss
 bindsym $mod+Shift+n exec makoctl restore
 
-# Clipboard history (install cliphist: sudo dnf install cliphist)
-exec wl-paste --watch cliphist store
-bindsym $mod+p exec cliphist list | rofi -dmenu | cliphist decode | wl-copy
+# Clipboard history
+exec wl-paste --watch $HOME/go/bin/cliphist store
+bindsym $mod+p exec $HOME/go/bin/cliphist list | rofi -dmenu | $HOME/go/bin/cliphist decode | wl-copy
 
 # Launcher
 bindsym $mod+d exec $menu
