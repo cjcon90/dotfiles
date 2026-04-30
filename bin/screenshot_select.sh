@@ -1,7 +1,6 @@
 #!/bin/bash
 
-SCREENSHOT_URL=Pictures/screenshots/"$(date "+%y%m%d%H%M%S")"_select.png
+SCREENSHOT="$HOME/Pictures/screenshots/$(date "+%y%m%d%H%M%S")_select.png"
 
-maim -s ~/"$SCREENSHOT_URL"
-
-notify-send "Screenshot Captured!" "Saved to: $SCREENSHOT_URL" --icon=dialog-information
+grim -g "$(slurp)" "$SCREENSHOT"
+notify-send "Screenshot Captured!" "Saved to: $SCREENSHOT" --icon=dialog-information
