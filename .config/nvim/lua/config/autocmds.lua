@@ -35,34 +35,27 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- Filetype-specific run keymaps (buffer-local)
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = { "*.go" },
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "go",
   callback = function()
-    vim.keymap.set("n", "<Leader>x", ":terminal go run %<CR>", { silent = true, buffer = true })
+    vim.keymap.set("n", "<Leader>x", "<cmd>terminal go run %<cr>", { silent = true, buffer = true })
   end,
 })
 
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = { "*.py" },
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "python",
   callback = function()
-    vim.keymap.set("n", "<Leader>x", ":terminal python3 %<CR>", { silent = true, buffer = true })
+    vim.keymap.set("n", "<Leader>x", "<cmd>terminal python3 %<cr>", { silent = true, buffer = true })
   end,
 })
 
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = { "*.cpp", "*.cc" },
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "cpp", "c" },
   callback = function()
-    vim.keymap.set("n", "<Leader>x", ":terminal ./a.out<CR>", { silent = true, buffer = true })
+    vim.keymap.set("n", "<Leader>x", "<cmd>terminal ./a.out<cr>", { silent = true, buffer = true })
   end,
 })
 
--- Fix WinBar (barbecue) background with transparent Dracula theme
-vim.api.nvim_create_autocmd("ColorScheme", {
-  callback = function()
-    vim.api.nvim_set_hl(0, "WinBar",   { bg = "#282a36", fg = "#f8f8f2" })
-    vim.api.nvim_set_hl(0, "WinBarNC", { bg = "#282a36", fg = "#6272a4" })
-  end,
-})
 
 -- Meta-only: Disable GetCodehubLink command (keep only GetCodehubLinkYank)
 if is_meta then

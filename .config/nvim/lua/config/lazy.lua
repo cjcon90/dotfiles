@@ -36,7 +36,6 @@ table.insert(spec, { import = "plugins" })
 require("lazy").setup({
   spec = spec,
   defaults = {
-    lazy = false,
     version = false,
   },
   install = { colorscheme = { "dracula", "habamax" } },
