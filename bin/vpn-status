@@ -1,12 +1,12 @@
 #!/bin/sh
 
-ACTIVE=`nmcli con show --active | grep "FB-VPN"`
+STATUS=$(protonvpn-cli status 2>/dev/null | grep -i "status" | awk '{print $2}')
 
-if [ -z "$ACTIVE" ]
-then
-    notify-send "VPN Status" "Not currently connected"
+if [ "$STATUS" = "Connected" ]; then
+    SERVER=$(protonvpn-cli status 2>/dev/null | grep -i "server" | awk '{print $2}')
+    notify-send "VPN Status" "Connected to $SERVER"
 else
-    notify-send "VPN Status" "FB-VPN is currently active"
+    notify-send "VPN Status" "Not currently connected"
 fi
 
 exit 0

@@ -1,13 +1,13 @@
 #!/bin/sh
 
-ACTIVE=$(/usr/bin/nmcli c show --active | grep "FB-VPN")
+STATUS=$(protonvpn-cli status 2>/dev/null | grep -i "status" | awk '{print $2}')
 
-if [ -z "$ACTIVE" ]
-then
-    /usr/bin/nmcli c up  "FB-VPN"
+if [ "$STATUS" = "Connected" ]; then
+    protonvpn-cli disconnect
+    notify-send "VPN" "Disconnected from ProtonVPN"
 else
-    /usr/bin/nmcli c down  "FB-VPN"
-    notify-send "VPN Connection" "Successfully disconnected from FB-VPN"
+    protonvpn-cli connect --fastest
+    notify-send "VPN" "Connecting to ProtonVPN..."
 fi
 
 exit 0
