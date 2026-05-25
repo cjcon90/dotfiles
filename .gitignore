@@ -1,5 +1,11 @@
+# Vim plugin directory
 plugged/
-.tmux/plugins/
+
+# Shell history
 .bash_history
-.bash_logout
-.local/
+
+# tmux plugins (installed by tpm, not tracked)
+.tmux/plugins/
+
+# Claude Code local/machine-specific settings
+.claude/settings.local.json
