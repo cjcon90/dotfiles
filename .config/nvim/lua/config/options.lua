@@ -31,6 +31,7 @@ local options = {
   wrap = false,
   scrolloff = 8,
   sidescrolloff = 8,
+  smoothscroll = true,
   guifont = "monospace:h17",
 }
 
@@ -61,15 +62,19 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
--- Use OSC 52 for yanking (works over SSH/tmux), wl-paste for pasting
-vim.g.clipboard = {
-  name = "osc52-wlpaste",
-  copy = {
-    ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-    ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
-  },
-  paste = {
-    ["+"] = { "wl-paste", "--no-newline" },
-    ["*"] = { "wl-paste", "--no-newline", "--primary" },
-  },
-}
+-- OSC 52 clipboard (works over SSH/tmux)
+if vim.fn.executable("wl-paste") == 1 then
+  vim.g.clipboard = {
+    name = "osc52-wlpaste",
+    copy = {
+      ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+      ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+    },
+    paste = {
+      ["+"] = { "wl-paste", "--no-newline" },
+      ["*"] = { "wl-paste", "--no-newline", "--primary" },
+    },
+  }
+else
+  vim.g.clipboard = "osc52"
+end

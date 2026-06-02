@@ -17,7 +17,7 @@ vim.opt.rtp:prepend(lazypath)
 local is_meta = require("config.meta").is_meta
 
 local spec = {
-  { "LazyVim/LazyVim", import = "lazyvim.plugins" },
+  { "LazyVim/LazyVim", import = "lazyvim.plugins", opts = { defaults = { keymaps = false } } },
 }
 
 -- Meta-specific plugin specs (must come after lazyvim.plugins, before extras and user plugins)

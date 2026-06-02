@@ -1,10 +1,50 @@
 local M = {}
 
+-- Nvim 0.12.0 passes diagnostics in internal format (lnum/col) to code action
+-- requests, but wasabi expects LSP wire format (range).
+M.code_action = function()
+  local params = vim.lsp.util.make_range_params()
+  local diags = {}
+  for _, d in ipairs(vim.diagnostic.get(0)) do
+    if d.user_data and d.user_data.lsp then
+      table.insert(diags, d.user_data.lsp)
+    end
+  end
+  params.context = { diagnostics = diags }
+  vim.lsp.buf_request(0, "textDocument/codeAction", params, function(err, result, ctx)
+    if err then
+      vim.notify("Code action error: " .. err.message, vim.log.levels.ERROR)
+      return
+    end
+    if not result or #result == 0 then
+      vim.notify("No code actions available", vim.log.levels.INFO)
+      return
+    end
+    vim.ui.select(result, {
+      prompt = "Code actions:",
+      format_item = function(action)
+        return action.title
+      end,
+    }, function(action)
+      if not action then
+        return
+      end
+      local client = vim.lsp.get_client_by_id(ctx.client_id)
+      if action.edit then
+        vim.lsp.util.apply_workspace_edit(action.edit, client.offset_encoding)
+      end
+      if action.command then
+        local command = type(action.command) == "table" and action.command or action
+        client:exec_cmd(command)
+      end
+    end)
+  end)
+end
+
 M.on_attach = function(client, bufnr)
   local opts = { noremap = true, silent = true, buffer = bufnr }
 
-  -- Meta-specific LSP keymaps (supplement LazyVim defaults)
-  vim.keymap.set("n", "<leader>a", vim.lsp.buf.code_action, opts)
+  vim.keymap.set("n", "<leader>a", M.code_action, opts)
   vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
 end
 

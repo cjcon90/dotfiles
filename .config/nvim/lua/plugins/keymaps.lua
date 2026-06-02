@@ -18,7 +18,6 @@ return {
           {
             "<leader>y",
             function()
-              -- Save unnamed register, yank to clipboard, then restore it
               local save = vim.fn.getreg('"')
               local save_type = vim.fn.getregtype('"')
               vim.cmd('normal! "zy')
@@ -30,17 +29,9 @@ return {
             mode = "v",
           },
 
-          -- Find / Grep (Meta: Biggrep, otherwise: Telescope)
-          {
-            "<leader>f",
-            is_meta and "<cmd>Bgf<cr>" or "<cmd>Telescope find_files<cr>",
-            desc = "Find files",
-          },
-          {
-            "<leader>r",
-            is_meta and "<cmd>Bgs<cr>" or "<cmd>Telescope live_grep<cr>",
-            desc = "Find Text",
-          },
+          -- Find / Grep
+          { "<leader>f", "<cmd>Telescope find_files<cr>", desc = "Find files" },
+          { "<leader>r", "<cmd>Telescope live_grep<cr>",  desc = "Find Text" },
 
           -- Markdown
           { "<leader>m",  "<cmd>RenderMarkdown toggle<cr>",                     desc = "Toggle Markdown Preview" },
@@ -63,13 +54,12 @@ return {
 
           -- LSP group
           { "<leader>l",  group = "LSP" },
-          { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>",             desc = "Code Action" },
+          { "<leader>la", function() require("config.lsp").code_action() end,   desc = "Code Action" },
           { "<leader>ld", "<cmd>Telescope diagnostics bufnr=0<cr>",             desc = "Document Diagnostics" },
           { "<leader>lw", "<cmd>Telescope diagnostics<cr>",                     desc = "Workspace Diagnostics" },
           {
             "<leader>lf",
-            is_meta and "<cmd>silent !arc f<cr>"
-            or function() require("conform").format({ async = true, lsp_format = "fallback" }) end,
+            function() require("conform").format({ async = true, lsp_format = "fallback" }) end,
             mode = { "n", "x" },
             desc = "Format",
           },
@@ -83,7 +73,7 @@ return {
           { "<leader>ls", "<cmd>Telescope lsp_document_symbols<cr>",          desc = "Document Symbols" },
           { "<leader>lS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc = "Workspace Symbols" },
 
-          -- Trouble group (v2 API)
+          -- Trouble group
           { "<leader>t",  group = "Trouble" },
           { "<leader>tt", "<cmd>Trouble diagnostics toggle<cr>",              desc = "Trouble Toggle" },
           { "<leader>td", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Document Diagnostics" },
@@ -92,6 +82,16 @@ return {
           { "<leader>tR", "<cmd>Trouble lsp_references toggle<cr>",           desc = "Trouble LSP References" },
         },
       })
+
+      -- ── Meta-specific overrides ─────────────────────────────────
+      -- ── Meta-specific overrides ─────────────────────────────────
+      if is_meta then
+        wk.add({
+          { "<leader>f",  "<cmd>Bgf<cr>",           desc = "Find files (Biggrep)" },
+          { "<leader>r",  "<cmd>Bgs<cr>",           desc = "Find Text (Biggrep)" },
+          { "<leader>lf", "<cmd>silent !arc f<cr>",  desc = "Format (arc)", mode = { "n", "x" } },
+        })
+      end
     end,
   },
 }

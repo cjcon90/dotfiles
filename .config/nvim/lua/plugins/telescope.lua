@@ -5,6 +5,15 @@ return {
       "nvim-lua/plenary.nvim",
       { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     },
+    opts = {
+      pickers = {
+        find_files = {
+          find_command = vim.fn.executable("fd") == 1
+            and { "fd", "--type", "f", "--strip-cwd-prefix" }
+            or { "find", ".", "-type", "f" },
+        },
+      },
+    },
     keys = {
       { "<leader>ff", function() require("telescope.builtin").find_files() end, desc = "Find Files" },
       { "<leader>fg", function() require("telescope.builtin").live_grep() end, desc = "Live Grep" },

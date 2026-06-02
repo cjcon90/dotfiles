@@ -1,5 +1,7 @@
+-- Meta: arc f handles formatting via <leader>lf
 return {
   "stevearc/conform.nvim",
+  enabled = not require("config.meta").is_meta,
   opts = {
     -- Format on save for Go (replaces the manual BufWritePre gofmt autocmd)
     format_on_save = function(bufnr)
