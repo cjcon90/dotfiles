@@ -15,6 +15,12 @@ vim.keymap.set("i", ",", ",<c-g>u")
 vim.keymap.set("i", ".", ".<c-g>u")
 vim.keymap.set("i", ";", ";<c-g>u")
 
+-- Window navigation (LazyVim defaults are disabled via defaults.keymaps = false)
+vim.keymap.set("n", "<C-h>", "<C-w>h", opts)
+vim.keymap.set("n", "<C-j>", "<C-w>j", opts)
+vim.keymap.set("n", "<C-k>", "<C-w>k", opts)
+vim.keymap.set("n", "<C-l>", "<C-w>l", opts)
+
 -- Window resize
 vim.keymap.set("n", "<C-Up>", ":resize +2<cr>", opts)
 vim.keymap.set("n", "<C-Down>", ":resize -2<cr>", opts)

@@ -16,11 +16,11 @@ require("config.diagnostics")
 
 if require("config.meta").is_meta then
   -- Metamate AI completion
-  require("meta.metamate").init({
-    completionKeymap = "<CR>",
-    virtualTextHighlightGroup = "ErrorMsg",
-    filetypes = { "BUCK", "TARGETS", "python", "cpp", "h", "sh" },
-  })
+  -- require("meta.metamate").init({
+  --   completionKeymap = "<CR>",
+  --   virtualTextHighlightGroup = "ErrorMsg",
+  --   filetypes = { "BUCK", "TARGETS", "python", "cpp", "h", "sh" },
+  -- })
 
   -- Meta commands and filetypes
   require("meta.cmds")
