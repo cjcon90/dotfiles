@@ -101,6 +101,12 @@ bindsym $mod+m exec $metamenu
 # Lock the screen
 bindsym $mod+Ctrl+l exec $lock_cmd
 
+# Idle: lock after 5 min, screen off after 10 min, lock before sleep
+exec swayidle -w \
+  timeout 300 '$lock_cmd' \
+  timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+  before-sleep '$lock_cmd'
+
 # Emoji picker
 for_window [app_id="codes.merritt.FeelingFinder"] floating enable
 bindsym $mod+semicolon exec flatpak run codes.merritt.FeelingFinder

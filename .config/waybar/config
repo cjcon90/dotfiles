@@ -115,7 +115,8 @@
     "format-ethernet": " 󰈀 {ifname} ",
     "format-disconnected": " 󰖪 ",
     "tooltip-format": "{essid} {signalStrength}%",
-    "on-click": "/usr/bin/nm-connection-editor"
+    "on-click": "~/.config/sway/wifi-menu.sh",
+    "on-click-right": "/usr/bin/nm-connection-editor"
   },
   "custom/spotify": {
     "exec": "python $HOME/.config/waybar/scripts/mediaplayer.py --player spotify",
