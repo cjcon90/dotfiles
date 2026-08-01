@@ -38,8 +38,16 @@ fi
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
+# Lazy-loaded: sourcing nvm.sh directly costs ~200ms on every shell start
+_load_nvm() {
+    unset -f nvm node npm npx corepack _load_nvm
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
+}
+for _cmd in nvm node npm npx corepack; do
+    eval "${_cmd}() { _load_nvm; ${_cmd} \"\$@\"; }"
+done
+unset _cmd
 
 # Aliases
 alias ls='ls --color=auto'
