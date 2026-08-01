@@ -37,13 +37,6 @@ output DP-3 resolution 3440x1440 position 0 0
 output eDP-1 resolution 1920x1080 position 760 1440
 output * bg /home/cjcon90/.config/sway/dracula-kraken.png fill
 
-### Idle / Lock
-exec swayidle -w \
-  timeout 300 '$lock_cmd' \
-  timeout 600 'swaymsg "output * dpms off"' \
-    resume 'swaymsg "output * dpms on"' \
-  before-sleep '$lock_cmd'
-
 ### Appearance
 gaps inner 10
 gaps outer 5
