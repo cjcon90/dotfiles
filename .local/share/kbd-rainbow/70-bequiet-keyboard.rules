@@ -1,0 +1,11 @@
+# be quiet! Light Mount TKL (373f:0018), used by kbd-rainbow.service.
+# Only the isolated "kbdlight" account gets access; the desktop user does not, so other
+# programs running as the desktop user cannot read keystrokes from these devices.
+# (IO Center's own access to the vendor interface 02 comes from 10-bequiet.rules.)
+
+# LampArray lighting interface (USB interface 03): kbdlight drives the lights
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="373f", ATTRS{idProduct}=="0018", IMPORT{builtin}="usb_id"
+SUBSYSTEM=="hidraw", ENV{ID_VENDOR_ID}=="373f", ENV{ID_MODEL_ID}=="0018", ENV{ID_USB_INTERFACE_NUM}=="03", OWNER:="kbdlight", MODE:="0600"
+
+# Key events: kbdlight may read them for typing-reactive effects (group "input" unchanged)
+SUBSYSTEM=="input", KERNEL=="event*", ATTRS{idVendor}=="373f", ATTRS{idProduct}=="0018", OWNER:="kbdlight"

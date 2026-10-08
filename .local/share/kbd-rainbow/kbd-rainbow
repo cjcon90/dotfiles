@@ -1,0 +1,503 @@
+#!/usr/bin/env python3
+"""Lighting effects for the be quiet! Light Mount TKL via its HID LampArray interface.
+
+Takes control of the lighting while running; on exit, hands control back to the
+keyboard (its default orange). Reconnects automatically if the keyboard is
+unplugged or moved to a different port/adapter.
+
+Modes (the standard Razer Synapse / QMK set, plus plasma):
+  static        one solid colour (--colour)
+  breathing     the colour fading in and out
+  spectrum      whole keyboard cycling through every colour
+  wave          rainbow scrolling left to right
+  spiral        rainbow rotating around the centre
+  riverflow     the colour flowing across the board like water
+  starlight     random keys gently fading in and out
+  raindrops     random keys switching to new colours
+  digital_rain  Matrix-style green code falling down the keys
+  fire          warm flame colours, red to gold
+  plasma        swirling lava-lamp colours
+  ripple        rings spread out from each key you press (typing)
+
+Usage:
+  kbd-rainbow [--mode MODE] [--colour RRGGBB] [--speed SECONDS] [--brightness 0-1]   run (saved)
+  kbd-rainbow next|prev|brighter|dimmer|toggle                    control a running instance
+
+Runs as a systemd service under the isolated "kbdlight" account (see kbd-rainbow.service),
+which is the only account allowed to read this keyboard's key events. Key presses are only
+used to place lighting effects; they are never stored or logged, and the service has no
+network access. The state lives in /var/lib/kbd-rainbow/state.json, which your account can
+write, so the wheel controls keep working. "toggle" hands the lighting back to the keyboard's own
+built-in effects (Fn + arrows) and back again.
+"""
+import argparse
+import colorsys
+import fcntl
+import glob
+import json
+import math
+import os
+import random
+import select
+import signal
+import struct
+import subprocess
+import sys
+import time
+
+STATE_DIR = "/var/lib/kbd-rainbow"
+STATE_FILE = os.path.join(STATE_DIR, "state.json")
+DEFAULT_STATE = {"mode": "ripple", "brightness": 0.3, "speed": 6.0, "colour": "ff5a00", "enabled": True}
+
+VID_PID = "0003:0000373F:00000018"
+LAMPARRAY_USAGE_PAGE = bytes([0x05, 0x59])  # Usage Page (Lighting and Illumination)
+
+
+def _ioc_rw(nr, size):
+    return (3 << 30) | (size << 16) | (ord("H") << 8) | nr
+
+
+def set_feature(fd, data):
+    fcntl.ioctl(fd, _ioc_rw(0x06, len(data)), bytes(data))
+
+
+def get_feature(fd, report_id, size):
+    buf = bytearray(size)
+    buf[0] = report_id
+    fcntl.ioctl(fd, _ioc_rw(0x07, size), buf)
+    return bytes(buf)
+
+
+def find_device():
+    for node in sorted(glob.glob("/sys/class/hidraw/hidraw*")):
+        try:
+            with open(f"{node}/device/uevent") as f:
+                if f"HID_ID={VID_PID}" not in f.read().upper():
+                    continue
+            with open(f"{node}/device/report_descriptor", "rb") as f:
+                if f.read(2) != LAMPARRAY_USAGE_PAGE:
+                    continue
+        except OSError:
+            continue
+        return "/dev/" + os.path.basename(node)
+    return None
+
+
+def normalise(vals):
+    lo, hi = min(vals), max(vals)
+    span = (hi - lo) or 1
+    return [(v - lo) / span for v in vals]
+
+
+def read_layout(fd):
+    # Report 1: LampCount(u16), BBox W/H/D, Kind, MinUpdateInterval (u32 each)
+    r = get_feature(fd, 1, 23)
+    count = struct.unpack_from("<H", r, 1)[0]
+    min_interval_us = struct.unpack_from("<I", r, 19)[0]
+    xs, ys, bindings = [], [], []
+    for lamp in range(count):
+        set_feature(fd, struct.pack("<BH", 2, lamp))
+        # Report 3: LampId(u16), PosX/PosY/PosZ, UpdateLatency, Purposes (u32 each), 5 x u8
+        a = get_feature(fd, 3, 28)
+        x, y = struct.unpack_from("<II", a, 3)
+        xs.append(x)
+        ys.append(y)
+        bindings.append(a[27])  # InputBinding: HID keyboard usage of the key under this lamp
+    return count, min_interval_us, normalise(xs), normalise(ys), bindings
+
+
+# HID keyboard usage -> Linux key code (from the kernel's hid-input table), for the keys on a TKL
+_HID_TO_KEY = dict(zip(range(0x04, 0x66), [
+    30, 48, 46, 32, 18, 33, 34, 35, 23, 36, 37, 38, 50, 49, 24, 25, 16, 19, 31, 20, 22, 47, 17, 45,
+    21, 44, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 28, 1, 14, 15, 57, 12, 13, 26, 27, 43, 43, 39, 40, 41,
+    51, 52, 53, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 87, 88, 99, 70, 119, 110, 102, 104, 111,
+    107, 109, 106, 105, 108, 103, 69, 98, 55, 74, 78, 96, 79, 80, 81, 75, 76, 77, 71, 72, 73, 82, 83,
+    86, 127]))
+_HID_TO_KEY.update(zip(range(0xE0, 0xE8), [29, 42, 56, 125, 97, 54, 100, 126]))
+
+EV_KEY = 1
+INPUT_EVENT = struct.Struct("llHHi")
+
+
+def keycode_to_lamp(bindings):
+    return {_HID_TO_KEY[b]: i for i, b in enumerate(bindings) if b in _HID_TO_KEY}
+
+
+def open_key_devices():
+    """Open this keyboard's evdev nodes read-only. Only the kbdlight account is allowed to."""
+    fds = []
+    for node in sorted(glob.glob("/sys/class/input/event*")):
+        try:
+            with open(f"{node}/device/id/vendor") as f:
+                vendor = f.read().strip()
+            with open(f"{node}/device/id/product") as f:
+                product = f.read().strip()
+            if (vendor, product) != ("373f", "0018"):
+                continue
+            fds.append(os.open("/dev/input/" + os.path.basename(node), os.O_RDONLY | os.O_NONBLOCK))
+        except OSError:
+            continue
+    return fds
+
+
+def read_presses(fds, timeout):
+    """Wait up to `timeout` seconds; return key codes pressed meanwhile (never stored)."""
+    pressed = []
+    if not fds:
+        time.sleep(timeout)
+        return pressed
+    ready, _, _ = select.select(fds, [], [], timeout)
+    for fd in ready:
+        data = os.read(fd, INPUT_EVENT.size * 64)
+        for off in range(0, len(data) - INPUT_EVENT.size + 1, INPUT_EVENT.size):
+            _, _, etype, code, value = INPUT_EVENT.unpack_from(data, off)
+            if etype == EV_KEY and value == 1:
+                pressed.append(code)
+    return pressed
+
+
+def set_autonomous(fd, on):
+    set_feature(fd, bytes([6, 1 if on else 0]))
+
+
+def hsv(h, s=1.0, v=1.0):
+    return colorsys.hsv_to_rgb(h % 1.0, s, max(0.0, min(1.0, v)))
+
+
+def mix(a, b, k):
+    return tuple(x + (y - x) * k for x, y in zip(a, b))
+
+
+class Effects:
+    """Each effect returns a list of (r, g, b) floats in 0..1, one per lamp.
+
+    The menu follows the effects that Razer Synapse and QMK ship as standard.
+    """
+
+    def __init__(self, xs, ys, speed, colour):
+        self.xs, self.ys, self.speed = xs, ys, speed
+        self.colour = colour
+        self.base_hue = colorsys.rgb_to_hsv(*colour)[0]
+        self.n = len(xs)
+        self.glow = [0.0] * self.n
+        self.hue = [0.0] * self.n
+        self.phase = [random.uniform(0, 2 * math.pi) for _ in range(self.n)]
+        self.rate = [random.uniform(0.6, 1.4) for _ in range(self.n)]
+        self.tiles = [hsv(random.random()) for _ in range(self.n)]
+        self.drops = []
+        self.ripples = []
+        self.last = time.monotonic()
+
+    def press(self, lamp, t):
+        """A key over `lamp` was pressed."""
+        self.ripples.append((self.xs[lamp] * 3.0, self.ys[lamp], t, self.xs[lamp]))
+        self.ripples = self.ripples[-12:]
+
+    def _dt(self, t):
+        dt, self.last = max(0.0, min(0.2, t - self.last)), t
+        return dt
+
+    # Static (Razer "Static", QMK SOLID_COLOR)
+    def static(self, t):
+        return [self.colour] * self.n
+
+    # Breathing (Razer "Breathing", QMK BREATHING): fades in and out
+    def breathing(self, t):
+        level = 0.05 + 0.95 * (0.5 - 0.5 * math.cos(2 * math.pi * t / self.speed))
+        return [tuple(c * level for c in self.colour)] * self.n
+
+    # Spectrum cycling (Razer "Spectrum cycling", QMK CYCLE_ALL)
+    def spectrum(self, t):
+        return [hsv(t / (self.speed * 2))] * self.n
+
+    # Wave (Razer "Wave", QMK CYCLE_LEFT_RIGHT)
+    def wave(self, t):
+        p = t / self.speed
+        return [hsv(p - x) for x in self.xs]
+
+    # Spiral (QMK CYCLE_SPIRAL): rainbow rotating around the centre of the board
+    def spiral(self, t):
+        p = t / self.speed
+        out = []
+        for x, y in zip(self.xs, self.ys):
+            dx, dy = (x - 0.5) * 3.0, y - 0.5  # TKL is roughly 3x wider than tall
+            out.append(hsv(math.atan2(dy, dx) / (2 * math.pi) + math.hypot(dx, dy) * 0.3 - p))
+        return out
+
+    # Riverflow (QMK RIVERFLOW): breathing offset across the board, like flowing water
+    def riverflow(self, t):
+        p = 2 * math.pi * t / self.speed
+        return [tuple(c * (0.15 + 0.85 * (0.5 + 0.5 * math.sin(p - x * 2 * math.pi))) for c in self.colour)
+                for x in self.xs]
+
+    # Starlight (Razer "Starlight", QMK STARLIGHT_SMOOTH): random keys fade in and out
+    def starlight(self, t):
+        dt = self._dt(t)
+        out = []
+        for i in range(self.n):
+            if self.glow[i] <= 0 and random.random() < dt * 0.25:
+                self.glow[i] = 1e-6
+                self.hue[i] = self.base_hue + random.uniform(-0.08, 0.08)
+            if self.glow[i] > 0:
+                self.glow[i] += dt / 1.8  # 1.8 s fade in + out
+                if self.glow[i] >= 1:
+                    self.glow[i] = 0.0
+            out.append(hsv(self.hue[i], 1.0, math.sin(math.pi * self.glow[i]) ** 2))
+        return out
+
+    # Raindrops (QMK JELLYBEAN_RAINDROPS): random keys change to a new colour
+    def raindrops(self, t):
+        dt = self._dt(t)
+        for _ in range(int(dt * 6) + (random.random() < (dt * 6) % 1)):
+            self.tiles[random.randrange(self.n)] = hsv(random.random(), random.uniform(0.6, 1.0))
+        return list(self.tiles)
+
+    # Digital rain (QMK DIGITAL_RAIN): Matrix-style green code falling down the keys
+    def digital_rain(self, t):
+        dt = self._dt(t)
+        cols = sorted(set(round(x, 2) for x in self.xs))
+        if random.random() < dt * 5:
+            self.drops.append([random.choice(cols), -0.1, random.uniform(0.7, 1.3)])
+        for d in self.drops:
+            d[1] += d[2] * dt * 0.9
+        self.drops = [d for d in self.drops if d[1] < 1.3]
+        out = []
+        for i, (x, y) in enumerate(zip(self.xs, self.ys)):
+            self.glow[i] *= math.exp(-dt * 3)
+            head = any(abs(x - dx) < 0.04 and abs(y - dy) < 0.1 for dx, dy, _ in self.drops)
+            if head:
+                self.glow[i] = 1.0
+            g = self.glow[i]
+            out.append((0.6, 1.0, 0.6) if head else (0.0, g, g * 0.15))
+        return out
+
+    # Fire (Razer "Fire"): warm colours mimicking the motion of flames
+    FIRE_PALETTE = [(0.0, (0.12, 0.0, 0.0)), (0.35, (1.0, 0.0, 0.0)),
+                    (0.65, (1.0, 0.22, 0.0)), (1.0, (1.0, 0.6, 0.0))]
+
+    def fire(self, t):
+        dt = self._dt(t)
+        out = []
+        for i, (x, y) in enumerate(zip(self.xs, self.ys)):
+            base = 0.38 + 0.4 * y  # red at the top, orange-gold at the bottom
+            roll = 0.15 * math.sin(t * 1.6 * self.rate[i] + self.phase[i])
+            drift = 0.08 * math.sin(x * 4 - t * 0.8)
+            self.glow[i] *= math.exp(-dt * 2)
+            if random.random() < dt * 0.08:
+                self.glow[i] = 1.0
+            h = max(0.0, min(1.0, base + roll + drift + 0.25 * self.glow[i]))
+            for (p0, c0), (p1, c1) in zip(self.FIRE_PALETTE, self.FIRE_PALETTE[1:]):
+                if h <= p1:
+                    out.append(mix(c0, c1, (h - p0) / (p1 - p0)))
+                    break
+        return out
+
+    # Plasma: swirling lava-lamp colours
+    def plasma(self, t):
+        p = t / self.speed * 2 * math.pi
+        out = []
+        for x, y in zip(self.xs, self.ys):
+            v = (math.sin(x * 6 + p) + math.sin(y * 4 - p * 0.7)
+                 + math.sin((x + y) * 5 + p * 1.3) + math.sin(math.hypot(x - 0.5, y - 0.5) * 9 - p))
+            out.append(hsv(v / 8 + p / 20))
+        return out
+
+    # Ripple (Razer "Ripple", QMK MULTISPLASH): rings spread out from each key press
+    def ripple(self, t):
+        self._dt(t)
+        self.ripples = [r for r in self.ripples if t - r[2] < 1.4]
+        out = []
+        for x, y in zip(self.xs, self.ys):
+            r = g = b = 0.0
+            for rx, ry, t0, hue in self.ripples:
+                age = t - t0
+                d = math.hypot(x * 3.0 - rx, y - ry)
+                k = math.exp(-((d - age * 2.6) / 0.22) ** 2) * (1 - age / 1.4)
+                cr, cg, cb = hsv(hue + d * 0.15)
+                r, g, b = r + cr * k, g + cg * k, b + cb * k
+            base = 0.06
+            out.append((min(1, base * self.colour[0] + r), min(1, base * self.colour[1] + g),
+                        min(1, base * self.colour[2] + b)))
+        return out
+
+
+
+MODES = ["static", "breathing", "spectrum", "wave", "spiral", "riverflow",
+         "starlight", "raindrops", "digital_rain", "fire", "plasma",
+         "ripple"]
+
+
+def parse_colour(text):
+    text = text.lstrip("#")
+    return tuple(int(text[i:i + 2], 16) / 255 for i in (0, 2, 4))
+
+
+def send(fd, colours, brightness):
+    count = len(colours)
+    scaled = [tuple(int(max(0, min(1, c)) * brightness * 255) for c in col) for col in colours]
+    # Report 4: LampCount, Flags, 8 x LampId (u16), 8 x RGB
+    for start in range(0, count, 8):
+        ids = list(range(start, min(start + 8, count)))
+        n = len(ids)
+        cols = [scaled[i] for i in ids] + [(0, 0, 0)] * (8 - n)
+        ids += [0] * (8 - n)
+        last = start + 8 >= count
+        payload = struct.pack("<BBB", 4, n, 1 if last else 0) + struct.pack("<8H", *ids)
+        payload += bytes(c for col in cols for c in col)
+        set_feature(fd, payload)
+
+
+def load_state():
+    state = dict(DEFAULT_STATE)
+    try:
+        with open(STATE_FILE) as f:
+            saved = json.load(f)
+        if saved.get("mode") in MODES:
+            state["mode"] = saved["mode"]
+        for key, lo, hi in (("brightness", 0.0, 1.0), ("speed", 0.5, 120.0)):
+            if isinstance(saved.get(key), (int, float)):
+                state[key] = max(lo, min(hi, float(saved[key])))
+        colour = str(saved.get("colour", "")).lstrip("#")
+        if len(colour) == 6 and all(c in "0123456789abcdefABCDEF" for c in colour):
+            state["colour"] = colour
+        if isinstance(saved.get("enabled"), bool):
+            state["enabled"] = saved["enabled"]
+    except (OSError, ValueError, AttributeError):
+        pass
+    return state
+
+
+def save_state(state):
+    os.makedirs(STATE_DIR, exist_ok=True)
+    tmp = STATE_FILE + ".tmp"
+    with open(tmp, "w") as f:
+        json.dump(state, f)
+    os.replace(tmp, STATE_FILE)
+
+
+def state_mtime():
+    try:
+        return os.stat(STATE_FILE).st_mtime_ns
+    except OSError:
+        return None
+
+
+def notify(text):
+    try:
+        subprocess.Popen(["notify-send", "-t", "1500", "-h", "string:x-canonical-private-synchronous:kbd-rainbow",
+                          "Keyboard lighting", text], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except OSError:
+        pass
+
+
+def control(action):
+    state = load_state()
+    cycle = MODES
+    if action in ("next", "prev"):
+        i = cycle.index(state["mode"]) if state["mode"] in cycle else 0
+        state["mode"] = cycle[(i + (1 if action == "next" else -1)) % len(cycle)]
+        state["enabled"] = True
+        msg = state["mode"]
+    elif action in ("brighter", "dimmer"):
+        step = 0.05 if action == "brighter" else -0.05
+        state["brightness"] = round(max(0.05, min(1.0, state["brightness"] + step)), 2)
+        msg = f"brightness {int(state['brightness'] * 100)}%"
+    else:  # toggle
+        state["enabled"] = not state["enabled"]
+        msg = state["mode"] if state["enabled"] else "keyboard built-in lighting"
+    save_state(state)
+    notify(msg)
+
+
+def run(args):
+    os.makedirs(STATE_DIR, exist_ok=True)
+    lock = open(os.path.join(STATE_DIR, "lock"), "w")
+    state = load_state()
+    for key in ("mode", "brightness", "speed", "colour"):
+        if getattr(args, key) is not None:
+            state[key] = getattr(args, key)
+            state["enabled"] = True
+    save_state(state)
+
+    try:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        # Already running in the background (e.g. started by sway): it picks up the saved options.
+        print(f"Updated the running kbd-rainbow: mode={state['mode']} brightness={state['brightness']}",
+              file=sys.stderr)
+        return
+
+    stopping = False
+
+    def stop(*_):
+        nonlocal stopping
+        stopping = True
+
+    signal.signal(signal.SIGINT, stop)
+    signal.signal(signal.SIGTERM, stop)
+
+    while not stopping:
+        path = find_device()
+        if not path:
+            time.sleep(2)
+            continue
+        fd = None
+        try:
+            fd = os.open(path, os.O_RDWR)
+            count, min_us, xs, ys, bindings = read_layout(fd)
+            key_lamp = keycode_to_lamp(bindings)
+            key_fds = open_key_devices()
+            print(f"{path}: {count} lamps, {len(key_lamp)} mapped to keys, "
+                  f"{len(key_fds)} key input devices", file=sys.stderr)
+            interval = max(min_us / 1e6, 1 / args.fps)
+            seen, fx, autonomous, shown = None, None, None, None
+            while not stopping:
+                if state_mtime() != seen:
+                    seen, state = state_mtime(), load_state()
+                    fx = Effects(xs, ys, state["speed"], parse_colour(state["colour"]))
+                if state["enabled"] == autonomous or autonomous is None:
+                    autonomous = not state["enabled"]
+                    set_autonomous(fd, autonomous)
+                if autonomous:
+                    read_presses(key_fds, 0.25)
+                    continue
+                t = time.monotonic()
+                mode = state["mode"] if state["mode"] in MODES else DEFAULT_STATE["mode"]
+                if mode != shown:
+                    print(f"mode: {mode}", file=sys.stderr)
+                    shown = mode
+                send(fd, getattr(fx, mode)(t), state["brightness"])
+                for code in read_presses(key_fds, interval):
+                    if code in key_lamp:
+                        fx.press(key_lamp[code], time.monotonic())
+        except OSError as e:
+            print(f"{path}: {e}; retrying", file=sys.stderr)
+            time.sleep(2)
+        finally:
+            for kfd in locals().get("key_fds", []):
+                os.close(kfd)
+            key_fds = []
+            if fd is not None:
+                try:
+                    set_autonomous(fd, True)
+                except OSError:
+                    pass
+                os.close(fd)
+
+
+def main():
+    os.umask(0o002)
+    if len(sys.argv) == 2 and sys.argv[1] in ("next", "prev", "brighter", "dimmer", "toggle"):
+        control(sys.argv[1])
+        return
+    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p.add_argument("--mode", choices=MODES)
+    p.add_argument("--colour", "--color", dest="colour", help="hex colour for static/breathing/riverflow/starlight, e.g. ff5a00")
+    p.add_argument("--speed", type=float, help="seconds per effect cycle (higher = slower)")
+    p.add_argument("--brightness", type=float, help="0-1")
+    p.add_argument("--fps", type=float, default=30.0)
+    run(p.parse_args())
+
+
+if __name__ == "__main__":
+    main()
