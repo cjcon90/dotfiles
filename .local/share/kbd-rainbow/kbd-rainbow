@@ -17,7 +17,9 @@ Modes (the standard Razer Synapse / QMK set, plus plasma):
   digital_rain  Matrix-style green code falling down the keys
   fire          warm flame colours, red to gold
   plasma        swirling lava-lamp colours
+  reactive      keys light up when pressed, then fade (typing)
   ripple        rings spread out from each key you press (typing)
+  heatmap       keys you use most glow hotter, blue to red (typing)
 
 Usage:
   kbd-rainbow [--mode MODE] [--colour RRGGBB] [--speed SECONDS] [--brightness 0-1]   run (saved)
@@ -102,25 +104,33 @@ def read_layout(fd):
         x, y = struct.unpack_from("<II", a, 3)
         xs.append(x)
         ys.append(y)
-        bindings.append(a[27])  # InputBinding: HID keyboard usage of the key under this lamp
+        bindings.append(a[27])  # InputBinding: which key is under this lamp
     return count, min_interval_us, normalise(xs), normalise(ys), bindings
 
 
-# HID keyboard usage -> Linux key code (from the kernel's hid-input table), for the keys on a TKL
-_HID_TO_KEY = dict(zip(range(0x04, 0x66), [
-    30, 48, 46, 32, 18, 33, 34, 35, 23, 36, 37, 38, 50, 49, 24, 25, 16, 19, 31, 20, 22, 47, 17, 45,
-    21, 44, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 28, 1, 14, 15, 57, 12, 13, 26, 27, 43, 43, 39, 40, 41,
-    51, 52, 53, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 87, 88, 99, 70, 119, 110, 102, 104, 111,
-    107, 109, 106, 105, 108, 103, 69, 98, 55, 74, 78, 96, 79, 80, 81, 75, 76, 77, 71, 72, 73, 82, 83,
-    86, 127]))
-_HID_TO_KEY.update(zip(range(0xE0, 0xE8), [29, 42, 56, 125, 97, 54, 100, 126]))
+# Linux key code -> this keyboard's per-lamp key label (read from its LampArray, UK ISO layout)
+_KEY_TO_LABEL = {
+    41: 0x01, **{k: k for k in range(2, 28)}, 28: 0x1C,  # ` 1-0 - = Backspace Tab Q-P [ ] Enter
+    58: 0x1D, **{k: k for k in range(30, 41)}, 43: 0x29,  # Caps A-L ; ' #
+    42: 0x2A, 86: 0x2B, **{k: k for k in range(44, 54)},  # LShift \ Z-/
+    29: 0x36, 125: 0x67, 56: 0x38, 57: 0x39, 100: 0x3A, 126: 0x68, 127: 0x37, 97: 0x3B,
+    110: 0x3C, 111: 0x3D, 105: 0x3E, 102: 0x3F, 107: 0x40, 103: 0x41, 108: 0x42, 104: 0x43,
+    109: 0x44, 106: 0x45,  # Ins Del Left Home End Up Down PgUp PgDn Right
+    1: 0x57, **{k: k + 29 for k in range(59, 69)}, 87: 0x62, 88: 0x63,  # Esc F1-F12
+    99: 0x76, 70: 0x78, 119: 0x77,  # PrtSc ScrLk Pause
+}
+
+# Keys kept dimly lit under ripple and reactive: number row, Esc, F-keys and the navigation cluster
+LEGEND_LABELS = {*range(0x01, 0x0F), *range(0x57, 0x64), 0x76, 0x77, 0x78, 0x3C, 0x3D, 0x3F, 0x40, 0x43, 0x44}
+LEGEND_GLOW = (0.06, 0.05, 0.04)
 
 EV_KEY = 1
 INPUT_EVENT = struct.Struct("llHHi")
 
 
 def keycode_to_lamp(bindings):
-    return {_HID_TO_KEY[b]: i for i, b in enumerate(bindings) if b in _HID_TO_KEY}
+    lamp = {b: i for i, b in enumerate(bindings)}
+    return {code: lamp[label] for code, label in _KEY_TO_LABEL.items() if label in lamp}
 
 
 def open_key_devices():
@@ -174,7 +184,7 @@ class Effects:
     The menu follows the effects that Razer Synapse and QMK ship as standard.
     """
 
-    def __init__(self, xs, ys, speed, colour):
+    def __init__(self, xs, ys, speed, colour, legend):
         self.xs, self.ys, self.speed = xs, ys, speed
         self.colour = colour
         self.base_hue = colorsys.rgb_to_hsv(*colour)[0]
@@ -186,10 +196,18 @@ class Effects:
         self.tiles = [hsv(random.random()) for _ in range(self.n)]
         self.drops = []
         self.ripples = []
+        self.heat = [0.0] * self.n
+        self.legend = legend
         self.last = time.monotonic()
 
     def press(self, lamp, t):
         """A key over `lamp` was pressed."""
+        self.glow[lamp] = 1.0
+        px, py = self.xs[lamp] * 3.0, self.ys[lamp]
+        for i, (x, y) in enumerate(zip(self.xs, self.ys)):
+            d = math.hypot(x * 3.0 - px, y - py)
+            if d < 0.45:
+                self.heat[i] = min(1.0, self.heat[i] + (0.3 if i == lamp else 0.08 * (1 - d / 0.45)))
         self.ripples.append((self.xs[lamp] * 3.0, self.ys[lamp], t, self.xs[lamp]))
         self.ripples = self.ripples[-12:]
 
@@ -302,12 +320,21 @@ class Effects:
             out.append(hsv(v / 8 + p / 20))
         return out
 
+    # Reactive (Razer "Reactive", QMK SOLID_REACTIVE_SIMPLE): pressed keys light up, then fade
+    def reactive(self, t):
+        dt = self._dt(t)
+        out = []
+        for i in range(self.n):
+            self.glow[i] *= math.exp(-dt * 1.2)
+            out.append(mix(LEGEND_GLOW if i in self.legend else (0, 0, 0), self.colour, self.glow[i]))
+        return out
+
     # Ripple (Razer "Ripple", QMK MULTISPLASH): rings spread out from each key press
     def ripple(self, t):
         self._dt(t)
         self.ripples = [r for r in self.ripples if t - r[2] < 1.4]
         out = []
-        for x, y in zip(self.xs, self.ys):
+        for i, (x, y) in enumerate(zip(self.xs, self.ys)):
             r = g = b = 0.0
             for rx, ry, t0, hue in self.ripples:
                 age = t - t0
@@ -315,16 +342,25 @@ class Effects:
                 k = math.exp(-((d - age * 2.6) / 0.22) ** 2) * (1 - age / 1.4)
                 cr, cg, cb = hsv(hue + d * 0.15)
                 r, g, b = r + cr * k, g + cg * k, b + cb * k
-            base = 0.06
-            out.append((min(1, base * self.colour[0] + r), min(1, base * self.colour[1] + g),
-                        min(1, base * self.colour[2] + b)))
+            br, bg, bb = LEGEND_GLOW if i in self.legend else (0, 0, 0)
+            out.append((min(1, br + r), min(1, bg + g), min(1, bb + b)))
         return out
 
+
+    # Typing heatmap (QMK TYPING_HEATMAP): keys you use most glow hotter, cooling over time
+    def heatmap(self, t):
+        dt = self._dt(t)
+        out = []
+        for i in range(self.n):
+            self.heat[i] = max(0.0, self.heat[i] - dt * 0.06)
+            h = self.heat[i]
+            out.append(hsv(0.66 * (1 - h), 1.0, 0.18 + 0.82 * min(1.0, h * 1.5)))
+        return out
 
 
 MODES = ["static", "breathing", "spectrum", "wave", "spiral", "riverflow",
          "starlight", "raindrops", "digital_rain", "fire", "plasma",
-         "ripple"]
+         "reactive", "ripple", "heatmap"]
 
 
 def parse_colour(text):
@@ -446,6 +482,7 @@ def run(args):
             fd = os.open(path, os.O_RDWR)
             count, min_us, xs, ys, bindings = read_layout(fd)
             key_lamp = keycode_to_lamp(bindings)
+            legend = {i for i, b in enumerate(bindings) if b in LEGEND_LABELS}
             key_fds = open_key_devices()
             print(f"{path}: {count} lamps, {len(key_lamp)} mapped to keys, "
                   f"{len(key_fds)} key input devices", file=sys.stderr)
@@ -454,7 +491,7 @@ def run(args):
             while not stopping:
                 if state_mtime() != seen:
                     seen, state = state_mtime(), load_state()
-                    fx = Effects(xs, ys, state["speed"], parse_colour(state["colour"]))
+                    fx = Effects(xs, ys, state["speed"], parse_colour(state["colour"]), legend)
                 if state["enabled"] == autonomous or autonomous is None:
                     autonomous = not state["enabled"]
                     set_autonomous(fd, autonomous)

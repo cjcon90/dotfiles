@@ -22,6 +22,8 @@ exec gsettings set org.gnome.desktop.interface icon-theme "Dracula"
 ### Input
 input * {
   xkb_layout gb,us
+  repeat_delay 250
+  repeat_rate 40
   xkb_options grp:shifts_toggle
 }
 
