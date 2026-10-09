@@ -1,5 +1,3 @@
-local is_meta = require("config.meta").is_meta
-
 -- Only highlight when searching
 vim.api.nvim_create_autocmd("CmdlineEnter", {
   callback = function()
@@ -55,13 +53,3 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set("n", "<Leader>x", "<cmd>terminal ./a.out<cr>", { silent = true, buffer = true })
   end,
 })
-
-
--- Meta-only: Disable GetCodehubLink command (keep only GetCodehubLinkYank)
-if is_meta then
-  vim.api.nvim_create_autocmd("VimEnter", {
-    callback = function()
-      pcall(vim.api.nvim_del_user_command, "GetCodehubLink")
-    end,
-  })
-end

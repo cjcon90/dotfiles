@@ -31,7 +31,6 @@ local options = {
   wrap = false,
   scrolloff = 8,
   sidescrolloff = 8,
-  smoothscroll = true,
   guifont = "monospace:h17",
 }
 

@@ -25,6 +25,19 @@ def write_output(text, player):
     sys.stdout.flush()
 
 
+def clear_output():
+    logger.info("Clearing output")
+    sys.stdout.write("\n")
+    sys.stdout.flush()
+
+
+def get_first_playing(manager):
+    for player in manager.props.players:
+        if player.props.status == "Playing":
+            return player
+    return None
+
+
 def on_play(player, status, manager):
     logger.info("Received new playback status")
     on_metadata(player, player.props.metadata, manager)
@@ -32,6 +45,16 @@ def on_play(player, status, manager):
 
 def on_metadata(player, metadata, manager):
     logger.info("Received new metadata")
+
+    active = get_first_playing(manager)
+    if active is not None and active != player:
+        logger.debug(
+            "Ignoring metadata from {}, {} is playing".format(
+                player.props.player_name, active.props.player_name
+            )
+        )
+        return
+
     track_info = ""
 
     if (
@@ -40,14 +63,20 @@ def on_metadata(player, metadata, manager):
         and ":ad:" in player.props.metadata["mpris:trackid"]
     ):
         track_info = "AD PLAYING"
-    elif player.get_artist() != "" and player.get_title() != "":
+    elif player.get_artist() and player.get_title():
         track_info = "{artist} - {title}".format(
             artist=player.get_artist(), title=player.get_title()
         )
-    else:
+    elif player.get_title():
         track_info = player.get_title()
 
-    if player.props.status != "Playing" and track_info:
+    if not track_info or player.props.status == "Stopped":
+        # Player is still on the bus but has nothing to show (tab closed,
+        # playback stopped). Blank the module instead of leaving stale text.
+        clear_output()
+        return
+
+    if player.props.status != "Playing":
         track_info = " " + track_info
     write_output(track_info, player)
 
@@ -63,8 +92,11 @@ def on_player_appeared(manager, player, selected_player=None):
 
 def on_player_vanished(manager, player):
     logger.info("Player has vanished")
-    sys.stdout.write("\n")
-    sys.stdout.flush()
+    clear_output()
+    # Another player may still be around; re-render it if so.
+    active = get_first_playing(manager)
+    if active is not None:
+        on_metadata(active, active.props.metadata, manager)
 
 
 def init_player(manager, name):

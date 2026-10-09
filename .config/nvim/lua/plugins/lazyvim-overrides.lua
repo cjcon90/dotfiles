@@ -95,19 +95,25 @@ return {
   },
 
   -- ── LSP (we use <leader>l*, not <leader>c*) ────────────────────
+  -- LazyVim sets LSP keymaps via servers["*"].keys (extended, not plugin keys)
   {
     "neovim/nvim-lspconfig",
-    keys = {
-      { "<leader>ca", false },
-      { "<leader>cc", false },
-      { "<leader>cC", false },
-      { "<leader>cR", false },
-      { "<leader>cr", false },
-      { "<leader>cA", false },
-      { "<leader>co", false },
-      { "<leader>cl", false },
-      { "<leader>ss", false },
-      { "<leader>sS", false },
+    opts = {
+      servers = {
+        ["*"] = {
+          keys = {
+            { "<leader>ca", false, mode = { "n", "x" } },
+            { "<leader>cc", false, mode = { "n", "x" } },
+            { "<leader>cC", false },
+            { "<leader>cR", false },
+            { "<leader>cr", false },
+            { "<leader>cA", false },
+            { "<leader>cl", false },
+            { "<leader>ss", false },
+            { "<leader>sS", false },
+          },
+        },
+      },
     },
   },
   { "mason-org/mason.nvim", keys = { { "<leader>cm", false } } },
@@ -129,9 +135,6 @@ return {
   { "mfussenegger/nvim-dap", enabled = false },
   { "rcarriga/nvim-dap-ui", enabled = false },
   { "theHamsta/nvim-dap-virtual-text", enabled = false },
-
-  -- ── Venv Selector (requires fd, not available on Meta) ───────────
-  { "linux-cultist/venv-selector.nvim", enabled = not require("config.meta").is_meta },
 
   -- ── Noice ───────────────────────────────────────────────────────
   {

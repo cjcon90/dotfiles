@@ -1,0 +1,6 @@
+\.git
+\.gitignore
+^/CLAUDE\.md
+^/README.*
+^/LICENSE
+\.stow-local-ignore

@@ -1,5 +1,3 @@
-local is_meta = require("config.meta").is_meta
-
 return {
   {
     "folke/which-key.nvim",
@@ -18,6 +16,7 @@ return {
           {
             "<leader>y",
             function()
+              -- Save unnamed register, yank to clipboard, then restore it
               local save = vim.fn.getreg('"')
               local save_type = vim.fn.getregtype('"')
               vim.cmd('normal! "zy')
@@ -54,7 +53,7 @@ return {
 
           -- LSP group
           { "<leader>l",  group = "LSP" },
-          { "<leader>la", function() require("config.lsp").code_action() end,   desc = "Code Action" },
+          { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>",             desc = "Code Action" },
           { "<leader>ld", "<cmd>Telescope diagnostics bufnr=0<cr>",             desc = "Document Diagnostics" },
           { "<leader>lw", "<cmd>Telescope diagnostics<cr>",                     desc = "Workspace Diagnostics" },
           {
@@ -82,16 +81,6 @@ return {
           { "<leader>tR", "<cmd>Trouble lsp_references toggle<cr>",           desc = "Trouble LSP References" },
         },
       })
-
-      -- ── Meta-specific overrides ─────────────────────────────────
-      -- ── Meta-specific overrides ─────────────────────────────────
-      if is_meta then
-        wk.add({
-          { "<leader>f",  "<cmd>Bgf<cr>",           desc = "Find files (Biggrep)" },
-          { "<leader>r",  "<cmd>Bgs<cr>",           desc = "Find Text (Biggrep)" },
-          { "<leader>lf", "<cmd>silent !arc f<cr>",  desc = "Format (arc)", mode = { "n", "x" } },
-        })
-      end
     end,
   },
 }

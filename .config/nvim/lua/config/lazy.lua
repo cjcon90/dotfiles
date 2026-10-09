@@ -14,20 +14,13 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local is_meta = require("config.meta").is_meta
-
 local spec = {
   { "LazyVim/LazyVim", import = "lazyvim.plugins", opts = { defaults = { keymaps = false } } },
 }
 
--- Meta-specific plugin specs (must come after lazyvim.plugins, before extras and user plugins)
-if is_meta then
-  table.insert(spec, {
-    dir = "/usr/share/fb-editor-support/nvim",
-    name = "meta.nvim",
-    import = "meta.lazyvim",
-  })
-  table.insert(spec, { import = "lazyvim.plugins.extras.lsp.none-ls" })
+-- Optional work overlay plugin specs (must come after lazyvim.plugins, before extras and user plugins)
+if (vim.uv or vim.loop).fs_stat(vim.fn.stdpath("config") .. "/lua/work/init.lua") then
+  table.insert(spec, { import = "work.plugins" })
 end
 
 -- User plugins last

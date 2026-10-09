@@ -3,7 +3,7 @@
   "height": 38,
   "modules-left": [
     "sway/workspaces",
-    "custom/spotify"
+    "custom/media"
   ],
   "modules-center": [
     "clock"
@@ -107,7 +107,7 @@
     "scroll-step": 1
   },
   "custom/vpn": {
-    "exec": "nmcli con show --active 2>/dev/null | grep -oP '(FB-VPN|proton[^ ]*)' | head -1 | xargs -I{} echo ' {} ' || echo ''",
+    "exec": "nmcli con show --active 2>/dev/null | grep -oP 'proton[^ ]*' | head -1 | xargs -I{} echo ' {} ' || echo ''",
     "interval": 5
   },
   "network": {
@@ -119,16 +119,15 @@
     "on-click": "~/.config/sway/wifi-menu.sh",
     "on-click-right": "/usr/bin/nm-connection-editor"
   },
-  "custom/spotify": {
-    "exec": "python $HOME/.config/waybar/scripts/mediaplayer.py --player spotify",
-    "exec-if": "pgrep spotify",
-    "format": " {}",
+  "custom/media": {
+    "exec": "python $HOME/.config/waybar/scripts/mediaplayer.py",
+    "format": "󰝚 {}",
     "escape": true,
     "max-length": 45,
     "return-type": "json",
-    "on-click": "playerctl -p spotify play-pause",
-    "on-scroll-up": "playerctl -p spotify next",
-    "on-scroll-down": "playerctl -p spotify previous"
+    "on-click": "playerctl play-pause",
+    "on-scroll-up": "playerctl next",
+    "on-scroll-down": "playerctl previous"
   },
   "temperature": {
     "thermal-zone": 1,

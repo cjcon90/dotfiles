@@ -6,7 +6,6 @@ set $up k
 set $right l
 set $term alacritty
 set $menu "rofi -modi drun,run -show drun"
-set $metamenu ~/bin/fmenu-rofi
 set $lock_cmd $HOME/.config/sway/swaylock-blur.sh
 
 ### Autostart
@@ -42,8 +41,8 @@ input type:touchpad {
 focus_follows_mouse yes
 
 ### Output
-output DP-3 resolution 3440x1440 position 0 0
-output eDP-1 resolution 1920x1080 position 760 1440
+# Per-desk layouts live in apply-display-profile.sh, matched on monitor serial.
+exec_always /usr/bin/bash ~/.config/sway/apply-display-profile.sh
 output * bg ~/.config/sway/dracula-kraken.png fill
 
 ### Appearance
@@ -79,8 +78,8 @@ client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
 client.background       #F8F8F2
 
 ### Screenshot
-bindsym Print exec ~/.config/sway/screenshot.sh
-bindsym Shift+Print exec ~/.config/sway/screenshot_select.sh
+bindsym Print exec ~/.local/bin/screenshot.sh
+bindsym Shift+Print exec ~/.local/bin/screenshot_select.sh
 
 ### Key bindings
 
@@ -100,7 +99,6 @@ bindsym $mod+p exec cliphist list | rofi -dmenu | cliphist decode | wl-copy
 
 # Launcher
 bindsym $mod+d exec $menu
-bindsym $mod+m exec $metamenu
 
 # Lock the screen
 bindsym $mod+Ctrl+l exec $lock_cmd
@@ -221,4 +219,6 @@ bar {
 }
 
 include ~/.config/sway/bequiet-light-mount.conf
+# Per-machine bits (untracked; a missing file is silently skipped)
+include ~/.config/sway/local.conf
 include /etc/sway/config.d/*

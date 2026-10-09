@@ -1,5 +1,4 @@
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
+# .bashrc
 
 # Source global definitions
 if [ -f /etc/bash.bashrc ]; then
@@ -8,17 +7,18 @@ elif [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
-# Base PATH — set explicitly rather than trusting the inherited environment.
-# Non-login shells (e.g. `pct enter` into an LXC container) can inherit a
-# PATH missing /usr/local/bin etc; .bashrc.d/01-path.sh layers user paths
-# ($HOME/.local/bin, $HOME/bin, $GOPATH/bin) on top of this safe baseline.
-PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-export PATH
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
 
 # All env, aliases, functions, and tool init live in ~/.bashrc.d/
+#   01-path.sh   PATH + toolchain env (always sourced, incl. non-interactive)
+#   devtools.sh  interactive-only: options, history, aliases, prompt, tool init
 if [ -d ~/.bashrc.d ]; then
-    for rc in ~/.bashrc.d/*; do
+    for rc in ~/.bashrc.d/*.sh; do
         [ -f "$rc" ] && . "$rc"
     done
     unset rc
 fi
+
+# Per-machine overrides (untracked)
+[ -f ~/.bashrc.local ] && . ~/.bashrc.local

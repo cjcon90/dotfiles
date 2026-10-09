@@ -7,3 +7,9 @@ foo.*
 *.log
 data
 lazy-lock.json
+
+# Machine-local nvim overrides (loaded by init.lua if present)
+lua/config/local.lua
+
+# Optional work overlay (loaded by init.lua and config/lazy.lua if present)
+lua/work/
