@@ -53,6 +53,7 @@ for_window [window_role="dialog"] floating enable
 for_window [app_id="pavucontrol"] floating enable
 for_window [app_id="nm-connection-editor"] floating enable
 for_window [app_id="blueman-manager"] floating enable
+for_window [app_id="barrel-roll"] floating enable, border none, resize set 75 ppt 30 ppt, move position center
 
 # Prevent idle while fullscreen (e.g. videos)
 for_window [app_id=".*"] inhibit_idle fullscreen
@@ -78,6 +79,17 @@ exec gammastep -l geoclue2
 ### Screenshot
 bindsym Print exec ~/.config/sway/screenshot.sh
 bindsym Shift+Print exec ~/.config/sway/screenshot_select.sh
+# be quiet! keyboard has no Print key: M1 (sends Play/Pause) screenshots, M2 (sends Next) screen-records, M3 (sends Prev) does a barrel roll
+bindsym --input-device=14143:24:be_quiet_be_quiet!_Light_Mount_TKL_Keyboard XF86AudioPlay exec ~/.config/sway/screenshot.sh
+bindsym --input-device=14143:24:be_quiet_be_quiet!_Light_Mount_TKL_Keyboard Shift+XF86AudioPlay exec ~/.config/sway/screenshot_select.sh
+bindsym --input-device=14143:24:be_quiet_be_quiet!_Light_Mount_TKL XF86AudioPlay exec ~/.config/sway/screenshot.sh
+bindsym --input-device=14143:24:be_quiet_be_quiet!_Light_Mount_TKL Shift+XF86AudioPlay exec ~/.config/sway/screenshot_select.sh
+bindsym --input-device=14143:24:be_quiet_be_quiet!_Light_Mount_TKL_Keyboard XF86AudioNext exec ~/.local/bin/screenrecord.sh
+bindsym --input-device=14143:24:be_quiet_be_quiet!_Light_Mount_TKL_Keyboard Shift+XF86AudioNext exec ~/.local/bin/screenrecord.sh select
+bindsym --input-device=14143:24:be_quiet_be_quiet!_Light_Mount_TKL XF86AudioNext exec ~/.local/bin/screenrecord.sh
+bindsym --input-device=14143:24:be_quiet_be_quiet!_Light_Mount_TKL Shift+XF86AudioNext exec ~/.local/bin/screenrecord.sh select
+bindsym --input-device=14143:24:be_quiet_be_quiet!_Light_Mount_TKL_Keyboard XF86AudioPrev exec ~/.local/bin/barrel-roll.sh
+bindsym --input-device=14143:24:be_quiet_be_quiet!_Light_Mount_TKL XF86AudioPrev exec ~/.local/bin/barrel-roll.sh
 
 ### Key bindings
 
