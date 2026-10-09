@@ -30,6 +30,10 @@ input * {
   xkb_options grp:shifts_toggle
 }
 
+# Switch keyboard layout: Alt+Shift+U = US, Alt+Shift+G = GB
+bindsym $mod+Shift+u input * xkb_switch_layout 1
+bindsym $mod+Shift+g input * xkb_switch_layout 0
+
 input type:touchpad {
   tap enabled
   dwt enabled
