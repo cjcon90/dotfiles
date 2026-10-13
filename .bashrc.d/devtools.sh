@@ -81,7 +81,3 @@ command -v zoxide &>/dev/null && eval "$(zoxide init bash)"
 
 # ── Starship prompt ───────────────────────────────────────────────────────────
 command -v starship &>/dev/null && eval "$(starship init bash)"
-
-# ── Atuin (better shell history; after fzf so it owns Ctrl+R) ─────────────────
-# install: curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
-command -v atuin &>/dev/null && eval "$(atuin init bash)"

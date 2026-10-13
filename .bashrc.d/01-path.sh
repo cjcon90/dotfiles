@@ -15,9 +15,8 @@ done
 unset _p
 export PATH
 
-# Rust / Atuin (installer-provided env scripts; idempotent)
+# Rust (installer-provided env script; idempotent)
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
-[ -f "$HOME/.atuin/bin/env" ] && . "$HOME/.atuin/bin/env"
 
 # ── Environment ───────────────────────────────────────────────────────────────
 export EDITOR="nvim"
