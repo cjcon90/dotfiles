@@ -10,7 +10,7 @@
   ],
   "modules-right": [
     "idle_inhibitor",
-    "backlight",
+    "custom/brightness",
     "pulseaudio",
     "temperature",
     "network",
@@ -61,8 +61,12 @@
     "tooltip-format-activated": "Idle inhibitor: on",
     "tooltip-format-deactivated": "Idle inhibitor: off"
   },
-  "backlight": {
-    "format": " {icon} {percent}% ",
+  "custom/brightness": {
+    "exec": "~/.config/waybar/scripts/brightness.sh get",
+    "return-type": "json",
+    "interval": 60,
+    "signal": 8,
+    "format": " {icon} {percentage}% ",
     "format-icons": [
       "", 
       "", 
@@ -74,8 +78,8 @@
       "", 
       ""
     ],
-    "on-scroll-up": "brightnessctl set +1%",
-    "on-scroll-down": "brightnessctl set 1%-"
+    "on-scroll-up": "~/.config/waybar/scripts/brightness.sh up",
+    "on-scroll-down": "~/.config/waybar/scripts/brightness.sh down"
   },
   "battery": {
     "bat": "BAT0",

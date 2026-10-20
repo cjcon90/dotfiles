@@ -29,7 +29,7 @@ window#waybar {
 #workspaces,
 #pulseaudio,
 #clock,
-#backlight,
+#custom-brightness,
 #battery,
 #network,
 #temperature,
@@ -75,7 +75,7 @@ window#waybar {
   padding: 10px 10px 10px 20px;
 }
 
-#backlight {
+#custom-brightness {
   color: @Orange;
 }
 
