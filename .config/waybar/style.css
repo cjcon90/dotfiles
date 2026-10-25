@@ -36,7 +36,6 @@ window#waybar {
 #tray,
 #bluetooth,
 #idle_inhibitor,
-#language,
 #custom-vpn {
   color: @Comment;
   border-color: @Comment;
@@ -149,8 +148,4 @@ window#waybar {
 
 #bluetooth.connected {
   color: @Cyan;
-}
-
-#language {
-  color: @Orange;
 }
