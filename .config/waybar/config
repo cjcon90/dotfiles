@@ -41,8 +41,7 @@
   },
   "clock": {
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
-    "format": "{:%H:%M}  ",
-    "format-alt": "{:%H:%M %a %d/%m/%y} 󰃰 ",
+    "format": "{:%a %d %b  %H:%M} 󰃰 ",
     "calendar": {
       "mode": "month",
       "mode-mon-col": 3,
@@ -55,6 +54,7 @@
         "weeks": "<span color='#6272a4'>W{}</span>"
       }
     },
+    "on-click": "brave --app=https://calendar.proton.me",
     "actions": {
       "on-click-right": "mode",
       "on-scroll-up": "shift_up",
