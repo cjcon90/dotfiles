@@ -19,8 +19,8 @@ emit() { printf '{"text": "%s", "percentage": %s, "tooltip": "%s: %s%%"}\n' "$1"
 
 if [[ $out == eDP-* ]]; then
     case $action in
-        up)   brightnessctl -q set "$LAPTOP_STEP%+"; refresh_bars ;;
-        down) brightnessctl -q set "$LAPTOP_STEP%-"; refresh_bars ;;
+        up)   swayosd-client --brightness "+$LAPTOP_STEP"; refresh_bars ;;
+        down) swayosd-client --brightness "-$LAPTOP_STEP"; refresh_bars ;;
         *)    emit "$(brightnessctl -m | cut -d, -f4 | tr -d %)" ;;
     esac
     exit 0
@@ -72,6 +72,8 @@ case $action in
         echo "$new" > "$cache"
         flock -u 8
         refresh_bars
+        swayosd-client --monitor "$out" --custom-icon display-brightness-symbolic \
+            --custom-progress "$(awk -v n="$new" 'BEGIN { printf "%.2f", n / 100 }')" &
 
         # Single writer applies only the latest level, so fast scrolls don't queue up.
         exec 9>"$cache.write"
