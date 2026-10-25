@@ -10,7 +10,7 @@ set $lock_cmd swaylock -f
 
 ### Autostart
 exec blueman-applet
-exec /usr/bin/mako
+exec swaync
 exec nm-applet
 exec wl-paste --watch cliphist store
 exec gammastep -l geoclue2
@@ -104,8 +104,8 @@ bindsym $mod+y exec $term -e yazi
 bindsym $mod+Shift+q kill
 
 # Notification dismiss/restore
-bindsym $mod+n exec makoctl dismiss
-bindsym $mod+Shift+n exec makoctl restore
+bindsym $mod+n exec swaync-client -t -sw
+bindsym $mod+Shift+n exec swaync-client -d -sw
 
 # Clipboard history
 bindsym $mod+p exec cliphist list | rofi -dmenu | cliphist decode | wl-copy

@@ -1,0 +1,56 @@
+* {
+  font-family: "Blex Mono Nerd Font";
+  font-size: 14px;
+}
+
+.notification-row,
+.notification-background {
+  background: transparent;
+  outline: none;
+}
+
+.notification {
+  background: rgba(40, 42, 54, 0.85);
+  color: #f8f8f2;
+  border: 2px solid #ff79c6;
+  border-radius: 12px;
+  margin: 6px 10px;
+  padding: 6px;
+}
+
+.notification.low { border-color: #6272a4; }
+.notification.normal { border-color: #ff79c6; }
+.notification.critical { border-color: #ff5555; }
+
+.summary { color: #ff79c6; font-weight: bold; }
+.body { color: #f8f8f2; }
+.time { color: #6272a4; }
+
+.close-button {
+  background: #44475a;
+  color: #f8f8f2;
+  border-radius: 999px;
+}
+
+.control-center {
+  background: rgba(40, 42, 54, 0.85);
+  border: 2px solid #6272a4;
+  border-radius: 14px;
+  color: #f8f8f2;
+}
+
+.control-center .notification {
+  background: #21222c;
+}
+
+.widget-title { color: #bd93f9; font-weight: bold; margin: 8px; }
+.widget-title > button {
+  background: #44475a;
+  color: #f8f8f2;
+  border-radius: 8px;
+}
+
+.widget-dnd { color: #bd93f9; margin: 8px; }
+.widget-dnd > switch { background: #44475a; border-radius: 999px; }
+.widget-dnd > switch:checked { background: #ff79c6; }
+.widget-dnd > switch slider { background: #f8f8f2; border-radius: 999px; }

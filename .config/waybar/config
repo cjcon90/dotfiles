@@ -15,7 +15,8 @@
     "network",
     "custom/vpn",
     "battery",
-    "bluetooth"
+    "bluetooth",
+    "custom/notification"
   ],
   "margin-top": 0,
   "margin-left": 15,
@@ -158,5 +159,23 @@
     "tooltip-format": "{status}",
     "tooltip-format-connected": "{device_alias}",
     "on-click": "/usr/bin/blueman-manager"
+  },
+  "custom/notification": {
+    "exec": "swaync-client -swb",
+    "return-type": "json",
+    "format": " {icon} ",
+    "format-icons": {
+      "none": "󰂚",
+      "notification": "󱅫",
+      "dnd-none": "󰂛",
+      "dnd-notification": "󰂛",
+      "inhibited-none": "󰂚",
+      "inhibited-notification": "󱅫",
+      "dnd-inhibited-none": "󰂛",
+      "dnd-inhibited-notification": "󰂛"
+    },
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true
   }
 }
