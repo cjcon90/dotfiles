@@ -84,11 +84,11 @@ blur_radius 5
 default_dim_inactive 0.15
 dim_inactive_colors.unfocused #000000ff
 dim_inactive_colors.urgent #ff5555ff
-layer_effects "waybar" blur enable; blur_ignore_transparent enable; shadows enable
-layer_effects "rofi" blur enable; shadows enable; corner_radius 12
-layer_effects "swaync-control-center" blur enable; blur_ignore_transparent enable
-layer_effects "swaync-notification-window" blur enable; blur_ignore_transparent enable
-layer_effects "swayosd" blur enable; blur_ignore_transparent enable
+layer_effects "waybar" "blur enable; blur_ignore_transparent enable"
+layer_effects "rofi" "blur enable; shadows enable; corner_radius 12"
+layer_effects "swaync-control-center" "blur enable; blur_ignore_transparent enable"
+layer_effects "swaync-notification-window" "blur enable; blur_ignore_transparent enable"
+layer_effects "swayosd" "blur enable; blur_ignore_transparent enable"
 
 ### Screenshot
 bindsym Print exec ~/.local/bin/screenshot.sh
