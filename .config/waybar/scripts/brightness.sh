@@ -19,8 +19,8 @@ emit() { printf '{"text": "%s", "percentage": %s, "tooltip": "%s: %s%%"}\n' "$1"
 
 if [[ $out == eDP-* ]]; then
     case $action in
-        up)   swayosd-client --brightness "+$LAPTOP_STEP"; refresh_bars ;;
-        down) swayosd-client --brightness "-$LAPTOP_STEP"; refresh_bars ;;
+        up)   swayosd-client --monitor "$out" --brightness "+$LAPTOP_STEP"; refresh_bars ;;
+        down) swayosd-client --monitor "$out" --brightness "-$LAPTOP_STEP"; refresh_bars ;;
         *)    emit "$(brightnessctl -m | cut -d, -f4 | tr -d %)" ;;
     esac
     exit 0
