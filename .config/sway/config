@@ -6,7 +6,7 @@ set $up k
 set $right l
 set $term alacritty
 set $menu "rofi -modi drun,run -show drun"
-set $lock_cmd $HOME/.config/sway/swaylock-blur.sh
+set $lock_cmd swaylock -f
 
 ### Autostart
 exec blueman-applet

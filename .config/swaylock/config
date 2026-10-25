@@ -1,0 +1,30 @@
+screenshots
+effect-blur=7x5
+effect-vignette=0.5:0.5
+fade-in=0.2
+clock
+indicator
+indicator-radius=110
+indicator-thickness=7
+timestr=%H:%M
+datestr=%a %d %b
+font=Blex Mono Nerd Font
+text-color=f8f8f2
+text-clear-color=f8f8f2
+text-ver-color=8be9fd
+text-wrong-color=ff5555
+inside-color=282a36aa
+inside-clear-color=282a36aa
+inside-ver-color=282a36aa
+inside-wrong-color=282a36aa
+ring-color=bd93f9
+ring-clear-color=bd93f9
+ring-ver-color=8be9fd
+ring-wrong-color=ff5555
+key-hl-color=ff79c6
+bs-hl-color=ff5555
+line-color=00000000
+line-clear-color=00000000
+line-ver-color=00000000
+line-wrong-color=00000000
+separator-color=00000000
