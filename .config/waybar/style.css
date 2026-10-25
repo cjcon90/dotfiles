@@ -19,7 +19,7 @@
 
 window#waybar {
   background-color: rgba(40, 42, 54, 0.82);
-  border: 2px solid rgba(98, 114, 164, 0.7);
+  border: 2px solid rgba(189, 147, 249, 0.7);
   border-radius: 12px;
   color: @Comment;
 }

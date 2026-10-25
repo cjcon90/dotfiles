@@ -27,11 +27,13 @@ All or nothing. If it doesn't work on Fedora, the `rice` branch is deleted. If i
 New labelled `### Effects (SwayFX)` section in `.config/sway/config`:
 
 - `corner_radius 12`
-- Shadows on all windows, soft. Slightly stronger on floating windows.
-- `default_dim_inactive 0.15`, replacing the transparency script.
+- Focused window: purple `#bd93f9` border with a soft pink glow (`shadow_color #ff79c666`, radius 25, no offset). Inactive windows keep a dark shadow.
+- Blur on, with a light frosted look (`blur_noise 0.02`, `blur_brightness 0.9`, `blur_saturation 1.2`).
+- `inactive_windows_transparency.py` stays, run with `-o 0.45`, so unfocused windows show the blurred wallpaper. SwayFX has no built-in inactive opacity, only dimming.
+- Gaps raised to inner 14, outer 6 (20px to the screen edge).
 - `layer_effects` with blur for the waybar, rofi, swaync and swayosd layer namespaces.
 
-Deleted: `.config/sway/inactive_windows_transparency.py` and its `exec` line. It is the only user of `python-i3ipc`.
+Changed 2026-10-25 after seeing it live: dimming alone looked flatter than the old transparency, so the script came back.
 
 `layer_effects` takes its effect list as one quoted string (`layer_effects "waybar" "blur enable; blur_ignore_transparent enable"`). Unquoted, sway splits at `;` and only the first effect applies. `blur_ignore_transparent` keeps the transparent margins around waybar sharp. Rounded corners for waybar come from its CSS.
 
@@ -39,7 +41,7 @@ Deleted: `.config/sway/inactive_windows_transparency.py` and its `exec` line. It
 
 Changed 2026-10-25 after seeing islands on the real screen: the user prefers one full-width band.
 
-- `window#waybar`: `rgba(40,42,54,.82)` background (blurred by SwayFX), 2px `#6272a4` border at ~70% opacity, 12px radius. Same position and margins as today.
+- `window#waybar`: `rgba(40,42,54,.82)` background (blurred by SwayFX), 2px `#bd93f9` border at ~70% opacity to match the focused window, 12px radius. Side margins 20px and bottom 14px, lined up with the window gaps.
 - Compact labels:
   - network wifi: strength only (e.g. `󰖩 93%`), SSID in the tooltip.
   - bluetooth connected: battery only (e.g. `󰂱 30%`), device alias in the tooltip.
@@ -113,7 +115,7 @@ No keybinding changes: `Print`/`Shift+Print` and the be quiet! `M1`/`Shift+M1` a
 
 In `setup.sh`:
 
-- Packages: add `swayfx`, `swaylock-effects` (both AUR, replacing `sway` and `swaylock`), `swaync`, `swayosd`, `swappy`. Remove `mako`, `python-i3ipc`, `sway`, `swaylock`.
+- Packages: add `swayfx`, `swaylock-effects` (both AUR, replacing `sway` and `swaylock`), `swaync`, `swayosd`, `swappy`. Remove `mako`, `sway`, `swaylock`.
 - New step: symlink `~/.claude/CLAUDE.md` -> `~/.dotfiles/CLAUDE.md`.
 
 ## Fedora 44 commands (work laptop, by hand)
@@ -124,7 +126,7 @@ sudo dnf copr enable eddsalkield/swaylock-effects
 sudo dnf copr enable celestelove/SwayOSD
 sudo dnf swap sway swayfx
 sudo dnf swap swaylock swaylock-effects
-sudo dnf install SwayNotificationCenter swayosd swappy
+sudo dnf install SwayNotificationCenter swayosd swappy python3-i3ipc
 sudo dnf remove mako
 cd ~/.dotfiles && git fetch && git switch rice && stow -R -t ~ .
 ln -sf ~/.dotfiles/CLAUDE.md ~/.claude/CLAUDE.md
@@ -146,4 +148,4 @@ Log out and back in afterwards. The COPRs have Fedora 44 build targets, but a su
 ## Rollback
 
 - Dotfiles: `git switch master && stow -R -t ~ .`
-- Packages (Arch): reinstall `sway swaylock mako python-i3ipc`, which replaces swayfx and swaylock-effects.
+- Packages (Arch): reinstall `sway swaylock mako`, which replaces swayfx and swaylock-effects.

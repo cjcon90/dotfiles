@@ -14,6 +14,7 @@ exec swaync
 exec swayosd-server
 exec nm-applet
 exec wl-paste --watch cliphist store
+exec /usr/bin/python3 ~/.config/sway/inactive_windows_transparency.py -o 0.45
 exec gammastep -l geoclue2
 
 ### GTK theme
@@ -41,8 +42,8 @@ exec_always /usr/bin/bash ~/.config/sway/apply-display-profile.sh
 output * bg ~/.config/sway/dracula-kraken.png fill
 
 ### Appearance
-gaps inner 10
-gaps outer 5
+gaps inner 14
+gaps outer 6
 smart_gaps off
 
 default_border pixel 3
@@ -65,7 +66,7 @@ focus_on_window_activation smart
 
 # Dracula window colors
 #                       border  bground text    indicator child_border
-client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
+client.focused          #BD93F9 #BD93F9 #282A36 #BD93F9   #BD93F9
 client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
 client.unfocused        #44475A #44475A #BFBFBF #282A36   #282A36
 client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
@@ -76,15 +77,16 @@ client.background       #F8F8F2
 corner_radius 12
 smart_corner_radius on
 shadows enable
-shadow_blur_radius 20
-shadow_color #000000aa
+shadow_blur_radius 25
+shadow_color #ff79c666
 shadow_inactive_color #00000077
-blur disable
+shadow_offset 0 0
+blur enable
 blur_passes 3
 blur_radius 5
-default_dim_inactive 0.15
-dim_inactive_colors.unfocused #000000ff
-dim_inactive_colors.urgent #ff5555ff
+blur_noise 0.02
+blur_brightness 0.9
+blur_saturation 1.2
 layer_effects "waybar" "blur enable; blur_ignore_transparent enable"
 layer_effects "rofi" "blur enable; shadows enable; corner_radius 12"
 layer_effects "swaync-control-center" "blur enable; blur_ignore_transparent enable"
