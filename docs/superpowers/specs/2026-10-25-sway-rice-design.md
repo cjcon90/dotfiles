@@ -1,4 +1,4 @@
-# Sway rice: SwayFX, Dracula, islands
+# Sway rice: SwayFX, Dracula
 
 Date: 2026-10-25
 Branch: `rice` (dotfiles), plus a small change in `arch-setup`
@@ -33,21 +33,19 @@ New labelled `### Effects (SwayFX)` section in `.config/sway/config`:
 
 Deleted: `.config/sway/inactive_windows_transparency.py` and its `exec` line. It is the only user of `python-i3ipc`.
 
-Risk to check during implementation: the waybar layer surface spans the whole screen width, so blur would also cover the gaps between islands. Use `blur_ignore_transparent` on that layer so only the islands are blurred. Set the islands' rounded corners in waybar CSS, not with `corner_radius` in `layer_effects`, which rounds the whole surface. Confirm the actual layer namespace names with `swaymsg -t get_tree` / `layer_effects` testing.
+`layer_effects` takes its effect list as one quoted string (`layer_effects "waybar" "blur enable; blur_ignore_transparent enable"`). Unquoted, sway splits at `;` and only the first effect applies. `blur_ignore_transparent` keeps the transparent margins around waybar sharp. Rounded corners for waybar come from its CSS.
 
-### 2. Waybar: floating islands, compact labels
+### 2. Waybar: refined full bar, compact labels
 
-- `window#waybar` background transparent.
-- `.modules-left`, `.modules-center`, `.modules-right` each styled as an island: `rgba(40,42,54,.82)` background, 12px radius, 2px `#6272a4` border at ~70% opacity. The centre (clock) island uses a `#bd93f9` border.
-- Left island: workspaces + media. Centre: clock. Right: status modules.
+Changed 2026-10-25 after seeing islands on the real screen: the user prefers one full-width band.
+
+- `window#waybar`: `rgba(40,42,54,.82)` background (blurred by SwayFX), 2px `#6272a4` border at ~70% opacity, 12px radius. Same position and margins as today.
 - Compact labels:
   - network wifi: strength only (e.g. `󰖩 93%`), SSID in the tooltip.
   - bluetooth connected: battery only (e.g. `󰂱 30%`), device alias in the tooltip.
-- New `custom/notification` module at the end of the right island: bell icon from `swaync-client -swb`. Click toggles the panel, right-click toggles do-not-disturb.
-- Fix the existing height warning (requested 38, modules need 52) by setting the height and padding so they agree.
+- New `custom/notification` module at the end of `modules-right`: bell icon from `swaync-client -swb`. Click toggles the panel, right-click toggles do-not-disturb.
+- Fix the existing height warning (requested 38, modules need 52) by removing the fixed height.
 - Module colours unchanged.
-
-Accepted trade-off: gaps between islands differ per screen (laptop 1920px: ~397px left / ~262px right with a song playing). No per-output bar configs.
 
 ### 3. Rofi: refined list
 
@@ -138,7 +136,7 @@ Log out and back in afterwards. The COPRs have Fedora 44 build targets, but a su
 
 - `sway -C` passes with the new config.
 - Waybar config parses as JSON. Waybar starts with no errors or height warning.
-- Screenshot each bar (`grim -o <output>`) and compare with the approved mockups: islands, compact labels, bell.
+- Screenshot each bar (`grim -o <output>`) and check: rounded full-width bar, compact labels, bell.
 - `notify-send` at low, normal and critical urgency shows the right border colours. `$mod+n` opens the panel, `$mod+Shift+n` toggles do-not-disturb.
 - Volume up/down/mute and laptop brightness keys show the popup and change the level as before.
 - Lock with `$mod+Ctrl+l`: blur, clock, ring states, unlock works.
