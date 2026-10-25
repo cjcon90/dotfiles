@@ -1,6 +1,5 @@
 {
   "position": "bottom",
-  "height": 38,
   "modules-left": [
     "sway/workspaces",
     "custom/media"
@@ -125,8 +124,7 @@
     "interval": 5
   },
   "network": {
-    "format-wifi": " 󰖩 {essid} ({signalStrength}%) ",
-    "max-length": 20,
+    "format-wifi": " 󰖩 {signalStrength}% ",
     "format-ethernet": " 󰈀 {ifname} ",
     "format-disconnected": " 󰖪 ",
     "tooltip-format": "{essid} {signalStrength}%",
@@ -154,10 +152,11 @@
   "bluetooth": {
     "format-off": " 󰂲 off ",
     "format-on": " 󰂯 disconnected ",
-    "format-connected": " 󰂱 {device_alias} ",
-    "format-connected-battery": " 󰂱 {device_alias}({device_battery_percentage}%) ",
+    "format-connected": " 󰂱 ",
+    "format-connected-battery": " 󰂱 {device_battery_percentage}% ",
     "interval": 5,
     "tooltip-format": "{status}",
+    "tooltip-format-connected": "{device_alias}",
     "on-click": "/usr/bin/blueman-manager"
   }
 }

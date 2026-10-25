@@ -18,12 +18,10 @@
 }
 
 window#waybar {
-  background-color: @Background;
-  border: 3px solid @Comment;
-  border-radius: 0;
+  background-color: rgba(40, 42, 54, 0.82);
+  border: 2px solid rgba(98, 114, 164, 0.7);
+  border-radius: 12px;
   color: @Comment;
-  transition-property: background-color;
-  transition-duration: .5s;
 }
 
 #workspaces,
@@ -39,7 +37,7 @@ window#waybar {
 #custom-vpn {
   color: @Comment;
   border-color: @Comment;
-  padding: 10px 5px;
+  padding: 6px 5px;
 }
 
 #tray, #workspaces {
@@ -50,7 +48,7 @@ window#waybar {
   color: @CurrentLine;
   min-width: 20px;
   font-weight: 700;
-  border-radius: 0px;
+  border-radius: 8px;
 }
 
 #workspaces button:hover {
