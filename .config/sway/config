@@ -104,7 +104,7 @@ bindsym $mod+y exec $term -e yazi
 # Kill focused window
 bindsym $mod+Shift+q kill
 
-# Notification dismiss/restore
+# Notification panel / do-not-disturb
 bindsym $mod+n exec swaync-client -t -sw
 bindsym $mod+Shift+n exec swaync-client -d -sw
 
