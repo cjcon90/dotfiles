@@ -1,6 +1,6 @@
 * {
 	bg: #282a36;
-	dark: #2e3440;
+	dark: #21222c;
 	white: #f8f8f2;
 	comment: #6272a4;
 	cyan: #8be9fd;
@@ -12,7 +12,7 @@
 	yellow: #f1fa8c;
 	highlight-green: bold #50fa7b;
 	
-	background-color: @bg;
+	background-color: transparent;
 	text-color: @white;
 
 	margin: 0;
@@ -29,8 +29,10 @@ window {
 	children: [entry, listview];
   height: 60%;
   width: 40%;
-  border: 3px;
+  border: 2px;
   border-color: @comment;
+  border-radius: 12px;
+  background-color: rgba(40, 42, 54, 0.85);
 }
 
 entry {
@@ -39,6 +41,7 @@ entry {
   margin: 10px;
 	font: "Blex Mono Nerd Font SemiBold 12";
   background-color: @dark;
+  border-radius: 8px;
 }
 
 element {
@@ -48,10 +51,11 @@ element {
 }
 
 element selected {
-	background-color: @comment;
+	background-color: #44475a;
 	text-color: @white;
-	border: 3px;
+	border: 2px;
 	border-color: @pink;
+	border-radius: 8px;
 }
 
 element-text {
