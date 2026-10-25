@@ -11,6 +11,7 @@ set $lock_cmd swaylock -f
 ### Autostart
 exec blueman-applet
 exec swaync
+exec swayosd-server
 exec nm-applet
 exec wl-paste --watch cliphist store
 exec gammastep -l geoclue2
@@ -216,15 +217,15 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 ### Media / Brightness
-bindsym --locked XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-bindsym --locked XF86AudioRaiseVolume exec wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 2%+
-bindsym --locked XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-
+bindsym --locked XF86AudioMute exec swayosd-client --output-volume mute-toggle
+bindsym --locked XF86AudioRaiseVolume exec swayosd-client --output-volume +2 --max-volume 100
+bindsym --locked XF86AudioLowerVolume exec swayosd-client --output-volume -2
 bindsym --locked Shift+XF86AudioRaiseVolume exec playerctl next
 bindsym --locked Shift+XF86AudioLowerVolume exec playerctl previous
 bindsym --locked Shift+XF86AudioMute exec playerctl play-pause
 
-bindsym XF86MonBrightnessUp exec brightnessctl set 5%+ && pkill -RTMIN+8 -x waybar
-bindsym XF86MonBrightnessDown exec brightnessctl set 5%- && pkill -RTMIN+8 -x waybar
+bindsym XF86MonBrightnessUp exec swayosd-client --brightness +5 && pkill -RTMIN+8 -x waybar
+bindsym XF86MonBrightnessDown exec swayosd-client --brightness -5 && pkill -RTMIN+8 -x waybar
 
 ### Bar
 bar {
