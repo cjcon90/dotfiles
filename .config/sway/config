@@ -68,12 +68,19 @@ focus_on_window_activation smart
 
 # Dracula window colors
 #                       border  bground text    indicator child_border
-client.focused          #BD93F9 #BD93F9 #282A36 #BD93F9   #BD93F9
-client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
-client.unfocused        #44475A #44475A #BFBFBF #282A36   #282A36
+client.focused          #44475A #44475A #BD93F9 #BD93F9   #BD93F9
+client.focused_inactive #282A36 #282A36 #BFBFBF #44475A   #44475A
+client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
 client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
 client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
 client.background       #F8F8F2
+
+# Tab titles: bold app name, dimmed window title
+font pango:Blex Mono Nerd Font 11
+title_align left
+titlebar_separator disable
+titlebar_padding 14 6
+for_window [title="."] title_format "<b>%app_id%class</b>   <span alpha='70%'>%title</span>"
 
 ### Effects (SwayFX)
 corner_radius 12
