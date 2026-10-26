@@ -32,6 +32,7 @@ local options = {
   scrolloff = 8,
   sidescrolloff = 8,
   guifont = "monospace:h17",
+  winborder = "rounded",
 }
 
 vim.opt.shortmess:append("c")

@@ -32,6 +32,7 @@ require("lazy").setup({
     version = false,
   },
   install = { colorscheme = { "dracula", "habamax" } },
+  ui = { border = "rounded" },
   checker = { enabled = true, notify = false },
   performance = {
     rtp = {
