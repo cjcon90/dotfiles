@@ -10,7 +10,7 @@ set $lock_cmd swaylock -f
 
 ### Autostart
 exec blueman-applet
-exec swaync
+exec systemctl --user start swaync.service
 exec swayosd-server
 exec nm-applet
 exec wl-paste --watch cliphist store
