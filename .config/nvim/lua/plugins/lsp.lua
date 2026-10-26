@@ -1,6 +1,3 @@
--- Servers without npm (NAS, work devserver) lack Mason's toolchains: use what's installed, never auto-install
-local no_autoinstall = vim.fn.executable("npm") == 0
-
 return {
   {
     "stevearc/aerial.nvim",
@@ -20,24 +17,9 @@ return {
     },
   },
   {
-    "neovim/nvim-lspconfig",
-    opts = function(_, opts)
-      if not no_autoinstall then
-        return
-      end
-      for name, s in pairs(opts.servers) do
-        if s == true then
-          opts.servers[name] = { mason = false }
-        elseif type(s) == "table" then
-          s.mason = false
-        end
-      end
-    end,
-  },
-  {
     "mason-org/mason.nvim",
     opts = function(_, opts)
-      if no_autoinstall then
+      if not vim.g.has_toolchains then
         opts.ensure_installed = {}
       end
     end,

@@ -23,6 +23,25 @@ if (vim.uv or vim.loop).fs_stat(vim.fn.stdpath("config") .. "/lua/work/init.lua"
   table.insert(spec, { import = "work.plugins" })
 end
 
+-- Language extras assume their toolchains; servers without npm (NAS, work devserver) skip them
+vim.g.has_toolchains = vim.fn.executable("npm") == 1
+if vim.g.has_toolchains then
+  for _, extra in ipairs({
+    "formatting.black",
+    "lang.go",
+    "lang.json",
+    "lang.markdown",
+    "lang.python",
+    "lang.rust",
+    "lang.sql",
+    "lang.toml",
+    "lang.typescript",
+    "lang.yaml",
+  }) do
+    table.insert(spec, { import = "lazyvim.plugins.extras." .. extra })
+  end
+end
+
 -- User plugins last
 table.insert(spec, { import = "plugins" })
 
