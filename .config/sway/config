@@ -68,7 +68,7 @@ focus_on_window_activation smart
 
 # Dracula window colors
 #                       border  bground text    indicator child_border
-client.focused          #44475A #44475A #BD93F9 #BD93F9   #BD93F9
+client.focused          #BD93F9 #44475A #BD93F9 #BD93F9   #BD93F9
 client.focused_inactive #282A36 #282A36 #BFBFBF #44475A   #44475A
 client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
 client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
@@ -80,6 +80,7 @@ font pango:Blex Mono Nerd Font 11
 title_align left
 titlebar_separator disable
 titlebar_padding 14 6
+titlebar_border_thickness 3
 for_window [title="."] title_format "<b>%app_id%class</b>   <span alpha='70%'>%title</span>"
 
 ### Effects (SwayFX)
