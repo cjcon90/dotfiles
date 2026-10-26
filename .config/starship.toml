@@ -1,5 +1,6 @@
 # Inserts a blank line between shell prompts
 add_newline = true
+palette = "dracula"
 
 [battery]
 full_symbol = "🔋"
@@ -11,11 +12,27 @@ threshold = 30
 style = "bold red"
 
 [character]                            
-success_symbol = "[>](bold green)"
-error_symbol = "[✖](bold red) "
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
 
 [directory]
 truncate_to_repo = false
+style = "bold purple"
+
+[git_branch]
+style = "bold pink"
+
+[cmd_duration]
+style = "bold orange"
+
+[jobs]
+style = "bold cyan"
+
+[python]
+# Only show inside an active venv, with its name
+detect_extensions = []
+detect_files = []
+format = "via [$symbol$virtualenv]($style) "
 
 [hostname]
 ssh_only = true
@@ -27,5 +44,15 @@ disabled = false
 [username]
 format = "[$user]($style)[@](bold blue)"
 style_user = "bold yellow"
+style_root = "bold red"
 show_always = false
 
+[palettes.dracula]
+purple = "#bd93f9"
+pink = "#ff79c6"
+red = "#ff5555"
+green = "#50fa7b"
+yellow = "#f1fa8c"
+orange = "#ffb86c"
+cyan = "#8be9fd"
+blue = "#6272a4"
