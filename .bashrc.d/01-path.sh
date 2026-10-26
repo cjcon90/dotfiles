@@ -12,6 +12,9 @@ export GOPATH="$HOME/go"
 for _p in "$GOPATH/bin" "$HOME/bin" "$HOME/.local/bin"; do
     case ":$PATH:" in *":$_p:"*) ;; *) PATH="$_p:$PATH" ;; esac
 done
+# Newest nvm Node, so npm works without loading nvm (e.g. for nvim's Mason)
+for _p in "$HOME"/.nvm/versions/node/v*/bin; do :; done
+[ -d "$_p" ] && case ":$PATH:" in *":$_p:"*) ;; *) PATH="$_p:$PATH" ;; esac
 unset _p
 export PATH
 
