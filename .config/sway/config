@@ -21,6 +21,8 @@ exec gammastep -l geoclue2
 exec gsettings set org.gnome.desktop.interface gtk-theme "Dracula"
 exec gsettings set org.gnome.desktop.wm.preferences theme "Dracula"
 exec gsettings set org.gnome.desktop.interface icon-theme "Dracula"
+exec gsettings set org.gnome.desktop.interface cursor-theme "Dracula-cursors"
+seat seat0 xcursor_theme Dracula-cursors 24
 
 ### Input
 input * {
