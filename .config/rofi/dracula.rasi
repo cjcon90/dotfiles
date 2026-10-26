@@ -30,7 +30,7 @@ window {
   height: 60%;
   width: 40%;
   border: 2px;
-  border-color: @comment;
+  border-color: rgba(189, 147, 249, 0.7);
   border-radius: 12px;
   background-color: rgba(40, 42, 54, 0.85);
 }

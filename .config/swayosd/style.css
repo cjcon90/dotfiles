@@ -1,6 +1,6 @@
 window#osd {
   background: rgba(40, 42, 54, 0.85);
-  border: 2px solid #6272a4;
+  border: 2px solid rgba(189, 147, 249, 0.7);
   border-radius: 999px;
   padding: 10px 16px;
 }
