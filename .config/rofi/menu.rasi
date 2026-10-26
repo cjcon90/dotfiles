@@ -1,0 +1,10 @@
+@import "dracula.rasi"
+
+window {
+  width: 30%;
+  height: 0;
+}
+
+listview {
+  lines: 4;
+}

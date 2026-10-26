@@ -119,11 +119,12 @@ bindsym $mod+p exec cliphist list | rofi -dmenu | cliphist decode | wl-copy
 # Launcher
 bindsym $mod+d exec $menu
 
-# Window switcher, power menu, keybind cheatsheet, calculator
+# Window switcher, power menu, keybind cheatsheet, calculator, audio output
 bindsym $mod+Tab exec rofi -show window
 bindsym $mod+x exec ~/.config/sway/power-menu.sh
 bindsym $mod+slash exec ~/.config/sway/keybinds.sh
 bindsym $mod+c exec ~/.config/sway/calc.sh
+bindsym $mod+a exec ~/.config/sway/audio-menu.sh
 
 # Lock the screen
 bindsym $mod+Ctrl+l exec $lock_cmd
