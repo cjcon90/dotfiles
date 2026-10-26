@@ -12,6 +12,7 @@ message {
 }
 
 textbox {
+  padding: 10px 0 0;
   horizontal-align: 0.5;
   text-color: @comment;
 }
@@ -26,7 +27,7 @@ listview {
 element {
   orientation: vertical;
   children: [element-text];
-  padding: 18px 0;
+  padding: 28px 0;
 }
 
 element-text {

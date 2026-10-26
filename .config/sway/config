@@ -5,7 +5,7 @@ set $down j
 set $up k
 set $right l
 set $term alacritty
-set $menu "rofi -modi drun,run -show drun"
+set $menu "rofi -modi drun,run -show drun -theme-str 'inputbar { children: [textbox-search, entry, mode-switcher]; }'"
 set $lock_cmd swaylock -f
 
 ### Autostart
@@ -122,7 +122,7 @@ bindsym $mod+n exec swaync-client -t -sw
 bindsym $mod+Shift+n exec swaync-client -d -sw
 
 # Clipboard history
-bindsym $mod+p exec cliphist list | rofi -dmenu | cliphist decode | wl-copy
+bindsym $mod+p exec cliphist list | rofi -dmenu -i -display-columns 2 -p Clipboard -theme-str 'entry { placeholder: "Clipboard"; }' | cliphist decode | wl-copy
 
 # Launcher
 bindsym $mod+d exec $menu

@@ -2,5 +2,9 @@ configuration {
   terminal: "alacritty";
   font: "Blex Mono Nerd Font SemiBold 11";
   icon-theme: "Dracula";
+  show-icons: true;
+  window-format: "{c:12} {t}";
+  drun { display-name: "Apps"; }
+  run { display-name: "Run"; }
 }
 @theme "~/.config/rofi/dracula.rasi"

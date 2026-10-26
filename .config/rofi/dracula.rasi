@@ -10,13 +10,13 @@
 	purple: #bd93f9;
 	red: #ff5555;
 	yellow: #f1fa8c;
-	highlight-green: bold #50fa7b;
+	highlight-pink: bold #ff79c6;
 	
 	background-color: transparent;
 	text-color: @white;
 
 	margin: 0;
-	padding: 10px;
+	padding: 0;
 	font: "Blex Mono Nerd Font SemiBold 11";
 }
 
@@ -26,42 +26,72 @@ run {
 
 window {
 	fullscreen: false;
-	children: [entry, listview];
+	children: [inputbar, listview];
   height: 60%;
   width: 40%;
   border: 2px;
   border-color: rgba(189, 147, 249, 0.7);
   border-radius: 12px;
+  padding: 10px;
   background-color: rgba(40, 42, 54, 0.85);
 }
 
-entry {
-	expand: false;
-	text-color: @pink;
+inputbar {
+  children: [textbox-search, entry];
   margin: 10px;
-	font: "Blex Mono Nerd Font SemiBold 12";
+  padding: 10px 12px;
+  spacing: 10px;
   background-color: @dark;
   border-radius: 8px;
 }
 
+textbox-search {
+  expand: false;
+  str: "󰍉";
+  text-color: @purple;
+	font: "Blex Mono Nerd Font SemiBold 12";
+}
+
+entry {
+	text-color: @pink;
+	font: "Blex Mono Nerd Font SemiBold 12";
+  placeholder: "Search";
+  placeholder-color: @comment;
+}
+
+button {
+  padding: 0 8px;
+  text-color: @comment;
+}
+
+button selected {
+  text-color: @purple;
+}
+
+listview {
+  padding: 0 10px 10px;
+  spacing: 4px;
+}
+
 element {
-	padding: 5px;
+	padding: 10px 12px;
+	spacing: 10px;
 	border-radius: 5px;
 	children: [element-icon, element-text];
 }
 
 element selected {
 	background-color: #44475a;
-	text-color: @white;
+	text-color: @purple;
 	border: 2px;
-	border-color: @pink;
+	border-color: @purple;
 	border-radius: 8px;
 }
 
 element-text {
 	background-color: inherit;
 	text-color: inherit;
-	highlight: @highlight-green;
+	highlight: @highlight-pink;
 	vertical-align: 0.50;
 }
 
