@@ -1,0 +1,4 @@
+{
+  "statusLine": { "type": "command", "command": "~/.local/bin/claude-statusline" },
+  "theme": "dark-ansi"
+}

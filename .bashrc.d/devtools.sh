@@ -38,6 +38,7 @@ command -v bat &>/dev/null && alias cat='bat --pager=never'
 alias grep='grep --color=auto'
 alias vim='nvim'
 alias ff='fastfetch'
+alias claude='claude --settings ~/.config/claude/settings.json'
 
 # ── Aliases: git ──────────────────────────────────────────────────────────────
 alias gs='git status'
