@@ -130,8 +130,9 @@ exec swayidle -w \
   timeout 600 '$lock_cmd' \
   before-sleep '$lock_cmd'
 
-# Emoji picker
-bindsym $mod+semicolon exec flatpak run codes.merritt.FeelingFinder
+# Emoji and symbol pickers
+bindsym $mod+semicolon exec ~/.config/sway/emoji-menu.sh
+bindsym $mod+Ctrl+semicolon exec ~/.config/sway/emoji-menu.sh symbols
 
 # Suspend (swayidle locks before sleep)
 bindsym $mod+Ctrl+Escape exec systemctl suspend

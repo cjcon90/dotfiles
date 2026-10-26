@@ -1,0 +1,9 @@
+@import "dracula.rasi"
+
+window {
+  width: 50%;
+}
+
+element-text {
+  font: "Blex Mono Nerd Font SemiBold 13";
+}
