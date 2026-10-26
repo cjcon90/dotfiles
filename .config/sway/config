@@ -76,6 +76,7 @@ client.background       #F8F8F2
 ### Effects (SwayFX)
 corner_radius 12
 smart_corner_radius on
+animation_duration_ms 200
 shadows enable
 shadow_blur_radius 25
 shadow_color #ff79c666
