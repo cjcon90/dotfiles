@@ -1,0 +1,10 @@
+[delta]
+    file-style = bold "#bd93f9"
+    file-decoration-style = "#bd93f9" ul
+    hunk-header-style = file line-number syntax
+    hunk-header-decoration-style = "#6272a4" box
+    line-numbers-left-style = "#44475a"
+    line-numbers-right-style = "#44475a"
+    line-numbers-zero-style = "#6272a4"
+    line-numbers-minus-style = "#ff5555"
+    line-numbers-plus-style = "#50fa7b"
