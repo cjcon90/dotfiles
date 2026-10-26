@@ -69,7 +69,10 @@ fi
 # ── fzf (Ctrl+R history, Ctrl+T file picker) ──────────────────────────────────
 if command -v fzf &>/dev/null; then
     eval "$(fzf --bash)"
-    export FZF_DEFAULT_OPTS="--height=40% --layout=reverse --border --info=inline"
+    export FZF_DEFAULT_OPTS="--height=40% --layout=reverse --border=rounded --info=inline \
+--prompt='󰍉 ' --pointer='▌' --marker='✓' \
+--color=fg:#f8f8f2,bg:-1,hl:#ff79c6,fg+:#f8f8f2,bg+:#44475a,hl+:#ff79c6,gutter:-1 \
+--color=border:#bd93f9,prompt:#bd93f9,pointer:#bd93f9,marker:#ff79c6,info:#6272a4,spinner:#ffb86c,header:#6272a4"
     if command -v rg &>/dev/null; then
         export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
         export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
