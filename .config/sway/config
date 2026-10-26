@@ -56,6 +56,7 @@ for_window [window_role="dialog"] floating enable
 for_window [app_id="pavucontrol"] floating enable
 for_window [app_id="nm-connection-editor"] floating enable
 for_window [app_id="blueman-manager"] floating enable
+for_window [app_id="qalculate-gtk"] floating enable, move position center
 for_window [app_id="codes.merritt.FeelingFinder"] floating enable
 
 # Prevent idle while fullscreen (e.g. videos)
@@ -118,10 +119,11 @@ bindsym $mod+p exec cliphist list | rofi -dmenu | cliphist decode | wl-copy
 # Launcher
 bindsym $mod+d exec $menu
 
-# Window switcher, power menu, keybind cheatsheet
+# Window switcher, power menu, keybind cheatsheet, calculator
 bindsym $mod+Tab exec rofi -show window
 bindsym $mod+x exec ~/.config/sway/power-menu.sh
 bindsym $mod+slash exec ~/.config/sway/keybinds.sh
+bindsym $mod+c exec ~/.config/sway/calc.sh
 
 # Lock the screen
 bindsym $mod+Ctrl+l exec $lock_cmd
