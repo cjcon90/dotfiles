@@ -102,7 +102,7 @@ bindsym Shift+Print exec ~/.local/bin/screenshot_select.sh
 
 # Terminal
 bindsym $mod+Return exec $term
-bindsym $mod+y exec $term -e yazi
+bindsym $mod+y exec foot yazi
 
 # Kill focused window
 bindsym $mod+Shift+q kill
