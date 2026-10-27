@@ -19,12 +19,13 @@ local spec = {
 }
 
 -- Optional work overlay plugin specs (must come after lazyvim.plugins, before extras and user plugins)
-if (vim.uv or vim.loop).fs_stat(vim.fn.stdpath("config") .. "/lua/work/init.lua") then
+local has_work = (vim.uv or vim.loop).fs_stat(vim.fn.stdpath("config") .. "/lua/work/init.lua")
+if has_work then
   table.insert(spec, { import = "work.plugins" })
 end
 
--- Language extras assume their toolchains; servers without npm (NAS, work devserver) skip them
-vim.g.has_toolchains = vim.fn.executable("npm") == 1
+-- Language extras assume their toolchains; servers without npm (NAS) or with only a stub npm (work devserver) skip them
+vim.g.has_toolchains = vim.fn.executable("npm") == 1 and not has_work
 if vim.g.has_toolchains then
   for _, extra in ipairs({
     "formatting.black",
