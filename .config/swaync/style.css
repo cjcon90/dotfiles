@@ -1,36 +1,24 @@
-* {
-  font-family: "Blex Mono Nerd Font";
-  font-size: 14px;
+@import url("file:///etc/xdg/swaync/style.css");
+
+:root {
+  --noti-bg: 40, 42, 54;
+  --noti-bg-alpha: 0.85;
+  --noti-bg-darker: #21222c;
+  --noti-bg-hover: #44475a;
+  --noti-close-bg: #44475a;
+  --noti-close-bg-hover: #6272a4;
+  --text-color: #f8f8f2;
+  --border: 2px solid #ff79c6;
 }
 
-.notification-row,
-.notification-background {
-  background: transparent;
-  outline: none;
-}
+* { font-family: "Adwaita Sans", sans-serif; }
 
-.notification {
-  background: rgba(40, 42, 54, 0.85);
-  color: #f8f8f2;
-  border: 2px solid #ff79c6;
-  border-radius: 12px;
-  margin: 6px 10px;
-  padding: 6px;
-}
+.notification-row .notification-background .notification.low { border-color: #6272a4; }
+.notification-row .notification-background .notification.critical { border-color: #ff5555; }
 
-.notification.low { border-color: #6272a4; }
-.notification.normal { border-color: #ff79c6; }
-.notification.critical { border-color: #ff5555; }
-
-.summary { color: #ff79c6; font-weight: bold; }
-.body { color: #f8f8f2; }
-.time { color: #6272a4; }
-
-.close-button {
-  background: #44475a;
-  color: #f8f8f2;
-  border-radius: 999px;
-}
+.notification-row .notification-background .notification .notification-default-action { padding: 8px; }
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .summary { color: #ff79c6; }
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .time { color: #6272a4; margin-left: 8px; }
 
 .control-center {
   background: rgba(40, 42, 54, 0.85);
