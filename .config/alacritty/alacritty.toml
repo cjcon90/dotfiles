@@ -104,3 +104,8 @@ y = 20
 key = "Return"
 mods = "Shift"
 chars = "\u001B\r"
+
+# Tapping Super sends C-b, the tmux prefix
+[[keyboard.bindings]]
+key = "Super"
+chars = "\u0002"
