@@ -7,7 +7,7 @@ action=${1:-get}
 out=${2:-${WAYBAR_OUTPUT_NAME:-}}
 # Waybar doesn't set this for on-scroll; focus_follows_mouse makes the hovered bar's output focused.
 [ -n "$out" ] || out=$(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
-LAPTOP_STEP=1
+LAPTOP_STEP=${LAPTOP_STEP:-1}
 DDC_STEP=2
 CACHE_TTL=55
 cache_dir=$XDG_RUNTIME_DIR/ddc-brightness
@@ -15,13 +15,18 @@ cache=$cache_dir/$out
 
 refresh_bars() { pkill -RTMIN+8 -x waybar; }
 
+# Segmented bar so CSS can colour brightness apart from the volume progressbar.
+show_osd() { swayosd-client --monitor "$out" --custom-icon display-brightness-symbolic --custom-segmented-progress "$((($1 + 2) / 5)):20"; }
+
+laptop_level() { brightnessctl -m | cut -d, -f4 | tr -d %; }
+
 emit() { printf '{"text": "%s", "percentage": %s, "tooltip": "%s: %s%%"}\n' "$1" "$1" "$out" "$1"; }
 
 if [[ $out == eDP-* ]]; then
     case $action in
-        up)   swayosd-client --monitor "$out" --brightness "+$LAPTOP_STEP"; refresh_bars ;;
-        down) swayosd-client --monitor "$out" --brightness "-$LAPTOP_STEP"; refresh_bars ;;
-        *)    emit "$(brightnessctl -m | cut -d, -f4 | tr -d %)" ;;
+        up)   brightnessctl -q -n set "$LAPTOP_STEP%+"; show_osd "$(laptop_level)"; refresh_bars ;;
+        down) brightnessctl -q -n set "$LAPTOP_STEP%-"; show_osd "$(laptop_level)"; refresh_bars ;;
+        *)    emit "$(laptop_level)" ;;
     esac
     exit 0
 fi
@@ -72,8 +77,7 @@ case $action in
         echo "$new" > "$cache"
         flock -u 8
         refresh_bars
-        swayosd-client --monitor "$out" --custom-icon display-brightness-symbolic \
-            --custom-progress "$(awk -v n="$new" 'BEGIN { printf "%.2f", n / 100 }')" &
+        show_osd "$new" &
 
         # Single writer applies only the latest level, so fast scrolls don't queue up.
         exec 9>"$cache.write"

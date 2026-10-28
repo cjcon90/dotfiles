@@ -243,8 +243,8 @@ bindsym --locked Shift+XF86AudioRaiseVolume exec playerctl next
 bindsym --locked Shift+XF86AudioLowerVolume exec playerctl previous
 bindsym --locked Shift+XF86AudioMute exec playerctl play-pause
 
-bindsym XF86MonBrightnessUp exec swayosd-client --monitor eDP-1 --brightness +5 && pkill -RTMIN+8 -x waybar
-bindsym XF86MonBrightnessDown exec swayosd-client --monitor eDP-1 --brightness -5 && pkill -RTMIN+8 -x waybar
+bindsym XF86MonBrightnessUp exec LAPTOP_STEP=5 ~/.config/waybar/scripts/brightness.sh up eDP-1
+bindsym XF86MonBrightnessDown exec LAPTOP_STEP=5 ~/.config/waybar/scripts/brightness.sh down eDP-1
 
 ### Bar
 bar {

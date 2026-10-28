@@ -11,7 +11,7 @@ window#osd {
 
 image,
 label {
-  color: #8be9fd;
+  color: #f8f8f2;
 }
 
 progressbar trough {
@@ -21,7 +21,22 @@ progressbar trough {
 }
 
 progressbar progress {
-  background: #8be9fd;
+  background: #50fa7b;
   border-radius: 999px;
   min-height: 8px;
+}
+
+segmentedprogress {
+  min-width: 160px;
+}
+
+segment {
+  margin: 0 1px;
+  background: #44475a;
+  border-radius: 999px;
+  min-height: 8px;
+}
+
+segment.active {
+  background: #f1fa8c;
 }
