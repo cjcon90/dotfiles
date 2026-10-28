@@ -1,30 +1,15 @@
 #!/usr/bin/env bash
+# Swap all workspaces between the laptop screen and the external monitor.
 
-# Getting the external output name
-external_output=$(swaymsg -t get_outputs | jq '.[].name | select(. != "eDP-1")')
+ext=$(swaymsg -t get_outputs | jq -r '.[] | select(.active and .name != "eDP-1") | .name' | head -1)
+[ -n "$ext" ] || exit 0
 
-# Get list of workspaces on eDP-1
-internal_workspaces=$(swaymsg -t get_workspaces | jq '.[] | select(.output == "eDP-1") | .name')
+workspaces=$(swaymsg -t get_workspaces)
+focused=$(jq -r '.[] | select(.focused).name' <<<"$workspaces")
+visible=$(jq -r '.[] | select(.visible and (.focused | not)).name' <<<"$workspaces")
+moves=$(jq -r --arg ext "$ext" '[sort_by(.output != "eDP-1")[]
+  | "workspace \"\(.name)\"; move workspace to output \(if .output == "eDP-1" then $ext else "eDP-1" end)"]
+  | join("; ")' <<<"$workspaces")
 
-# Get list of workspaces on external
-external_workspaces=$(swaymsg -t get_workspaces | jq '.[] | select(.output == '"$external_output"') | .name')
-
-# Get visible but unfocused workspace
-visible=$(swaymsg -t get_workspaces | jq '.[] | select(.visible == true) | select(.focused == false) | .name')
-
-# Get currently focused workspace
-focused=$(swaymsg -t get_workspaces | jq '.[] | select(.focused == true) | .name')
-
-# Move eDP-1 workspaces to external
-for workspace in $internal_workspaces; do
-    swaymsg "workspace $workspace, move workspace to output $external_output"
-done
-
-# Move external workspaces to eDP-1
-for workspace in $external_workspaces; do
-    swaymsg "workspace $workspace, move workspace to output eDP-1"
-done
-
-# Restore focus: focused on other screen, visible from other screen becomes focused
-swaymsg workspace $focused
-swaymsg workspace $visible
+# Focus stays on the same screen, now showing the other screen's workspace
+swaymsg -q "$moves; workspace \"$focused\"; workspace \"$visible\""

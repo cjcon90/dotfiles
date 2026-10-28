@@ -212,7 +212,7 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 # Swap workspaces between monitors
-bindsym $mod+Shift+s exec /usr/bin/bash ~/.config/sway/swap-displays.sh
+bindsym $mod+Shift+s exec ~/.config/sway/swap-displays.sh
 
 ### Scratchpad
 bindsym $mod+Shift+minus move scratchpad
