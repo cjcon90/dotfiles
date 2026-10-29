@@ -60,7 +60,7 @@ if __name__ == "__main__":
     prev_focused = None
     prev_workspace = ipc.get_tree().find_focused().workspace().num
 
-    for window in ipc.get_tree():
+    for window in ipc.get_tree().leaves():
         if window.focused:
             prev_focused = window
         else:
